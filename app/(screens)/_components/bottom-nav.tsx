@@ -1,0 +1,227 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  Home, Users, Building2, Handshake, MoreHorizontal,
+  Route, CheckSquare2, CalendarDays, FlaskConical,
+  BarChart2, LayoutGrid, Eye, EyeOff,
+} from "lucide-react";
+import { useNav } from "../_context/nav-context";
+
+const ALL_SWAPPABLE = [
+  { key: "users",       icon: Users,        label: "Users",       href: "/users"       },
+  { key: "accounts",    icon: Building2,    label: "Accounts",    href: "/accounts"    },
+  { key: "deals",       icon: Handshake,    label: "Deals",       href: "/deals"       },
+  { key: "journeys",    icon: Route,        label: "Journeys",    href: "/journeys"    },
+  { key: "tasks",       icon: CheckSquare2, label: "Tasks",       href: "/tasks"       },
+  { key: "meetings",    icon: CalendarDays, label: "Meetings",    href: "/meetings"    },
+  { key: "experiences", icon: FlaskConical, label: "Experiences", href: "/experiences" },
+  { key: "reports",     icon: BarChart2,    label: "Reports",     href: "/reports"     },
+  { key: "dashboards",  icon: LayoutGrid,   label: "Dashboards",  href: "/dashboards"  },
+];
+
+const SPRING = [
+  "left 0.55s cubic-bezier(0.34,1.56,0.64,1)",
+  "right 0.55s cubic-bezier(0.34,1.56,0.64,1)",
+  "bottom 0.45s cubic-bezier(0.34,1.56,0.64,1)",
+  "box-shadow 0.3s ease",
+].join(", ");
+
+const STICKY = [
+  "left 0.32s cubic-bezier(0.4,-0.25,0.6,1)",
+  "right 0.32s cubic-bezier(0.4,-0.25,0.6,1)",
+  "bottom 0.28s ease",
+  "box-shadow 0.2s ease",
+].join(", ");
+
+const DEFAULT_KEYS = ["users", "accounts", "deals"];
+
+export default function BottomNav() {
+  const pathname  = usePathname();
+  const { scrolled } = useNav();
+  const [showMore, setShowMore] = useState(false);
+  const [closing,  setClosing]  = useState(false);
+  const [selected, setSelected] = useState<string[]>(DEFAULT_KEYS);
+
+  // Hydrate from localStorage after mount to avoid SSR mismatch
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("nav-slots");
+      if (saved) setSelected(JSON.parse(saved));
+    } catch {}
+  }, []);
+
+  const toggle = (key: string) => {
+    setSelected((prev) => {
+      const next = prev.includes(key)
+        ? prev.filter((k) => k !== key)
+        : prev.length < 3 ? [...prev, key] : prev;
+      try { localStorage.setItem("nav-slots", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  };
+
+  const openMore  = () => { setClosing(false); setShowMore(true); };
+  const closeMore = () => {
+    setClosing(true);
+    setTimeout(() => { setShowMore(false); setClosing(false); }, 240);
+  };
+
+  // Build nav: Home + up-to-3 dynamic slots + More
+  const slots = selected
+    .map((k) => ALL_SWAPPABLE.find((x) => x.key === k)!)
+    .filter(Boolean);
+
+  const navItems = [
+    { key: "home", icon: Home,           label: "Home", href: "/home"  },
+    ...slots,
+    { key: "more", icon: MoreHorizontal, label: "More", href: "/more"  },
+  ];
+
+  return (
+    <>
+      {/* ── Nav bar ─────────────────────────────────────────────────────── */}
+      <div
+        className="fixed z-30"
+        style={{
+          bottom: scrolled ? 44 : 36,
+          left:   scrolled ? 60 : 12,
+          right:  scrolled ? 60 : 12,
+          borderRadius: 999,
+          background: "var(--raised)",
+          border: "1px solid var(--border)",
+          boxShadow: scrolled
+            ? "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)"
+            : "0 4px 16px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04)",
+          transition: scrolled ? STICKY : SPRING,
+        }}
+      >
+        <div className="flex items-center px-1 py-1">
+          {navItems.map(({ key, icon: Icon, label, href }) => {
+            const isMore = key === "more";
+            // While dropdown is open, only More is active — deselects other tabs
+            const active = isMore ? showMore : (!showMore && pathname === href);
+
+            const inner = (
+              <div
+                className="flex-1 flex items-center justify-center gap-1.5 h-9"
+                style={{
+                  borderRadius: 999,
+                  background: active ? "rgba(59,130,246,0.12)" : "transparent",
+                  color: active ? "#3b82f6" : "var(--icon)",
+                  transition: "background 0.35s ease, color 0.3s ease",
+                }}
+              >
+                <Icon size={19} strokeWidth={active ? 2.2 : 1.8} />
+                <span
+                  style={{
+                    fontSize: 13, fontWeight: 600, lineHeight: 1,
+                    color: "#3b82f6", whiteSpace: "nowrap", overflow: "hidden",
+                    maxWidth: active ? "80px" : "0px",
+                    opacity: active ? 1 : 0,
+                    transition: active
+                      ? "max-width 0.45s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease-out 0.08s"
+                      : "max-width 0.3s cubic-bezier(0.4,0,0.6,1), opacity 0.15s ease-in",
+                  }}
+                >
+                  {label}
+                </span>
+              </div>
+            );
+
+            const wrapStyle = {
+              flex: active ? 2 : 1,
+              transition: "flex 0.45s cubic-bezier(0.34,1.56,0.64,1)",
+            };
+
+            return isMore ? (
+              <button key={key} onClick={showMore ? closeMore : openMore} className="flex p-0.5" style={wrapStyle}>
+                {inner}
+              </button>
+            ) : (
+              <Link key={key} href={href} className="flex p-0.5" style={wrapStyle} onClick={() => showMore && closeMore()}>
+                {inner}
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Dropdown ────────────────────────────────────────────────────── */}
+      {showMore && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={closeMore} />
+
+          <div
+            className="fixed z-50 rounded-2xl overflow-hidden"
+            style={{
+              bottom: scrolled ? 102 : 92,
+              right: 14,
+              width: 210,
+              background: "var(--raised)",
+              border: "1px solid var(--border)",
+              boxShadow: "0 12px 40px rgba(0,0,0,0.13), 0 3px 10px rgba(0,0,0,0.07)",
+              transformOrigin: "bottom right",
+              animation: closing
+                ? "dropdown-out 0.22s cubic-bezier(0.4,0,1,1) forwards"
+                : "dropdown-in 0.3s cubic-bezier(0.34,1.56,0.64,1)",
+            }}
+          >
+            {/* Counter */}
+            <div className="px-4 pt-3 pb-1 flex justify-end">
+              <span
+                className="text-[11px] font-semibold px-2 py-0.5 rounded-full"
+                style={{
+                  background: selected.length >= 3 ? "rgba(59,130,246,0.1)" : "var(--secondary)",
+                  color: selected.length >= 3 ? "#3b82f6" : "var(--muted-foreground)",
+                }}
+              >
+                {selected.length} / 3
+              </span>
+            </div>
+
+            {ALL_SWAPPABLE.map(({ key, icon: Icon, label }, i) => {
+              const isSelected = selected.includes(key);
+              const atMax      = !isSelected && selected.length >= 3;
+
+              return (
+                <button
+                  key={key}
+                  onClick={() => !atMax && toggle(key)}
+                  className="flex items-center gap-3 w-full px-4 py-2.5 text-left transition-colors duration-100"
+                  style={{
+                    opacity: atMax ? 0.35 : 1,
+                    cursor: atMax ? "default" : "pointer",
+                    animation: "tab-in 0.2s ease-out both",
+                    animationDelay: `${i * 28}ms`,
+                  }}
+                  onMouseEnter={(e) => { if (!atMax) e.currentTarget.style.background = "var(--secondary)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                >
+                  <Icon
+                    size={17}
+                    strokeWidth={1.8}
+                    className="shrink-0"
+                    style={{ color: isSelected ? "#3b82f6" : "var(--icon)" }}
+                  />
+                  <span
+                    className="flex-1 text-[14px] font-medium"
+                    style={{ color: isSelected ? "#3b82f6" : "var(--foreground)" }}
+                  >
+                    {label}
+                  </span>
+                  {isSelected
+                    ? <Eye    size={15} strokeWidth={2} style={{ color: "#3b82f6",               flexShrink: 0 }} />
+                    : <EyeOff size={15} strokeWidth={1.8} style={{ color: "var(--muted-foreground)", flexShrink: 0 }} />
+                  }
+                </button>
+              );
+            })}
+          </div>
+        </>
+      )}
+    </>
+  );
+}
