@@ -163,10 +163,10 @@ function StatCard({ icon: Icon, label, value, color, bg, change, href, onClick }
 
       {/* Top row */}
       <div className="flex items-start justify-between relative z-10">
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: bg }}>
-          <Icon size={17} strokeWidth={1.75} style={{ color }} />
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--secondary)" }}>
+          <Icon size={17} strokeWidth={1.75} className="text-foreground" style={{ opacity: 0.7 }} />
         </div>
-        <ChevronRight size={14} strokeWidth={1.75} className="mt-0.5 opacity-50" style={{ color }} />
+        <ChevronRight size={14} strokeWidth={1.75} className="mt-0.5 text-muted-foreground opacity-50" />
       </div>
 
       {/* Value + label */}
