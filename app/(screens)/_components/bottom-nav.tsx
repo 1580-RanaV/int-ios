@@ -111,7 +111,7 @@ export default function BottomNav() {
                 style={{
                   borderRadius: 999,
                   background: active ? "rgba(59,130,246,0.12)" : "transparent",
-                  color: active ? "#3b82f6" : "var(--icon)",
+                  color: active ? "#1d4ed8" : "var(--icon)",
                   transition: "background 0.35s ease, color 0.3s ease",
                 }}
               >
@@ -119,7 +119,7 @@ export default function BottomNav() {
                 <span
                   className="text-sm font-semibold leading-none"
                   style={{
-                    color: "#3b82f6", whiteSpace: "nowrap", overflow: "hidden",
+                    color: "#1d4ed8", whiteSpace: "nowrap", overflow: "hidden",
                     maxWidth: (active && !scrolled) ? "150px" : "0px",
                     opacity: (active && !scrolled) ? 1 : 0,
                     transition: (active && !scrolled)
@@ -176,7 +176,7 @@ export default function BottomNav() {
                 className="text-xs font-semibold px-2 py-0.5 rounded-full"
                 style={{
                   background: selected.length >= 3 ? "rgba(59,130,246,0.1)" : "var(--secondary)",
-                  color: selected.length >= 3 ? "#3b82f6" : "var(--muted-foreground)",
+                  color: selected.length >= 3 ? "#1d4ed8" : "var(--muted-foreground)",
                 }}
               >
                 {selected.length} / 3
@@ -205,9 +205,9 @@ export default function BottomNav() {
                   >
                     <Icon
                       size={17} strokeWidth={1.75} className="shrink-0"
-                      style={{ color: isSelected ? "#3b82f6" : "var(--icon)" }}
+                      style={{ color: isSelected ? "#1d4ed8" : "var(--icon)" }}
                     />
-                    <span className="flex-1 text-sm font-medium" style={{ color: isSelected ? "#3b82f6" : "var(--foreground)" }}>
+                    <span className="flex-1 text-sm font-medium" style={{ color: isSelected ? "#1d4ed8" : "var(--foreground)" }}>
                       {label}
                     </span>
                   </button>
@@ -219,7 +219,7 @@ export default function BottomNav() {
                     style={{ opacity: atMax ? 0.35 : 1, cursor: atMax ? "default" : "pointer" }}
                   >
                     {isSelected
-                      ? <Eye    size={15} strokeWidth={1.75} style={{ color: "#3b82f6" }} />
+                      ? <Eye    size={15} strokeWidth={1.75} style={{ color: "#1d4ed8" }} />
                       : <EyeOff size={15} strokeWidth={1.75} style={{ color: "var(--muted-foreground)" }} />
                     }
                   </button>

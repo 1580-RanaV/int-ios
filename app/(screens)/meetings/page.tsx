@@ -18,7 +18,7 @@ function Toggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
       className="relative shrink-0 transition-colors duration-250"
       style={{
         width: 48, height: 28, borderRadius: 999,
-        background: on ? "#10b981" : "var(--border)",
+        background: on ? "#15803d" : "var(--border)",
         transition: "background 0.25s ease",
       }}
     >
@@ -134,7 +134,7 @@ function EditBookingSheet({
       <div className="flex-1 overflow-y-auto scrollbar-hide px-5 pt-5 pb-6">
         {/* Name */}
         <div className="mb-4">
-          <p className="text-sm font-semibold text-foreground mb-1.5">Name <span style={{ color: "#f43f5e" }}>*</span></p>
+          <p className="text-sm font-semibold text-foreground mb-1.5">Name <span style={{ color: "#be123c" }}>*</span></p>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -148,7 +148,7 @@ function EditBookingSheet({
         <SelectField label="Meeting Type" value={meetingType} options={["Round Robin", "One-on-One", "Group", "Collective"]} onChange={setMeetingType} />
 
         <div className="mb-4">
-          <p className="text-sm font-semibold text-foreground mb-1.5">Team <span style={{ color: "#f43f5e" }}>*</span></p>
+          <p className="text-sm font-semibold text-foreground mb-1.5">Team <span style={{ color: "#be123c" }}>*</span></p>
           <div className="relative">
             <select
               value={team}
@@ -193,7 +193,7 @@ function EditBookingSheet({
           <button
             onClick={addTriggerWord}
             className="h-11 px-5 rounded-2xl text-sm font-semibold text-white shrink-0"
-            style={{ background: "#3b82f6" }}
+            style={{ background: "#1d4ed8" }}
           >Add</button>
         </div>
         {triggerWords.length > 0 && (
@@ -221,7 +221,7 @@ function EditBookingSheet({
       <div className="shrink-0 px-5 pb-8 pt-3" style={{ borderTop: "1px solid var(--border)" }}>
         <button
           className="w-full h-12 rounded-2xl text-sm font-bold text-white"
-          style={{ background: "#3b82f6" }}
+          style={{ background: "#1d4ed8" }}
           onClick={onClose}
         >Save</button>
       </div>
@@ -238,9 +238,9 @@ const COMING_UP = [
 type MeetingStatus = "Completed" | "Canceled" | "Denied entry";
 
 const STATUS_STYLE: Record<MeetingStatus, { background: string; color: string }> = {
-  Completed:      { background: "rgba(16,185,129,0.1)",  color: "#10b981" },
-  Canceled:       { background: "rgba(244,63,94,0.1)",   color: "#f43f5e" },
-  "Denied entry": { background: "rgba(234,179,8,0.1)",   color: "#ca8a04" },
+  Completed:      { background: "rgba(16,185,129,0.1)",  color: "#15803d" },
+  Canceled:       { background: "rgba(244,63,94,0.1)",   color: "#be123c" },
+  "Denied entry": { background: "rgba(234,179,8,0.1)",   color: "#92400e" },
 };
 
 const PAST_MEETINGS: {
@@ -400,8 +400,8 @@ export default function MeetingsScreen() {
                         className="w-12 h-12 rounded-2xl flex flex-col items-center justify-center shrink-0"
                         style={{ background: "rgba(59,130,246,0.1)" }}
                       >
-                        <span className="text-xs font-semibold leading-none" style={{ color: "#3b82f6" }}>{m.month}</span>
-                        <span className="text-lg font-bold leading-tight mt-0.5" style={{ color: "#3b82f6" }}>{m.day}</span>
+                        <span className="text-xs font-semibold leading-none" style={{ color: "#1d4ed8" }}>{m.month}</span>
+                        <span className="text-lg font-bold leading-tight mt-0.5" style={{ color: "#1d4ed8" }}>{m.day}</span>
                       </div>
 
                       {/* Info */}
@@ -411,7 +411,7 @@ export default function MeetingsScreen() {
                           <span className="text-xs text-muted-foreground">{m.time}</span>
                           <span
                             className="text-xs font-medium px-2 py-0.5 rounded-full"
-                            style={{ background: "rgba(251,146,60,0.12)", color: "#f97316" }}
+                            style={{ background: "rgba(251,146,60,0.12)", color: "#c2410c" }}
                           >{m.countdown}</span>
                         </div>
                       </div>
@@ -419,7 +419,7 @@ export default function MeetingsScreen() {
                       {/* Join button */}
                       <button
                         className="flex items-center gap-1.5 px-3 py-2 rounded-full shrink-0"
-                        style={{ background: "#3b82f6" }}
+                        style={{ background: "#1d4ed8" }}
                       >
                         <Video size={13} strokeWidth={1.75} className="text-white" />
                         <span className="text-xs font-semibold text-white">Join now</span>

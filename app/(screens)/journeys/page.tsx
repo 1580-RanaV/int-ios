@@ -21,19 +21,19 @@ const JOURNEYS: { name: string; status: Status }[] = [
 ];
 
 const STATUS_COLOR: Record<Status, string> = {
-  Live:    "#10b981",
-  Paused:  "#f97316",
-  Stopped: "#f43f5e",
-  Draft:   "#8a8f98",
+  Live:    "#15803d",
+  Paused:  "#c2410c",
+  Stopped: "#be123c",
+  Draft:   "#4b5563",
 };
 
 const GROUP_ORDER: Status[] = ["Live", "Paused", "Stopped", "Draft"];
 const FILTER_OPTIONS: { value: Filter; color?: string }[] = [
   { value: "All"     },
-  { value: "Live",    color: "#10b981" },
-  { value: "Paused",  color: "#f97316" },
-  { value: "Stopped", color: "#f43f5e" },
-  { value: "Draft",   color: "#8a8f98" },
+  { value: "Live",    color: "#15803d" },
+  { value: "Paused",  color: "#c2410c" },
+  { value: "Stopped", color: "#be123c" },
+  { value: "Draft",   color: "#4b5563" },
 ];
 
 export default function JourneysScreen() {
@@ -109,7 +109,7 @@ export default function JourneysScreen() {
             </div>
             <span
               className="text-xs font-semibold px-2 py-1 rounded-full"
-              style={{ color: "#10b981", background: "rgba(16,185,129,0.1)" }}
+              style={{ color: "#15803d", background: "rgba(16,185,129,0.1)" }}
             >
               +2326.25%
             </span>
@@ -135,7 +135,7 @@ export default function JourneysScreen() {
               </div>
               <span
                 className="text-xs font-semibold px-2 py-1 rounded-full"
-                style={{ color: "#10b981", background: "rgba(16,185,129,0.1)" }}
+                style={{ color: "#15803d", background: "rgba(16,185,129,0.1)" }}
               >
                 +569.66%
               </span>
@@ -222,7 +222,7 @@ export default function JourneysScreen() {
                         )}
                         <span
                           className="text-sm font-medium"
-                          style={{ color: selected ? "#3b82f6" : "var(--foreground)" }}
+                          style={{ color: selected ? "#1d4ed8" : "var(--foreground)" }}
                         >
                           {value}
                         </span>

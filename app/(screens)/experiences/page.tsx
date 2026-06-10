@@ -8,11 +8,11 @@ type Status = "Active" | "Stopped" | "Ready For Review" | "Draft" | "Completed";
 type Filter = "All" | "Active" | "Stopped" | "Completed";
 
 const STATUS_COLOR: Record<Status, string> = {
-  Active:           "#10b981",
-  Stopped:          "#f43f5e",
-  "Ready For Review": "#3b82f6",
-  Draft:            "#8a8f98",
-  Completed:        "#10b981",
+  Active:           "#15803d",
+  Stopped:          "#be123c",
+  "Ready For Review": "#1d4ed8",
+  Draft:            "#4b5563",
+  Completed:        "#15803d",
 };
 
 const STATUS_BG: Record<Status, string> = {
@@ -119,7 +119,7 @@ export default function ExperiencesScreen() {
               <p className="text-xs text-muted-foreground mb-1">Total Revenue</p>
               <div className="flex items-baseline gap-1.5">
                 <p className="text-2xl font-bold text-foreground leading-none">$0.00</p>
-                <span className="text-xs font-semibold" style={{ color: "#10b981" }}>+0.00%</span>
+                <span className="text-xs font-semibold" style={{ color: "#15803d" }}>+0.00%</span>
               </div>
             </div>
             <div className="text-right">
@@ -223,7 +223,7 @@ export default function ExperiencesScreen() {
                           ? <span className="w-2 h-2 rounded-full shrink-0" style={{ background: color }} />
                           : <span className="w-2 h-2 shrink-0" />
                         }
-                        <span className="text-sm font-medium" style={{ color: sel ? "#3b82f6" : "var(--foreground)" }}>{f}</span>
+                        <span className="text-sm font-medium" style={{ color: sel ? "#1d4ed8" : "var(--foreground)" }}>{f}</span>
                       </button>
                     );
                   })}

@@ -39,17 +39,17 @@ type Stat = {
 };
 
 const salesStats: Stat[] = [
-  { icon: Users,        label: "Users",    value: 20,  color: "#3b82f6", bg: "rgba(59,130,246,0.10)",  href: "/users"    },
-  { icon: Building2,    label: "Accounts", value: 51,  color: "#8b5cf6", bg: "rgba(139,92,246,0.10)",  href: "/accounts" },
-  { icon: CheckSquare2, label: "Tasks",    value: 0,   color: "#10b981", bg: "rgba(16,185,129,0.10)",  href: "/tasks"    },
+  { icon: Users,        label: "Users",    value: 20,  color: "#1d4ed8", bg: "rgba(59,130,246,0.10)",  href: "/users"    },
+  { icon: Building2,    label: "Accounts", value: 51,  color: "#6d28d9", bg: "rgba(139,92,246,0.10)",  href: "/accounts" },
+  { icon: CheckSquare2, label: "Tasks",    value: 0,   color: "#15803d", bg: "rgba(16,185,129,0.10)",  href: "/tasks"    },
   { icon: Handshake,    label: "Deals",    value: 0,   color: "#f59e0b", bg: "rgba(245,158,11,0.10)",  href: "/deals"    },
-  { icon: CalendarDays, label: "Meetings", value: 156, color: "#f43f5e", bg: "rgba(244,63,94,0.10)",   href: "/meetings" },
+  { icon: CalendarDays, label: "Meetings", value: 156, color: "#be123c", bg: "rgba(244,63,94,0.10)",   href: "/meetings" },
 ];
 
 const marketingStats: Stat[] = [
-  { icon: Route,        label: "Active Journeys",     value: 30,      color: "#3b82f6", bg: "rgba(59,130,246,0.10)",  href: "/journeys"     },
-  { icon: FlaskConical, label: "Active Experiences",  value: 0,       color: "#8b5cf6", bg: "rgba(139,92,246,0.10)",  href: "/experiences"  },
-  { icon: TrendingUp,   label: "Revenue",             value: "$0.00", color: "#10b981", bg: "rgba(16,185,129,0.10)"  },
+  { icon: Route,        label: "Active Journeys",     value: 30,      color: "#1d4ed8", bg: "rgba(59,130,246,0.10)",  href: "/journeys"     },
+  { icon: FlaskConical, label: "Active Experiences",  value: 0,       color: "#6d28d9", bg: "rgba(139,92,246,0.10)",  href: "/experiences"  },
+  { icon: TrendingUp,   label: "Revenue",             value: "$0.00", color: "#15803d", bg: "rgba(16,185,129,0.10)"  },
   { icon: Users,        label: "Users",               value: "3.94K", color: "#f59e0b", bg: "rgba(245,158,11,0.10)", change: { label: "-37.21%", positive: false } },
 ];
 
@@ -63,7 +63,7 @@ const ANALYTICS_CATEGORIES = [
     label: "Traffic",
     subtitle: "Sources, pages, geography, devices",
     icon: Eye,
-    color: "#3b82f6",
+    color: "#1d4ed8",
     total: "3.94K",
     totalLabel: "Total users",
     valueLabel: "Users",
@@ -76,7 +76,7 @@ const ANALYTICS_CATEGORIES = [
     label: "Revenue",
     subtitle: "Product catalog, categories, verticals",
     icon: TrendingUp,
-    color: "#10b981",
+    color: "#15803d",
     total: "$0.00",
     totalLabel: "Total revenue",
     valueLabel: "Revenue",
@@ -89,7 +89,7 @@ const ANALYTICS_CATEGORIES = [
     label: "Engagement",
     subtitle: "Activity, stickiness, retention, sessions",
     icon: Activity,
-    color: "#8b5cf6",
+    color: "#6d28d9",
     total: "2.1K",
     totalLabel: "Total sessions",
     valueLabel: "Sessions",
@@ -177,7 +177,7 @@ function StatCard({ icon: Icon, label, value, color, bg, change, href, onClick }
         <div className="flex items-center justify-between mt-1.5">
           <p className="text-sm font-medium text-muted-foreground">{label}</p>
           {change && (
-            <span className="text-xs font-semibold" style={{ color: change.positive ? "#10b981" : "#f43f5e" }}>
+            <span className="text-xs font-semibold" style={{ color: change.positive ? "#15803d" : "#be123c" }}>
               {change.label}
             </span>
           )}
@@ -444,7 +444,7 @@ function AnalyticsContent({ category, onOpenSheet }: { category: AnalyticsCatego
           <span
             className="text-xs font-semibold px-2 py-1 rounded-full mt-0.5"
             style={{
-              color: current.positive ? "#10b981" : "#f43f5e",
+              color: current.positive ? "#15803d" : "#be123c",
               background: current.positive ? "rgba(16,185,129,0.1)" : "rgba(244,63,94,0.1)",
             }}
           >
@@ -466,14 +466,14 @@ function AnalyticsContent({ category, onOpenSheet }: { category: AnalyticsCatego
           </div>
           <span
             className="text-xs font-semibold px-2 py-1 rounded-full mt-0.5"
-            style={{ color: "#10b981", background: "rgba(16,185,129,0.1)" }}
+            style={{ color: "#15803d", background: "rgba(16,185,129,0.1)" }}
           >
             +22.1%
           </span>
         </div>
         <LineChart
           data={[180,240,360,320,280,220,190,230,290,340,380,350,310,260,290,330,360,290,220,180,220,290,360,410,380,320,240,280,320,340]}
-          color="#10b981"
+          color="#15803d"
           id={`${category}-pageviews`}
           valueLabel="Pageviews"
         />

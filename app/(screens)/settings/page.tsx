@@ -72,10 +72,10 @@ function Row({ icon: Icon, label, subtitle, value, notSet, danger, onClick }: Ro
       onClick={onClick}
     >
       <Icon size={18} strokeWidth={1.75} className="shrink-0"
-        style={{ color: danger ? "#f43f5e" : "var(--icon)" }} />
+        style={{ color: danger ? "#be123c" : "var(--icon)" }} />
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium leading-snug"
-          style={{ color: danger ? "#f43f5e" : "var(--foreground)" }}>
+          style={{ color: danger ? "#be123c" : "var(--foreground)" }}>
           {label}
         </p>
         {subtitle && (
@@ -206,7 +206,7 @@ export default function SettingsScreen() {
                 style={{ paddingTop: 13, paddingBottom: 13 }}
               >
                 <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-white text-sm font-bold"
-                  style={{ background: "#3b82f6" }}>
+                  style={{ background: "#1d4ed8" }}>
                   S
                 </div>
                 <div className="flex-1 min-w-0">
@@ -314,14 +314,14 @@ export default function SettingsScreen() {
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
                     style={{ background: active ? "rgba(59,130,246,0.12)" : "var(--secondary)" }}>
                     <Icon size={17} strokeWidth={1.75}
-                      style={{ color: active ? "#3b82f6" : "var(--icon)" }} />
+                      style={{ color: active ? "#1d4ed8" : "var(--icon)" }} />
                   </div>
                   <div className="flex-1">
                     <p className="text-sm font-semibold"
-                      style={{ color: active ? "#3b82f6" : "var(--foreground)" }}>{label}</p>
+                      style={{ color: active ? "#1d4ed8" : "var(--foreground)" }}>{label}</p>
                     <p className="text-xs mt-0.5" style={{ color: "var(--muted-foreground)" }}>{sub}</p>
                   </div>
-                  {active && <Check size={16} strokeWidth={1.75} style={{ color: "#3b82f6", flexShrink: 0 }} />}
+                  {active && <Check size={16} strokeWidth={1.75} style={{ color: "#1d4ed8", flexShrink: 0 }} />}
                 </button>
               );
             })}
@@ -345,7 +345,7 @@ export default function SettingsScreen() {
                     onClick={() => { setReportPeriod(p); }}
                     className="px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200"
                     style={{
-                      background: active ? "#3b82f6" : "var(--secondary)",
+                      background: active ? "#1d4ed8" : "var(--secondary)",
                       color: active ? "#ffffff" : "var(--foreground)",
                     }}
                   >
@@ -362,7 +362,7 @@ export default function SettingsScreen() {
             <button
               onClick={() => closeSheet()}
               className="w-full py-3 rounded-2xl text-sm font-semibold text-white transition-opacity"
-              style={{ background: "#3b82f6" }}
+              style={{ background: "#1d4ed8" }}
             >
               Apply
             </button>
@@ -388,7 +388,7 @@ export default function SettingsScreen() {
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-foreground">Gmail</p>
-                  <p className="text-xs" style={{ color: gmailConn ? "#10b981" : "var(--muted-foreground)" }}>
+                  <p className="text-xs" style={{ color: gmailConn ? "#15803d" : "var(--muted-foreground)" }}>
                     {gmailConn ? "Connected" : "Not connected"}
                   </p>
                 </div>
@@ -396,8 +396,8 @@ export default function SettingsScreen() {
                   onClick={() => setGmailConn((v) => !v)}
                   className="text-sm font-semibold px-3 py-1.5 rounded-full transition-all duration-200"
                   style={gmailConn
-                    ? { color: "#f43f5e", background: "rgba(244,63,94,0.08)" }
-                    : { color: "#3b82f6", background: "rgba(59,130,246,0.08)" }
+                    ? { color: "#be123c", background: "rgba(244,63,94,0.08)" }
+                    : { color: "#1d4ed8", background: "rgba(59,130,246,0.08)" }
                   }
                 >
                   {gmailConn ? "Disconnect" : "Connect"}
@@ -408,12 +408,12 @@ export default function SettingsScreen() {
               <div className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl"
                 style={{ background: "var(--page)", border: "1px solid var(--border)" }}>
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-white text-xs font-bold"
-                  style={{ background: "#3b82f6" }}>
+                  style={{ background: "#1d4ed8" }}>
                   31
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-foreground">Google Calendar</p>
-                  <p className="text-xs" style={{ color: gcalConn ? "#10b981" : "var(--muted-foreground)" }}>
+                  <p className="text-xs" style={{ color: gcalConn ? "#15803d" : "var(--muted-foreground)" }}>
                     {gcalConn ? "Connected" : "Not connected"}
                   </p>
                 </div>
@@ -421,8 +421,8 @@ export default function SettingsScreen() {
                   onClick={() => setGcalConn((v) => !v)}
                   className="text-sm font-semibold px-3 py-1.5 rounded-full transition-all duration-200"
                   style={gcalConn
-                    ? { color: "#f43f5e", background: "rgba(244,63,94,0.08)" }
-                    : { color: "#3b82f6", background: "rgba(59,130,246,0.08)" }
+                    ? { color: "#be123c", background: "rgba(244,63,94,0.08)" }
+                    : { color: "#1d4ed8", background: "rgba(59,130,246,0.08)" }
                   }
                 >
                   {gcalConn ? "Disconnect" : "Connect"}
@@ -452,7 +452,7 @@ export default function SettingsScreen() {
                   <p className="text-xs" style={{ color: "var(--muted-foreground)" }}>Now</p>
                 </div>
                 <span className="text-xs font-semibold px-2.5 py-1 rounded-full"
-                  style={{ color: "#10b981", background: "rgba(16,185,129,0.1)" }}>
+                  style={{ color: "#15803d", background: "rgba(16,185,129,0.1)" }}>
                   Current
                 </span>
               </div>
@@ -464,8 +464,8 @@ export default function SettingsScreen() {
               onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.7"; }}
               onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
             >
-              <LogOut size={17} strokeWidth={1.75} style={{ color: "#f43f5e" }} />
-              <span className="text-sm font-semibold" style={{ color: "#f43f5e" }}>
+              <LogOut size={17} strokeWidth={1.75} style={{ color: "#be123c" }} />
+              <span className="text-sm font-semibold" style={{ color: "#be123c" }}>
                 Log out everywhere
               </span>
             </button>
@@ -479,8 +479,8 @@ export default function SettingsScreen() {
               onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(244,63,94,0.10)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(244,63,94,0.05)"; }}
             >
-              <Trash2 size={16} strokeWidth={1.75} style={{ color: "#f43f5e" }} />
-              <span className="text-sm font-semibold" style={{ color: "#f43f5e" }}>Delete account</span>
+              <Trash2 size={16} strokeWidth={1.75} style={{ color: "#be123c" }} />
+              <span className="text-sm font-semibold" style={{ color: "#be123c" }}>Delete account</span>
             </button>
 
           </div>
