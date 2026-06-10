@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useNav } from "../_context/nav-context";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   Users,
   Building2,
@@ -17,6 +18,7 @@ import {
   TrendingUp,
   Eye,
   Activity,
+  Settings,
 } from "lucide-react";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -462,10 +464,18 @@ function AnalyticsContent({ category, onOpenSheet }: { category: AnalyticsCatego
 // ─── Screen ──────────────────────────────────────────────────────────────────
 
 export default function HomeScreen() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>("Sales");
   const [analyticsCategory, setAnalyticsCategory] = useState<AnalyticsCategory>("Traffic");
   const [showCategorySheet, setShowCategorySheet] = useState(false);
+  const [sheetClosing,      setSheetClosing]      = useState(false);
   const { scrolled, setScrolled } = useNav();
+
+  const openSheet  = () => { setSheetClosing(false); setShowCategorySheet(true); };
+  const closeSheet = (cb?: () => void) => {
+    setSheetClosing(true);
+    setTimeout(() => { setShowCategorySheet(false); setSheetClosing(false); cb?.(); }, 320);
+  };
 
   useEffect(() => { setScrolled(false); }, []);
 
@@ -491,6 +501,13 @@ export default function HomeScreen() {
               </span>
             </div>
           </div>
+          <button
+            onClick={() => router.push("/settings")}
+            className="w-9 h-9 flex items-center justify-center rounded-full shrink-0"
+            style={{ background: "var(--secondary)" }}
+          >
+            <Settings size={16} strokeWidth={1.8} style={{ color: "var(--icon)" }} />
+          </button>
         </div>
 
         {/* Segmented control */}
@@ -527,7 +544,7 @@ export default function HomeScreen() {
           {activeTab === "Analytics" ? (
             <AnalyticsContent
               category={analyticsCategory}
-              onOpenSheet={() => setShowCategorySheet(true)}
+              onOpenSheet={openSheet}
             />
           ) : (
             <div
@@ -567,15 +584,19 @@ export default function HomeScreen() {
             className="fixed inset-0 z-40"
             style={{
               background: "rgba(0,0,0,0.4)",
-              animation: "fade-in 0.2s ease-out",
+              animation: sheetClosing
+                ? "fade-out 0.28s ease-in forwards"
+                : "fade-in 0.2s ease-out",
             }}
-            onClick={() => setShowCategorySheet(false)}
+            onClick={() => closeSheet()}
           />
           <div
             className="fixed bottom-0 inset-x-0 z-50 rounded-t-3xl pb-6"
             style={{
               background: "var(--raised)",
-              animation: "sheet-in 0.35s cubic-bezier(0.32,0.72,0,1)",
+              animation: sheetClosing
+                ? "sheet-out 0.32s cubic-bezier(0.32,0.72,0,1) forwards"
+                : "sheet-in 0.35s cubic-bezier(0.32,0.72,0,1)",
             }}
           >
             <div className="flex justify-center pt-3 pb-5">
@@ -588,7 +609,7 @@ export default function HomeScreen() {
                 return (
                   <button
                     key={cat.key}
-                    onClick={() => { setAnalyticsCategory(cat.key); setShowCategorySheet(false); }}
+                    onClick={() => closeSheet(() => setAnalyticsCategory(cat.key))}
                     className="flex items-center gap-3 p-3 rounded-2xl w-full text-left transition-colors"
                     style={{ background: isSelected ? `${cat.color}12` : "transparent" }}
                   >

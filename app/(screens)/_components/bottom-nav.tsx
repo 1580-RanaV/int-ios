@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   Home, Users, Building2, Handshake, MoreHorizontal,
   Route, CheckSquare2, CalendarDays, FlaskConical,
-  BarChart2, LayoutGrid, Eye, EyeOff,
+  BarChart2, LayoutGrid, Eye, EyeOff, Settings,
 } from "lucide-react";
 import { useNav } from "../_context/nav-context";
 
@@ -119,9 +119,9 @@ export default function BottomNav() {
                   style={{
                     fontSize: 13, fontWeight: 600, lineHeight: 1,
                     color: "#3b82f6", whiteSpace: "nowrap", overflow: "hidden",
-                    maxWidth: active ? "80px" : "0px",
-                    opacity: active ? 1 : 0,
-                    transition: active
+                    maxWidth: (active && !scrolled) ? "80px" : "0px",
+                    opacity: (active && !scrolled) ? 1 : 0,
+                    transition: (active && !scrolled)
                       ? "max-width 0.45s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease-out 0.08s"
                       : "max-width 0.3s cubic-bezier(0.4,0,0.6,1), opacity 0.15s ease-in",
                   }}
@@ -132,7 +132,7 @@ export default function BottomNav() {
             );
 
             const wrapStyle = {
-              flex: active ? 2 : 1,
+              flex: (active && !scrolled) ? 2 : 1,
               transition: "flex 0.45s cubic-bezier(0.34,1.56,0.64,1)",
             };
 
@@ -213,12 +213,26 @@ export default function BottomNav() {
                     {label}
                   </span>
                   {isSelected
-                    ? <Eye    size={15} strokeWidth={2} style={{ color: "#3b82f6",               flexShrink: 0 }} />
+                    ? <Eye    size={15} strokeWidth={2}   style={{ color: "#3b82f6",                flexShrink: 0 }} />
                     : <EyeOff size={15} strokeWidth={1.8} style={{ color: "var(--muted-foreground)", flexShrink: 0 }} />
                   }
                 </button>
               );
             })}
+
+            {/* Settings — fixed, non-swappable */}
+            <div style={{ margin: "4px 12px", height: 1, background: "linear-gradient(to right, transparent, var(--border) 20%, var(--border) 80%, transparent)" }} />
+            <Link
+              href="/settings"
+              onClick={closeMore}
+              className="flex items-center gap-3 w-full px-4 py-2.5 text-left transition-colors duration-100"
+              style={{ animation: "tab-in 0.2s ease-out both", animationDelay: `${ALL_SWAPPABLE.length * 28}ms` }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--secondary)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+            >
+              <Settings size={17} strokeWidth={1.8} className="shrink-0" style={{ color: "var(--icon)" }} />
+              <span className="flex-1 text-[14px] font-medium text-foreground">Settings</span>
+            </Link>
           </div>
         </>
       )}
