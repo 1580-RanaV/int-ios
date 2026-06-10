@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNav } from "../_context/nav-context";
 import {
   CalendarDays, Plus, Settings, Search,
@@ -290,6 +290,8 @@ export default function MeetingsScreen() {
   const [tab, setTab] = useState<MeetingTab>("Meetings");
   const [query, setQuery] = useState("");
   const { scrolled, setScrolled } = useNav();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [atBottom, setAtBottom] = useState(false);
   const [editingBooking, setEditingBooking] = useState<BookingType | null>(null);
   const [editClosing,    setEditClosing]    = useState(false);
 
@@ -300,6 +302,12 @@ export default function MeetingsScreen() {
   };
 
   useEffect(() => { setScrolled(false); }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
+  }, [tab]);
 
   const totalMeetings = COMING_UP.length + PAST_MEETINGS.reduce((s, g) => s + g.items.length, 0);
 
@@ -375,8 +383,13 @@ export default function MeetingsScreen() {
       {/* Scroll area */}
       <div className="flex-1 min-h-0 relative">
         <div
+          ref={scrollRef}
           className="absolute inset-0 overflow-y-auto scrollbar-hide pb-28 px-4"
-          onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 50)}
+          onScroll={(e) => {
+            const el = e.currentTarget;
+            setScrolled(el.scrollTop > 50);
+            setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
+          }}
         >
           {tab === "Meetings" ? (
             <>
@@ -571,8 +584,11 @@ export default function MeetingsScreen() {
 
         {/* Bottom fade */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-10"
-          style={{ background: "linear-gradient(to top, var(--page) 0%, var(--page) 15%, transparent 100%)" }}
+          className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-10 transition-opacity duration-300"
+          style={{
+            opacity: atBottom ? 0 : 1,
+            background: "linear-gradient(to top, var(--page) 0%, var(--page) 15%, transparent 100%)",
+          }}
         />
       </div>
 

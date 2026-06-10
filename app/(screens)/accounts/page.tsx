@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNav } from "../_context/nav-context";
 import { Building2, Search, Plus, Settings, ChevronRight } from "lucide-react";
 
@@ -25,12 +25,20 @@ const ACCOUNTS = [
 export default function AccountsScreen() {
   const [query, setQuery] = useState("");
   const { scrolled, setScrolled } = useNav();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [atBottom, setAtBottom] = useState(false);
 
   useEffect(() => { setScrolled(false); }, []);
 
   const filtered = ACCOUNTS.filter((a) =>
     a.name.toLowerCase().includes(query.toLowerCase())
   );
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
+  }, [filtered]);
 
   return (
     <div
@@ -78,8 +86,13 @@ export default function AccountsScreen() {
       {/* Scroll area */}
       <div className="flex-1 min-h-0 relative">
         <div
+          ref={scrollRef}
           className="absolute inset-0 overflow-y-auto scrollbar-hide pb-28 px-4 flex flex-col gap-2.5 pt-1"
-          onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 50)}
+          onScroll={(e) => {
+            const el = e.currentTarget;
+            setScrolled(el.scrollTop > 50);
+            setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
+          }}
         >
           {filtered.map((account, i) => (
             <div
@@ -120,8 +133,11 @@ export default function AccountsScreen() {
 
         {/* Bottom fade */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-10"
-          style={{ background: "linear-gradient(to top, var(--page) 0%, var(--page) 15%, transparent 100%)" }}
+          className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-10 transition-opacity duration-300"
+          style={{
+            opacity: atBottom ? 0 : 1,
+            background: "linear-gradient(to top, var(--page) 0%, var(--page) 15%, transparent 100%)",
+          }}
         />
       </div>
     </div>

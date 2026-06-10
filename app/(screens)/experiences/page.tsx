@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNav } from "../_context/nav-context";
 import { FlaskConical, Search, Settings, ChevronDown, Monitor } from "lucide-react";
 
@@ -54,6 +54,8 @@ export default function ExperiencesScreen() {
   const [dropOpen,    setDropOpen]    = useState(false);
   const [dropClosing, setDropClosing] = useState(false);
   const { scrolled, setScrolled } = useNav();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [atBottom, setAtBottom] = useState(false);
 
   useEffect(() => { setScrolled(false); }, []);
 
@@ -72,6 +74,12 @@ export default function ExperiencesScreen() {
   const sections = GROUP_ORDER
     .map((s) => ({ label: s, items: filtered.filter((e) => e.status === s) }))
     .filter((s) => s.items.length > 0);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
+  }, [sections]);
 
   const totalExperiments    = EXPERIENCES.filter((e) => e.type === "Experiment").length;
   const totalPersonalizations = EXPERIENCES.filter((e) => e.type === "Personalization").length;
@@ -237,8 +245,13 @@ export default function ExperiencesScreen() {
       {/* Scroll area */}
       <div className="flex-1 min-h-0 relative">
         <div
+          ref={scrollRef}
           className="absolute inset-0 overflow-y-auto scrollbar-hide pb-28 px-4"
-          onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 50)}
+          onScroll={(e) => {
+            const el = e.currentTarget;
+            setScrolled(el.scrollTop > 50);
+            setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
+          }}
         >
           {sections.length === 0 ? (
             <div className="flex items-center justify-center h-32">
@@ -322,8 +335,11 @@ export default function ExperiencesScreen() {
 
         {/* Bottom fade */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-10"
-          style={{ background: "linear-gradient(to top, var(--page) 0%, var(--page) 15%, transparent 100%)" }}
+          className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-10 transition-opacity duration-300"
+          style={{
+            opacity: atBottom ? 0 : 1,
+            background: "linear-gradient(to top, var(--page) 0%, var(--page) 15%, transparent 100%)",
+          }}
         />
       </div>
     </div>

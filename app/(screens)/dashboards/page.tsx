@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNav } from "../_context/nav-context";
 import { LayoutGrid, Search, Settings, ChevronRight } from "lucide-react";
 
@@ -19,12 +19,20 @@ const DASHBOARDS = [
 export default function DashboardsScreen() {
   const [query, setQuery] = useState("");
   const { scrolled, setScrolled } = useNav();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [atBottom, setAtBottom] = useState(false);
 
   useEffect(() => { setScrolled(false); }, []);
 
   const filtered = DASHBOARDS.filter((d) =>
     d.name.toLowerCase().includes(query.toLowerCase())
   );
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
+  }, [filtered]);
 
   return (
     <div
@@ -62,8 +70,13 @@ export default function DashboardsScreen() {
       {/* Scroll area */}
       <div className="flex-1 min-h-0 relative">
         <div
+          ref={scrollRef}
           className="absolute inset-0 overflow-y-auto scrollbar-hide pb-28 px-4"
-          onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 50)}
+          onScroll={(e) => {
+            const el = e.currentTarget;
+            setScrolled(el.scrollTop > 50);
+            setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
+          }}
         >
           {filtered.length === 0 ? (
             <div className="flex items-center justify-center h-32">
@@ -108,8 +121,11 @@ export default function DashboardsScreen() {
 
         {/* Bottom fade */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-10"
-          style={{ background: "linear-gradient(to top, var(--page) 0%, var(--page) 15%, transparent 100%)" }}
+          className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-10 transition-opacity duration-300"
+          style={{
+            opacity: atBottom ? 0 : 1,
+            background: "linear-gradient(to top, var(--page) 0%, var(--page) 15%, transparent 100%)",
+          }}
         />
       </div>
     </div>

@@ -23,17 +23,10 @@ const ALL_SWAPPABLE = [
 ];
 
 const SPRING = [
-  "left 0.55s cubic-bezier(0.34,1.56,0.64,1)",
-  "right 0.55s cubic-bezier(0.34,1.56,0.64,1)",
-  "bottom 0.45s cubic-bezier(0.34,1.56,0.64,1)",
+  "left 0.52s cubic-bezier(0.34,1.4,0.64,1)",
+  "right 0.52s cubic-bezier(0.34,1.4,0.64,1)",
+  "bottom 0.44s cubic-bezier(0.34,1.4,0.64,1)",
   "box-shadow 0.3s ease",
-].join(", ");
-
-const STICKY = [
-  "left 0.32s cubic-bezier(0.4,-0.25,0.6,1)",
-  "right 0.32s cubic-bezier(0.4,-0.25,0.6,1)",
-  "bottom 0.28s ease",
-  "box-shadow 0.2s ease",
 ].join(", ");
 
 const DEFAULT_KEYS = ["users", "accounts", "deals"];
@@ -96,7 +89,7 @@ export default function BottomNav() {
           boxShadow: scrolled
             ? "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)"
             : "0 4px 16px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04)",
-          transition: scrolled ? STICKY : SPRING,
+          transition: SPRING,
         }}
       >
         <div className="flex items-center px-1 py-1">
