@@ -114,10 +114,10 @@ export default function BottomNav() {
                   transition: "background 0.35s ease, color 0.3s ease",
                 }}
               >
-                <Icon size={19} strokeWidth={active ? 2.2 : 1.8} />
+                <Icon size={19} strokeWidth={1.75} />
                 <span
+                  className="text-sm font-semibold leading-none"
                   style={{
-                    fontSize: 13, fontWeight: 600, lineHeight: 1,
                     color: "#3b82f6", whiteSpace: "nowrap", overflow: "hidden",
                     maxWidth: (active && !scrolled) ? "80px" : "0px",
                     opacity: (active && !scrolled) ? 1 : 0,
@@ -172,7 +172,7 @@ export default function BottomNav() {
             {/* Counter */}
             <div className="px-4 pt-3 pb-1 flex justify-end">
               <span
-                className="text-[11px] font-semibold px-2 py-0.5 rounded-full"
+                className="text-xs font-semibold px-2 py-0.5 rounded-full"
                 style={{
                   background: selected.length >= 3 ? "rgba(59,130,246,0.1)" : "var(--secondary)",
                   color: selected.length >= 3 ? "#3b82f6" : "var(--muted-foreground)",
@@ -202,19 +202,19 @@ export default function BottomNav() {
                 >
                   <Icon
                     size={17}
-                    strokeWidth={1.8}
+                    strokeWidth={1.75}
                     className="shrink-0"
                     style={{ color: isSelected ? "#3b82f6" : "var(--icon)" }}
                   />
                   <span
-                    className="flex-1 text-[14px] font-medium"
+                    className="flex-1 text-sm font-medium"
                     style={{ color: isSelected ? "#3b82f6" : "var(--foreground)" }}
                   >
                     {label}
                   </span>
                   {isSelected
-                    ? <Eye    size={15} strokeWidth={2}   style={{ color: "#3b82f6",                flexShrink: 0 }} />
-                    : <EyeOff size={15} strokeWidth={1.8} style={{ color: "var(--muted-foreground)", flexShrink: 0 }} />
+                    ? <Eye    size={15} strokeWidth={1.75}   style={{ color: "#3b82f6",                flexShrink: 0 }} />
+                    : <EyeOff size={15} strokeWidth={1.75} style={{ color: "var(--muted-foreground)", flexShrink: 0 }} />
                   }
                 </button>
               );
@@ -230,8 +230,8 @@ export default function BottomNav() {
               onMouseEnter={(e) => { e.currentTarget.style.background = "var(--secondary)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
             >
-              <Settings size={17} strokeWidth={1.8} className="shrink-0" style={{ color: "var(--icon)" }} />
-              <span className="flex-1 text-[14px] font-medium text-foreground">Settings</span>
+              <Settings size={17} strokeWidth={1.75} className="shrink-0" style={{ color: "var(--icon)" }} />
+              <span className="flex-1 text-sm font-medium text-foreground">Settings</span>
             </Link>
           </div>
         </>

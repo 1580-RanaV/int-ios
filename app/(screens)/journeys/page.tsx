@@ -77,22 +77,22 @@ export default function JourneysScreen() {
         {/* Title row */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2.5 flex-1 min-w-0">
-            <Route size={22} className="text-foreground shrink-0" strokeWidth={2} />
-            <p className="text-[20px] font-bold text-foreground leading-tight">Journeys</p>
+            <Route size={22} className="text-foreground shrink-0" strokeWidth={1.75} />
+            <p className="text-xl font-bold text-foreground leading-tight">Journeys</p>
           </div>
           <div className="flex items-center gap-2">
             <button
               className="flex items-center gap-1 px-2.5 py-1.5 rounded-full"
               style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
             >
-              <span className="text-[12px] font-medium text-foreground">By Status</span>
-              <ChevronDown size={12} className="text-muted-foreground" strokeWidth={2} />
+              <span className="text-xs font-medium text-foreground">By Status</span>
+              <ChevronDown size={12} className="text-muted-foreground" strokeWidth={1.75} />
             </button>
             <button
               className="w-8 h-8 flex items-center justify-center rounded-full"
               style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
             >
-              <Settings size={15} className="text-muted-foreground" strokeWidth={1.8} />
+              <Settings size={15} className="text-muted-foreground" strokeWidth={1.75} />
             </button>
           </div>
         </div>
@@ -104,11 +104,11 @@ export default function JourneysScreen() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[12px] text-muted-foreground mb-1">Total Revenue</p>
-              <p className="text-[26px] font-bold text-foreground leading-none">$41.25K</p>
+              <p className="text-xs text-muted-foreground mb-1">Total Revenue</p>
+              <p className="text-2xl font-bold text-foreground leading-none">$41.25K</p>
             </div>
             <span
-              className="text-[11px] font-semibold px-2 py-1 rounded-full"
+              className="text-xs font-semibold px-2 py-1 rounded-full"
               style={{ color: "#10b981", background: "rgba(16,185,129,0.1)" }}
             >
               +2326.25%
@@ -121,20 +121,20 @@ export default function JourneysScreen() {
             }} />
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[12px] text-muted-foreground mb-0.5">Attributed</p>
+                <p className="text-xs text-muted-foreground mb-0.5">Attributed</p>
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-[17px] font-bold text-foreground">$4.65K</span>
+                  <span className="text-lg font-bold text-foreground">$4.65K</span>
                   <span
-                    className="text-[11px] font-semibold px-1.5 py-0.5 rounded-full"
+                    className="text-xs font-semibold px-1.5 py-0.5 rounded-full"
                     style={{ color: "var(--muted-foreground)", background: "var(--secondary)" }}
                   >11.3%</span>
                 </div>
-                <p className="text-[12px] text-muted-foreground mt-0.5">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   Per send <span className="text-foreground font-medium">$0.00</span>
                 </p>
               </div>
               <span
-                className="text-[11px] font-semibold px-2 py-1 rounded-full"
+                className="text-xs font-semibold px-2 py-1 rounded-full"
                 style={{ color: "#10b981", background: "rgba(16,185,129,0.1)" }}
               >
                 +569.66%
@@ -151,12 +151,12 @@ export default function JourneysScreen() {
             className="flex-3 flex items-center gap-2.5 px-3.5 h-10 rounded-2xl"
             style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
           >
-            <Search size={15} className="text-muted-foreground shrink-0" strokeWidth={2} />
+            <Search size={15} className="text-muted-foreground shrink-0" strokeWidth={1.75} />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search..."
-              className="flex-1 bg-transparent text-[14px] text-foreground placeholder:text-muted-foreground outline-none"
+              className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"
             />
           </div>
 
@@ -171,10 +171,10 @@ export default function JourneysScreen() {
                 border:     filterActive ? "1px solid transparent" : "1px solid var(--border)",
               }}
             >
-              <span className="text-[13px] font-semibold truncate">{filter}</span>
+              <span className="text-sm font-semibold truncate">{filter}</span>
               <ChevronDown
                 size={12}
-                strokeWidth={2.5}
+                strokeWidth={1.75}
                 style={{
                   flexShrink: 0,
                   transition: "transform 0.25s ease",
@@ -221,7 +221,7 @@ export default function JourneysScreen() {
                           <span className="w-2 h-2 shrink-0" />
                         )}
                         <span
-                          className="text-[14px] font-medium"
+                          className="text-sm font-medium"
                           style={{ color: selected ? "#3b82f6" : "var(--foreground)" }}
                         >
                           {value}
@@ -244,16 +244,16 @@ export default function JourneysScreen() {
         >
           {sections.length === 0 ? (
             <div className="flex items-center justify-center h-32">
-              <p className="text-[14px] text-muted-foreground">No journeys found</p>
+              <p className="text-sm text-muted-foreground">No journeys found</p>
             </div>
           ) : (
             sections.map(({ label, items }) => (
               <div key={label}>
                 <div className="flex items-center justify-between pt-4 pb-2 px-0.5">
-                  <span className="text-[13px] font-semibold" style={{ color: STATUS_COLOR[label] }}>
+                  <span className="text-sm font-semibold" style={{ color: STATUS_COLOR[label] }}>
                     {label}
                   </span>
-                  <span className="text-[13px] text-muted-foreground">{items.length}</span>
+                  <span className="text-sm text-muted-foreground">{items.length}</span>
                 </div>
 
                 <div className="flex flex-col gap-2.5">
@@ -273,7 +273,7 @@ export default function JourneysScreen() {
                           className="w-2 h-2 rounded-full shrink-0"
                           style={{ background: STATUS_COLOR[journey.status] }}
                         />
-                        <p className="text-[15px] font-semibold text-foreground leading-snug">
+                        <p className="text-base font-semibold text-foreground leading-snug">
                           {journey.name}
                         </p>
                       </div>

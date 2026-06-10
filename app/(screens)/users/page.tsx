@@ -44,21 +44,21 @@ export default function UsersScreen() {
       <div className="shrink-0 bg-page px-5 pt-5 pb-4">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2.5 flex-1 min-w-0">
-            <Users size={22} className="text-foreground shrink-0" strokeWidth={2} />
-            <p className="text-[20px] font-bold text-foreground leading-tight">Users</p>
+            <Users size={22} className="text-foreground shrink-0" strokeWidth={1.75} />
+            <p className="text-xl font-bold text-foreground leading-tight">Users</p>
           </div>
           <div className="flex items-center gap-2">
             <button
               className="w-8 h-8 flex items-center justify-center rounded-full"
               style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
             >
-              <Plus size={16} className="text-foreground" strokeWidth={2.5} />
+              <Plus size={16} className="text-foreground" strokeWidth={1.75} />
             </button>
             <button
               className="w-8 h-8 flex items-center justify-center rounded-full"
               style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
             >
-              <Settings size={15} className="text-muted-foreground" strokeWidth={1.8} />
+              <Settings size={15} className="text-muted-foreground" strokeWidth={1.75} />
             </button>
           </div>
         </div>
@@ -68,12 +68,12 @@ export default function UsersScreen() {
           className="mt-4 flex items-center gap-2.5 px-3.5 h-10 rounded-2xl"
           style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
         >
-          <Search size={15} className="text-muted-foreground shrink-0" strokeWidth={2} />
+          <Search size={15} className="text-muted-foreground shrink-0" strokeWidth={1.75} />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search..."
-            className="flex-1 bg-transparent text-[14px] text-foreground placeholder:text-muted-foreground outline-none"
+            className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"
           />
         </div>
       </div>
@@ -94,17 +94,17 @@ export default function UsersScreen() {
                 className="w-11 h-11 rounded-full flex items-center justify-center shrink-0"
                 style={{ background: user.color }}
               >
-                <span className="text-[15px] font-bold text-white">
+                <span className="text-base font-bold text-white">
                   {user.name.split(" ").map((w) => w[0]).join("").slice(0, 2)}
                 </span>
               </div>
 
               <div className="flex-1 min-w-0">
-                <p className="text-[14px] font-semibold text-foreground truncate">{user.name}</p>
-                <p className="text-[12px] text-muted-foreground mt-0.5">{user.seen}</p>
+                <p className="text-sm font-semibold text-foreground truncate">{user.name}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">{user.seen}</p>
               </div>
 
-              <ChevronRight size={16} className="text-muted-foreground shrink-0" strokeWidth={1.8} />
+              <ChevronRight size={16} className="text-muted-foreground shrink-0" strokeWidth={1.75} />
             </div>
           ))}
         </div>

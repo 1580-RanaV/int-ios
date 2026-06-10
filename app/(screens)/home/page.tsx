@@ -149,13 +149,13 @@ function StatCard({ icon: Icon, label, value, color, bg, change }: Stat) {
         <ChevronRight size={15} style={{ color }} className="mt-0.5 opacity-60" />
       </div>
       <div>
-        <p className="text-[32px] leading-none font-bold tracking-tight text-foreground">
+        <p className="text-3xl leading-none font-bold tracking-tight text-foreground">
           {typeof value === "number" ? value.toLocaleString() : value}
         </p>
         <div className="flex items-center justify-between mt-1.5">
-          <p className="text-[13px] font-medium text-muted-foreground">{label}</p>
+          <p className="text-sm font-medium text-muted-foreground">{label}</p>
           {change && (
-            <span className="text-[11px] font-semibold" style={{ color: change.positive ? "#10b981" : "#f43f5e" }}>
+            <span className="text-xs font-semibold" style={{ color: change.positive ? "#10b981" : "#f43f5e" }}>
               {change.label}
             </span>
           )}
@@ -261,10 +261,10 @@ function LineChart({ data, color, id, valueLabel }: { data: number[]; color: str
               boxShadow: `0 2px 10px ${color}55`,
             }}
           >
-            <span className="text-[11px] font-semibold text-white">
+            <span className="text-xs font-semibold text-white">
               {new Date(2026, 4, 10 + hoverIdx).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
             </span>
-            <span className="text-[11px] font-semibold text-white leading-none">
+            <span className="text-xs font-semibold text-white leading-none">
               {valueLabel}: {data[hoverIdx].toLocaleString()}
             </span>
           </div>
@@ -279,7 +279,7 @@ function LineChart({ data, color, id, valueLabel }: { data: number[]; color: str
 
       <div className="flex justify-between mt-2">
         {["May 10", "May 16", "May 22", "May 28", "Jun 9"].map((l) => (
-          <span key={l} className="text-[9.5px] text-muted-foreground">{l}</span>
+          <span key={l} className="text-xs text-muted-foreground">{l}</span>
         ))}
       </div>
     </div>
@@ -298,8 +298,8 @@ function LocationBarChart({ color }: { color: string }) {
   return (
     <div className="rounded-2xl bg-raised border border-border p-4">
       <div className="mb-3">
-        <p className="text-[15px] font-bold text-foreground">Location — Users</p>
-        <p className="text-[11px] text-muted-foreground mt-0.5">Visitors by country, region, or city</p>
+        <p className="text-base font-bold text-foreground">Location — Users</p>
+        <p className="text-xs text-muted-foreground mt-0.5">Visitors by country, region, or city</p>
       </div>
 
       <div className="flex bg-secondary rounded-[14px] p-1 gap-0.5 mb-4">
@@ -309,7 +309,7 @@ function LocationBarChart({ color }: { color: string }) {
             <button
               key={tab}
               onClick={() => { setActiveTab(tab); setHoverIdx(null); }}
-              className="flex-1 text-[12px] font-semibold py-1.5 rounded-[10px] transition-all"
+              className="flex-1 text-xs font-semibold py-1.5 rounded-[10px] transition-all"
               style={{
                 background: isActive ? "var(--raised)" : "transparent",
                 color: isActive ? "var(--foreground)" : "var(--muted-foreground)",
@@ -336,7 +336,7 @@ function LocationBarChart({ color }: { color: string }) {
               onMouseEnter={() => setHoverIdx(i)}
               onMouseLeave={() => setHoverIdx(null)}
             >
-              <p className="w-[72px] shrink-0 text-[11px] font-medium text-muted-foreground text-right truncate leading-none">
+              <p className="w-[72px] shrink-0 text-xs font-medium text-muted-foreground text-right truncate leading-none">
                 {item.name}
               </p>
 
@@ -358,8 +358,8 @@ function LocationBarChart({ color }: { color: string }) {
                       className="px-3 py-1.5 rounded-xl whitespace-nowrap"
                       style={{ background: color, boxShadow: `0 2px 10px ${color}55` }}
                     >
-                      <p className="text-[11px] font-semibold text-white">{item.name}</p>
-                      <p className="text-[11px] font-semibold text-white">Users: {item.value.toFixed(2)}K</p>
+                      <p className="text-xs font-semibold text-white">{item.name}</p>
+                      <p className="text-xs font-semibold text-white">Users: {item.value.toFixed(2)}K</p>
                     </div>
                     <div style={{
                       width: 0, height: 0, marginTop: 2,
@@ -371,7 +371,7 @@ function LocationBarChart({ color }: { color: string }) {
                 )}
               </div>
 
-              <p className="w-[46px] shrink-0 text-[11px] font-semibold text-foreground leading-none">
+              <p className="w-[46px] shrink-0 text-xs font-semibold text-foreground leading-none">
                 {item.value.toFixed(2)}K
               </p>
             </div>
@@ -402,8 +402,8 @@ function AnalyticsContent({ category, onOpenSheet }: { category: AnalyticsCatego
           <CatIcon size={16} style={{ color: current.color }} />
         </div>
         <div className="flex-1">
-          <p className="text-[14px] font-semibold text-foreground">{current.label}</p>
-          <p className="text-[11px] text-muted-foreground mt-0.5">{current.subtitle}</p>
+          <p className="text-sm font-semibold text-foreground">{current.label}</p>
+          <p className="text-xs text-muted-foreground mt-0.5">{current.subtitle}</p>
         </div>
         <ChevronDown size={15} className="text-muted-foreground shrink-0" />
       </button>
@@ -416,11 +416,11 @@ function AnalyticsContent({ category, onOpenSheet }: { category: AnalyticsCatego
       >
         <div className="flex items-start justify-between mb-4">
           <div>
-            <p className="text-[28px] font-bold text-foreground leading-none">{current.total}</p>
-            <p className="text-[12px] text-muted-foreground mt-1.5">{current.totalLabel}</p>
+            <p className="text-3xl font-bold text-foreground leading-none">{current.total}</p>
+            <p className="text-xs text-muted-foreground mt-1.5">{current.totalLabel}</p>
           </div>
           <span
-            className="text-[11px] font-semibold px-2 py-1 rounded-full mt-0.5"
+            className="text-xs font-semibold px-2 py-1 rounded-full mt-0.5"
             style={{
               color: current.positive ? "#10b981" : "#f43f5e",
               background: current.positive ? "rgba(16,185,129,0.1)" : "rgba(244,63,94,0.1)",
@@ -430,7 +430,7 @@ function AnalyticsContent({ category, onOpenSheet }: { category: AnalyticsCatego
           </span>
         </div>
         <LineChart data={current.data} color={current.color} id={category} valueLabel={current.valueLabel} />
-        <p className="text-[10px] text-muted-foreground mt-3">May 10 – Jun 9, 2026</p>
+        <p className="text-xs text-muted-foreground mt-3">May 10 – Jun 9, 2026</p>
       </div>
 
       <LocationBarChart color={current.color} />
@@ -439,11 +439,11 @@ function AnalyticsContent({ category, onOpenSheet }: { category: AnalyticsCatego
       <div className="rounded-2xl bg-raised border border-border p-4">
         <div className="flex items-start justify-between mb-4">
           <div>
-            <p className="text-[28px] font-bold text-foreground leading-none">18.7K</p>
-            <p className="text-[12px] text-muted-foreground mt-1.5">Total pageviews</p>
+            <p className="text-3xl font-bold text-foreground leading-none">18.7K</p>
+            <p className="text-xs text-muted-foreground mt-1.5">Total pageviews</p>
           </div>
           <span
-            className="text-[11px] font-semibold px-2 py-1 rounded-full mt-0.5"
+            className="text-xs font-semibold px-2 py-1 rounded-full mt-0.5"
             style={{ color: "#10b981", background: "rgba(16,185,129,0.1)" }}
           >
             +22.1%
@@ -455,7 +455,7 @@ function AnalyticsContent({ category, onOpenSheet }: { category: AnalyticsCatego
           id={`${category}-pageviews`}
           valueLabel="Pageviews"
         />
-        <p className="text-[10px] text-muted-foreground mt-3">May 10 – Jun 9, 2026</p>
+        <p className="text-xs text-muted-foreground mt-3">May 10 – Jun 9, 2026</p>
       </div>
     </div>
   );
@@ -491,12 +491,12 @@ export default function HomeScreen() {
             <Image src="/logo.png" alt="Intempt" width={44} height={44} className="w-full h-full object-contain" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-[15px] font-semibold text-foreground leading-tight truncate">
+            <p className="text-base font-semibold text-foreground leading-tight truncate">
               Intempt External Use
             </p>
             <div className="flex items-center gap-1 mt-[3px]">
               <Globe size={11} className="text-muted-foreground shrink-0" />
-              <span className="text-[12px] text-muted-foreground truncate">
+              <span className="text-xs text-muted-foreground truncate">
                 Intempt on Intempt
               </span>
             </div>
@@ -506,7 +506,7 @@ export default function HomeScreen() {
             className="w-9 h-9 flex items-center justify-center rounded-full shrink-0"
             style={{ background: "var(--secondary)" }}
           >
-            <Settings size={16} strokeWidth={1.8} style={{ color: "var(--icon)" }} />
+            <Settings size={16} strokeWidth={1.75} style={{ color: "var(--icon)" }} />
           </button>
         </div>
 
@@ -518,7 +518,7 @@ export default function HomeScreen() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className="flex-1 text-[13px] font-semibold py-1.75 rounded-[10px] transition-all"
+                className="flex-1 text-sm font-semibold py-1.75 rounded-[10px] transition-all"
                 style={{
                   background: isActive ? "var(--raised)" : "transparent",
                   color: isActive ? "var(--foreground)" : "var(--muted-foreground)",
@@ -620,8 +620,8 @@ export default function HomeScreen() {
                       <Icon size={18} style={{ color: isSelected ? cat.color : "var(--icon)" }} />
                     </div>
                     <div className="flex-1">
-                      <p className="text-[14px] font-semibold text-foreground">{cat.label}</p>
-                      <p className="text-[11px] text-muted-foreground mt-0.5">{cat.subtitle}</p>
+                      <p className="text-sm font-semibold text-foreground">{cat.label}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{cat.subtitle}</p>
                     </div>
                   </button>
                 );

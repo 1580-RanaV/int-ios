@@ -36,7 +36,7 @@ function Divider() {
 
 function SectionLabel({ title }: { title: string }) {
   return (
-    <p className="text-[11px] font-semibold uppercase tracking-widest px-1 pt-5 pb-2"
+    <p className="text-xs font-semibold uppercase tracking-widest px-1 pt-5 pb-2"
       style={{ color: "var(--muted-foreground)" }}>
       {title}
     </p>
@@ -71,29 +71,29 @@ function Row({ icon: Icon, label, subtitle, value, notSet, danger, onClick }: Ro
       onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
       onClick={onClick}
     >
-      <Icon size={18} strokeWidth={1.8} className="shrink-0"
+      <Icon size={18} strokeWidth={1.75} className="shrink-0"
         style={{ color: danger ? "#f43f5e" : "var(--icon)" }} />
       <div className="flex-1 min-w-0">
-        <p className="text-[14px] font-medium leading-snug"
+        <p className="text-sm font-medium leading-snug"
           style={{ color: danger ? "#f43f5e" : "var(--foreground)" }}>
           {label}
         </p>
         {subtitle && (
-          <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>{subtitle}</p>
+          <p className="text-xs mt-0.5" style={{ color: "var(--muted-foreground)" }}>{subtitle}</p>
         )}
       </div>
       {notSet && (
-        <span className="text-[12px] font-medium shrink-0" style={{ color: "var(--muted-foreground)" }}>
+        <span className="text-xs font-medium shrink-0" style={{ color: "var(--muted-foreground)" }}>
           Not Set
         </span>
       )}
       {value && !notSet && (
-        <span className="text-[13px] font-medium shrink-0" style={{ color: "var(--muted-foreground)" }}>
+        <span className="text-sm font-medium shrink-0" style={{ color: "var(--muted-foreground)" }}>
           {value}
         </span>
       )}
       {!danger && (
-        <ChevronRight size={15} strokeWidth={2}
+        <ChevronRight size={15} strokeWidth={1.75}
           style={{ color: "var(--muted-foreground)", flexShrink: 0 }} />
       )}
     </button>
@@ -180,8 +180,8 @@ export default function SettingsScreen() {
       {/* Header */}
       <div className="shrink-0 bg-page px-5 pt-5 pb-2">
         <div className="flex items-center gap-2.5">
-          <Settings size={22} className="text-foreground shrink-0" strokeWidth={2} />
-          <p className="text-[20px] font-bold text-foreground leading-tight">Settings</p>
+          <Settings size={22} className="text-foreground shrink-0" strokeWidth={1.75} />
+          <p className="text-xl font-bold text-foreground leading-tight">Settings</p>
         </div>
       </div>
 
@@ -205,15 +205,15 @@ export default function SettingsScreen() {
                 className="flex items-center gap-3.5 w-full px-4 text-left"
                 style={{ paddingTop: 13, paddingBottom: 13 }}
               >
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-white text-[13px] font-bold"
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-white text-sm font-bold"
                   style={{ background: "#3b82f6" }}>
                   S
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[14px] font-medium text-foreground leading-snug">StockInvest.us</p>
-                  <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>stockinvest-project</p>
+                  <p className="text-sm font-medium text-foreground leading-snug">StockInvest.us</p>
+                  <p className="text-xs mt-0.5" style={{ color: "var(--muted-foreground)" }}>stockinvest-project</p>
                 </div>
-                <ChevronRight size={15} strokeWidth={2} style={{ color: "var(--muted-foreground)" }} />
+                <ChevronRight size={15} strokeWidth={1.75} style={{ color: "var(--muted-foreground)" }} />
               </button>
             </Card>
           </div>
@@ -297,7 +297,7 @@ export default function SettingsScreen() {
       {sheet === "appearance" && (
         <BottomSheet closing={sheetClosing} onClose={() => closeSheet()}>
           <div className="px-5 pt-3 pb-2">
-            <p className="text-[17px] font-bold text-foreground">Appearance</p>
+            <p className="text-lg font-bold text-foreground">Appearance</p>
           </div>
           <div className="px-3 pb-8 flex flex-col gap-1">
             {APPEARANCE_OPTIONS.map(({ key, icon: Icon, label, sub }) => {
@@ -313,15 +313,15 @@ export default function SettingsScreen() {
                 >
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
                     style={{ background: active ? "rgba(59,130,246,0.12)" : "var(--secondary)" }}>
-                    <Icon size={17} strokeWidth={1.8}
+                    <Icon size={17} strokeWidth={1.75}
                       style={{ color: active ? "#3b82f6" : "var(--icon)" }} />
                   </div>
                   <div className="flex-1">
-                    <p className="text-[14px] font-semibold"
+                    <p className="text-sm font-semibold"
                       style={{ color: active ? "#3b82f6" : "var(--foreground)" }}>{label}</p>
-                    <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>{sub}</p>
+                    <p className="text-xs mt-0.5" style={{ color: "var(--muted-foreground)" }}>{sub}</p>
                   </div>
-                  {active && <Check size={16} strokeWidth={2.5} style={{ color: "#3b82f6", flexShrink: 0 }} />}
+                  {active && <Check size={16} strokeWidth={1.75} style={{ color: "#3b82f6", flexShrink: 0 }} />}
                 </button>
               );
             })}
@@ -333,7 +333,7 @@ export default function SettingsScreen() {
       {sheet === "reporting" && (
         <BottomSheet closing={sheetClosing} onClose={() => closeSheet()}>
           <div className="px-5 pt-3 pb-2">
-            <p className="text-[17px] font-bold text-foreground">Reporting Period</p>
+            <p className="text-lg font-bold text-foreground">Reporting Period</p>
           </div>
           <div className="px-5 pb-4">
             <div className="flex gap-2 flex-wrap">
@@ -343,7 +343,7 @@ export default function SettingsScreen() {
                   <button
                     key={p}
                     onClick={() => { setReportPeriod(p); }}
-                    className="px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-200"
+                    className="px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200"
                     style={{
                       background: active ? "#3b82f6" : "var(--secondary)",
                       color: active ? "#ffffff" : "var(--foreground)",
@@ -354,14 +354,14 @@ export default function SettingsScreen() {
                 );
               })}
             </div>
-            <p className="text-[13px] mt-4 text-center" style={{ color: "var(--muted-foreground)" }}>
+            <p className="text-sm mt-4 text-center" style={{ color: "var(--muted-foreground)" }}>
               {dateRange}
             </p>
           </div>
           <div className="px-5 pb-8">
             <button
               onClick={() => closeSheet()}
-              className="w-full py-3 rounded-2xl text-[14px] font-semibold text-white transition-opacity"
+              className="w-full py-3 rounded-2xl text-sm font-semibold text-white transition-opacity"
               style={{ background: "#3b82f6" }}
             >
               Apply
@@ -374,7 +374,7 @@ export default function SettingsScreen() {
       {sheet === "connections" && (
         <BottomSheet closing={sheetClosing} onClose={() => closeSheet()}>
           <div className="px-5 pt-3 pb-2">
-            <p className="text-[17px] font-bold text-foreground">Connections</p>
+            <p className="text-lg font-bold text-foreground">Connections</p>
           </div>
           <div className="px-5 pb-8">
             <div className="flex flex-col gap-2">
@@ -382,19 +382,19 @@ export default function SettingsScreen() {
               {/* Gmail */}
               <div className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl"
                 style={{ background: "var(--page)", border: "1px solid var(--border)" }}>
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-white text-[13px] font-bold"
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-white text-sm font-bold"
                   style={{ background: "linear-gradient(135deg,#ea4335,#fbbc05 50%,#34a853)" }}>
-                  <Mail size={16} strokeWidth={2} className="text-white" />
+                  <Mail size={16} strokeWidth={1.75} className="text-white" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-[14px] font-semibold text-foreground">Gmail</p>
-                  <p className="text-[12px]" style={{ color: gmailConn ? "#10b981" : "var(--muted-foreground)" }}>
+                  <p className="text-sm font-semibold text-foreground">Gmail</p>
+                  <p className="text-xs" style={{ color: gmailConn ? "#10b981" : "var(--muted-foreground)" }}>
                     {gmailConn ? "Connected" : "Not connected"}
                   </p>
                 </div>
                 <button
                   onClick={() => setGmailConn((v) => !v)}
-                  className="text-[13px] font-semibold px-3 py-1.5 rounded-full transition-all duration-200"
+                  className="text-sm font-semibold px-3 py-1.5 rounded-full transition-all duration-200"
                   style={gmailConn
                     ? { color: "#f43f5e", background: "rgba(244,63,94,0.08)" }
                     : { color: "#3b82f6", background: "rgba(59,130,246,0.08)" }
@@ -407,19 +407,19 @@ export default function SettingsScreen() {
               {/* Google Calendar */}
               <div className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl"
                 style={{ background: "var(--page)", border: "1px solid var(--border)" }}>
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-white text-[12px] font-bold"
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-white text-xs font-bold"
                   style={{ background: "#3b82f6" }}>
                   31
                 </div>
                 <div className="flex-1">
-                  <p className="text-[14px] font-semibold text-foreground">Google Calendar</p>
-                  <p className="text-[12px]" style={{ color: gcalConn ? "#10b981" : "var(--muted-foreground)" }}>
+                  <p className="text-sm font-semibold text-foreground">Google Calendar</p>
+                  <p className="text-xs" style={{ color: gcalConn ? "#10b981" : "var(--muted-foreground)" }}>
                     {gcalConn ? "Connected" : "Not connected"}
                   </p>
                 </div>
                 <button
                   onClick={() => setGcalConn((v) => !v)}
-                  className="text-[13px] font-semibold px-3 py-1.5 rounded-full transition-all duration-200"
+                  className="text-sm font-semibold px-3 py-1.5 rounded-full transition-all duration-200"
                   style={gcalConn
                     ? { color: "#f43f5e", background: "rgba(244,63,94,0.08)" }
                     : { color: "#3b82f6", background: "rgba(59,130,246,0.08)" }
@@ -438,7 +438,7 @@ export default function SettingsScreen() {
       {sheet === "account" && (
         <BottomSheet closing={sheetClosing} onClose={() => closeSheet()}>
           <div className="px-5 pt-3 pb-2">
-            <p className="text-[17px] font-bold text-foreground">Account</p>
+            <p className="text-lg font-bold text-foreground">Account</p>
           </div>
           <div className="px-5 pb-8 flex flex-col gap-4">
 
@@ -446,12 +446,12 @@ export default function SettingsScreen() {
             <div className="rounded-2xl overflow-hidden"
               style={{ background: "var(--page)", border: "1px solid var(--border)" }}>
               <div className="flex items-center gap-3.5 px-4 py-3.5">
-                <Smartphone size={18} strokeWidth={1.8} style={{ color: "var(--icon)" }} className="shrink-0" />
+                <Smartphone size={18} strokeWidth={1.75} style={{ color: "var(--icon)" }} className="shrink-0" />
                 <div className="flex-1">
-                  <p className="text-[14px] font-semibold text-foreground">This device</p>
-                  <p className="text-[12px]" style={{ color: "var(--muted-foreground)" }}>Now</p>
+                  <p className="text-sm font-semibold text-foreground">This device</p>
+                  <p className="text-xs" style={{ color: "var(--muted-foreground)" }}>Now</p>
                 </div>
-                <span className="text-[12px] font-semibold px-2.5 py-1 rounded-full"
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full"
                   style={{ color: "#10b981", background: "rgba(16,185,129,0.1)" }}>
                   Current
                 </span>
@@ -464,14 +464,14 @@ export default function SettingsScreen() {
               onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.7"; }}
               onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
             >
-              <LogOut size={17} strokeWidth={1.8} style={{ color: "#f43f5e" }} />
-              <span className="text-[14px] font-semibold" style={{ color: "#f43f5e" }}>
+              <LogOut size={17} strokeWidth={1.75} style={{ color: "#f43f5e" }} />
+              <span className="text-sm font-semibold" style={{ color: "#f43f5e" }}>
                 Log out everywhere
               </span>
             </button>
 
             {/* Delete account */}
-            <p className="text-[11px] font-semibold uppercase tracking-widest -mb-1"
+            <p className="text-xs font-semibold uppercase tracking-widest -mb-1"
               style={{ color: "var(--muted-foreground)" }}>Danger Zone</p>
             <button
               className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-2xl"
@@ -479,8 +479,8 @@ export default function SettingsScreen() {
               onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(244,63,94,0.10)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(244,63,94,0.05)"; }}
             >
-              <Trash2 size={16} strokeWidth={1.8} style={{ color: "#f43f5e" }} />
-              <span className="text-[14px] font-semibold" style={{ color: "#f43f5e" }}>Delete account</span>
+              <Trash2 size={16} strokeWidth={1.75} style={{ color: "#f43f5e" }} />
+              <span className="text-sm font-semibold" style={{ color: "#f43f5e" }}>Delete account</span>
             </button>
 
           </div>

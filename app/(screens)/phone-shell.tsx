@@ -13,7 +13,7 @@ function StatusBar() {
         className="absolute left-1/2 -translate-x-1/2 bg-black dark:bg-black"
         style={{ top: 10, width: 120, height: 34, borderRadius: 20 }}
       />
-      <span className="absolute left-6 text-[15px] font-semibold tracking-tight text-foreground" style={{ top: 16 }}>
+      <span className="absolute left-6 text-base font-semibold tracking-tight text-foreground" style={{ top: 16 }}>
         9:41
       </span>
       <div className="absolute right-6 flex items-center gap-1.5 text-foreground" style={{ top: 18 }}>
