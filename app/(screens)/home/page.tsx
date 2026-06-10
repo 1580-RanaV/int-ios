@@ -34,20 +34,21 @@ type Stat = {
   value: number | string;
   color: string;
   bg: string;
+  href?: string;
   change?: { label: string; positive: boolean };
 };
 
 const salesStats: Stat[] = [
-  { icon: Users,        label: "Users",    value: 20,  color: "#3b82f6", bg: "rgba(59,130,246,0.10)"  },
-  { icon: Building2,    label: "Accounts", value: 51,  color: "#8b5cf6", bg: "rgba(139,92,246,0.10)"  },
-  { icon: CheckSquare2, label: "Tasks",    value: 0,   color: "#10b981", bg: "rgba(16,185,129,0.10)"  },
-  { icon: Handshake,    label: "Deals",    value: 0,   color: "#f59e0b", bg: "rgba(245,158,11,0.10)"  },
-  { icon: CalendarDays, label: "Meetings", value: 156, color: "#f43f5e", bg: "rgba(244,63,94,0.10)"   },
+  { icon: Users,        label: "Users",    value: 20,  color: "#3b82f6", bg: "rgba(59,130,246,0.10)",  href: "/users"    },
+  { icon: Building2,    label: "Accounts", value: 51,  color: "#8b5cf6", bg: "rgba(139,92,246,0.10)",  href: "/accounts" },
+  { icon: CheckSquare2, label: "Tasks",    value: 0,   color: "#10b981", bg: "rgba(16,185,129,0.10)",  href: "/tasks"    },
+  { icon: Handshake,    label: "Deals",    value: 0,   color: "#f59e0b", bg: "rgba(245,158,11,0.10)",  href: "/deals"    },
+  { icon: CalendarDays, label: "Meetings", value: 156, color: "#f43f5e", bg: "rgba(244,63,94,0.10)",   href: "/meetings" },
 ];
 
 const marketingStats: Stat[] = [
-  { icon: Route,        label: "Active Journeys",     value: 30,      color: "#3b82f6", bg: "rgba(59,130,246,0.10)"  },
-  { icon: FlaskConical, label: "Active Experiences",  value: 0,       color: "#8b5cf6", bg: "rgba(139,92,246,0.10)"  },
+  { icon: Route,        label: "Active Journeys",     value: 30,      color: "#3b82f6", bg: "rgba(59,130,246,0.10)",  href: "/journeys"     },
+  { icon: FlaskConical, label: "Active Experiences",  value: 0,       color: "#8b5cf6", bg: "rgba(139,92,246,0.10)",  href: "/experiences"  },
   { icon: TrendingUp,   label: "Revenue",             value: "$0.00", color: "#10b981", bg: "rgba(16,185,129,0.10)"  },
   { icon: Users,        label: "Users",               value: "3.94K", color: "#f59e0b", bg: "rgba(245,158,11,0.10)", change: { label: "-37.21%", positive: false } },
 ];
@@ -139,16 +140,37 @@ const LOCATION_DATA: Record<LocationTab, Array<{ name: string; value: number }>>
 
 // ─── Stat card ───────────────────────────────────────────────────────────────
 
-function StatCard({ icon: Icon, label, value, color, bg, change }: Stat) {
+function StatCard({ icon: Icon, label, value, color, bg, change, href, onClick }: Stat & { onClick?: () => void }) {
   return (
-    <div className="rounded-2xl p-4 flex flex-col gap-3 bg-raised border border-border">
-      <div className="flex items-start justify-between">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: bg }}>
-          <Icon size={18} style={{ color }} />
-        </div>
-        <ChevronRight size={15} style={{ color }} className="mt-0.5 opacity-60" />
+    <div
+      className="rounded-2xl p-4 flex flex-col justify-between bg-raised border border-border relative overflow-hidden"
+      style={{ minHeight: 120, cursor: href ? "pointer" : "default" }}
+      onClick={onClick}
+    >
+      {/* Large faded watermark icon */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          right: -14,
+          bottom: -10,
+          color: "var(--foreground)",
+          opacity: 0.035,
+          transform: "rotate(-20deg)",
+        }}
+      >
+        <Icon size={96} strokeWidth={1.75} />
       </div>
-      <div>
+
+      {/* Top row */}
+      <div className="flex items-start justify-between relative z-10">
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: bg }}>
+          <Icon size={17} strokeWidth={1.75} style={{ color }} />
+        </div>
+        <ChevronRight size={14} strokeWidth={1.75} className="mt-0.5 opacity-50" style={{ color }} />
+      </div>
+
+      {/* Value + label */}
+      <div className="relative z-10 mt-3">
         <p className="text-3xl leading-none font-bold tracking-tight text-foreground">
           {typeof value === "number" ? value.toLocaleString() : value}
         </p>
@@ -554,7 +576,7 @@ export default function HomeScreen() {
             >
               <div className="grid grid-cols-2 gap-3">
                 {(activeTab === "Sales" ? salesStats : marketingStats).map((s) => (
-                  <StatCard key={s.label} {...s} />
+                  <StatCard key={s.label} {...s} onClick={s.href ? () => router.push(s.href!) : undefined} />
                 ))}
               </div>
             </div>

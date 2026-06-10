@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Home, Users, Building2, Handshake, MoreHorizontal,
   Route, CheckSquare2, CalendarDays, FlaskConical,
@@ -40,6 +40,7 @@ const DEFAULT_KEYS = ["users", "accounts", "deals"];
 
 export default function BottomNav() {
   const pathname  = usePathname();
+  const router    = useRouter();
   const { scrolled } = useNav();
   const [showMore, setShowMore] = useState(false);
   const [closing,  setClosing]  = useState(false);
@@ -119,7 +120,7 @@ export default function BottomNav() {
                   className="text-sm font-semibold leading-none"
                   style={{
                     color: "#3b82f6", whiteSpace: "nowrap", overflow: "hidden",
-                    maxWidth: (active && !scrolled) ? "80px" : "0px",
+                    maxWidth: (active && !scrolled) ? "150px" : "0px",
                     opacity: (active && !scrolled) ? 1 : 0,
                     transition: (active && !scrolled)
                       ? "max-width 0.45s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease-out 0.08s"
@@ -132,7 +133,7 @@ export default function BottomNav() {
             );
 
             const wrapStyle = {
-              flex: (active && !scrolled) ? 2 : 1,
+              flex: (active && !scrolled) ? 3 : 1,
               transition: "flex 0.45s cubic-bezier(0.34,1.56,0.64,1)",
             };
 
@@ -182,41 +183,47 @@ export default function BottomNav() {
               </span>
             </div>
 
-            {ALL_SWAPPABLE.map(({ key, icon: Icon, label }, i) => {
+            {ALL_SWAPPABLE.map(({ key, icon: Icon, label, href }, i) => {
               const isSelected = selected.includes(key);
               const atMax      = !isSelected && selected.length >= 3;
 
               return (
-                <button
+                <div
                   key={key}
-                  onClick={() => !atMax && toggle(key)}
-                  className="flex items-center gap-3 w-full px-4 py-2.5 text-left transition-colors duration-100"
+                  className="flex items-center w-full transition-colors duration-100"
                   style={{
-                    opacity: atMax ? 0.35 : 1,
-                    cursor: atMax ? "default" : "pointer",
                     animation: "tab-in 0.2s ease-out both",
                     animationDelay: `${i * 28}ms`,
                   }}
-                  onMouseEnter={(e) => { if (!atMax) e.currentTarget.style.background = "var(--secondary)"; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "var(--secondary)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
                 >
-                  <Icon
-                    size={17}
-                    strokeWidth={1.75}
-                    className="shrink-0"
-                    style={{ color: isSelected ? "#3b82f6" : "var(--icon)" }}
-                  />
-                  <span
-                    className="flex-1 text-sm font-medium"
-                    style={{ color: isSelected ? "#3b82f6" : "var(--foreground)" }}
+                  {/* Row — navigate */}
+                  <button
+                    className="flex items-center gap-3 flex-1 px-4 py-2.5 text-left"
+                    onClick={() => { closeMore(); router.push(href); }}
                   >
-                    {label}
-                  </span>
-                  {isSelected
-                    ? <Eye    size={15} strokeWidth={1.75}   style={{ color: "#3b82f6",                flexShrink: 0 }} />
-                    : <EyeOff size={15} strokeWidth={1.75} style={{ color: "var(--muted-foreground)", flexShrink: 0 }} />
-                  }
-                </button>
+                    <Icon
+                      size={17} strokeWidth={1.75} className="shrink-0"
+                      style={{ color: isSelected ? "#3b82f6" : "var(--icon)" }}
+                    />
+                    <span className="flex-1 text-sm font-medium" style={{ color: isSelected ? "#3b82f6" : "var(--foreground)" }}>
+                      {label}
+                    </span>
+                  </button>
+
+                  {/* Eye — toggle slot */}
+                  <button
+                    className="px-4 py-2.5 shrink-0"
+                    onClick={(e) => { e.stopPropagation(); if (!atMax) toggle(key); }}
+                    style={{ opacity: atMax ? 0.35 : 1, cursor: atMax ? "default" : "pointer" }}
+                  >
+                    {isSelected
+                      ? <Eye    size={15} strokeWidth={1.75} style={{ color: "#3b82f6" }} />
+                      : <EyeOff size={15} strokeWidth={1.75} style={{ color: "var(--muted-foreground)" }} />
+                    }
+                  </button>
+                </div>
               );
             })}
 

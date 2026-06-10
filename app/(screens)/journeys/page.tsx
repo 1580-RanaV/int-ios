@@ -69,7 +69,7 @@ export default function JourneysScreen() {
   return (
     <div
       className="flex flex-col flex-1 min-h-0 bg-page relative"
-      style={{ animation: "tab-in 0.25s ease-out" }}
+      style={{ animation: "slide-in-right 0.45s cubic-bezier(0.25,0.46,0.45,0.94)" }}
     >
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <div className="shrink-0 bg-page px-5 pt-5 pb-4">
@@ -253,7 +253,10 @@ export default function JourneysScreen() {
                   <span className="text-sm font-semibold" style={{ color: STATUS_COLOR[label] }}>
                     {label}
                   </span>
-                  <span className="text-sm text-muted-foreground">{items.length}</span>
+                  <span
+                    className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                    style={{ background: "var(--secondary)", color: "var(--muted-foreground)" }}
+                  >{items.length}</span>
                 </div>
 
                 <div className="flex flex-col gap-2.5">
