@@ -22,11 +22,6 @@ const ALL_SWAPPABLE = [
   { key: "dashboards",  icon: LayoutGrid,   label: "Dashboards",  href: "/dashboards"  },
 ];
 
-const SPRING = [
-  "transform 0.55s cubic-bezier(0.22,1,0.36,1)",
-  "box-shadow 0.3s ease",
-].join(", ");
-
 const DEFAULT_KEYS = ["users", "accounts", "deals"];
 
 export default function BottomNav() {
@@ -76,26 +71,29 @@ export default function BottomNav() {
     <>
       {/* ── Nav bar ─────────────────────────────────────────────────────── */}
       <div
-        className="fixed z-30"
+        className="fixed z-30 flex justify-center"
+        style={{ bottom: 36, left: 0, right: 0 }}
+      >
+      <div
         style={{
-          bottom: 36,
-          left: 12,
-          right: 12,
+          width: scrolled ? "60%" : "80%",
           transform: scrolled
-  ? "translateY(-8px) scale(0.95) translateZ(0)"
-  : "translateY(0px) scale(1) translateZ(0)",
-
-transformOrigin: "bottom center",
+            ? "translateY(-8px) translateZ(0)"
+            : "translateY(0px) translateZ(0)",
+          transformOrigin: "bottom center",
           borderRadius: 999,
           background: "var(--raised)",
           border: "1px solid var(--border)",
           boxShadow: scrolled
             ? "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)"
             : "0 4px 16px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04)",
-          transition: SPRING,
-          willChange: "transform",
-          backfaceVisibility: "hidden",
-          perspective: 1000,
+          transition: [
+            "width 0.6s cubic-bezier(0.34,1.2,0.64,1)",
+            "transform 0.6s cubic-bezier(0.34,1.2,0.64,1)",
+            "box-shadow 0.35s ease",
+          ].join(", "),
+          willChange: "transform, width",
+          overflow: "hidden",
         }}
       >
         <div className="flex items-center px-1 py-1">
@@ -106,12 +104,13 @@ transformOrigin: "bottom center",
 
             const inner = (
               <div
-                className="flex-1 flex items-center justify-center gap-1.5 h-9"
+                className="flex-1 flex items-center justify-center h-9"
                 style={{
+                  gap: (active && !scrolled) ? 6 : 0,
                   borderRadius: 999,
                   background: active ? "rgba(59,130,246,0.12)" : "transparent",
                   color: active ? "#1d4ed8" : "var(--icon)",
-                  transition: "background 0.35s ease, color 0.3s ease",
+                  transition: "gap 0.42s cubic-bezier(0.4,0,0.2,1), background 0.35s ease, color 0.3s ease",
                 }}
               >
                 <Icon size={19} strokeWidth={1.75} />
@@ -147,6 +146,7 @@ transformOrigin: "bottom center",
             );
           })}
         </div>
+      </div>
       </div>
 
       {/* ── Dropdown ────────────────────────────────────────────────────── */}
