@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNav } from "../_context/nav-context";
-import { BarChart2, Search, Settings, ChevronRight, TrendingUp, Filter, Users } from "lucide-react";
+import { BarChart2, Search, ChevronRight, TrendingUp, Filter, Users } from "lucide-react";
 
 type Category = "Insights" | "Funnels" | "Retention";
 
@@ -80,12 +80,6 @@ export default function ReportsScreen() {
             <BarChart2 size={22} className="text-foreground shrink-0" strokeWidth={1.75} />
             <p className="text-xl font-bold text-foreground leading-tight">Reports</p>
           </div>
-          <button
-            className="w-8 h-8 flex items-center justify-center rounded-full"
-            style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-          >
-            <Settings size={15} className="text-muted-foreground" strokeWidth={1.75} />
-          </button>
         </div>
 
         {/* Search */}

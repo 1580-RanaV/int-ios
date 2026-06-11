@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNav } from "../_context/nav-context";
 import { useRouter } from "next/navigation";
-import { FlaskConical, Search, Settings, ChevronDown, Monitor } from "lucide-react";
+import { FlaskConical, Search, ChevronDown, Monitor } from "lucide-react";
 import {
   EXPERIENCES, GROUP_ORDER, FILTERS, STATUS_COLOR, STATUS_BG,
   type Status, type Filter,
@@ -68,12 +68,6 @@ export default function ExperiencesScreen() {
             >
               <span className="text-xs font-medium text-foreground">By Status</span>
               <ChevronDown size={12} strokeWidth={1.75} className="text-muted-foreground" />
-            </button>
-            <button
-              className="w-8 h-8 flex items-center justify-center rounded-full"
-              style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-            >
-              <Settings size={15} className="text-muted-foreground" strokeWidth={1.75} />
             </button>
           </div>
         </div>

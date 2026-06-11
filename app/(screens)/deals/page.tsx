@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { useNav } from "../_context/nav-context";
 import {
-  Handshake, Search, ChevronDown, Plus, X, Check,
+  Handshake, Search, ChevronDown, Plus, Check,
   DollarSign, TrendingUp,
 } from "lucide-react";
 import {
@@ -289,7 +289,6 @@ export default function DealsPage() {
               <div key={label}>
                 <div className="flex items-center justify-between px-5 pt-4 pb-1.5">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full shrink-0" style={{ background: stageStyle.color }} />
                     <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: stageStyle.color }}>
                       {label}
                     </span>
@@ -349,12 +348,8 @@ export default function DealsPage() {
             </div>
 
             {/* Header */}
-            <div className="flex items-center justify-between px-5 pt-2 pb-3">
-              <button onClick={closeCreate}>
-                <X size={18} strokeWidth={1.75} className="text-muted-foreground" />
-              </button>
-              <p className="text-[15px] font-bold text-foreground">Create Deal</p>
-              <div className="w-5" />
+            <div className="px-5 pt-2 pb-3">
+              <p className="text-lg font-bold text-foreground">Create Deal</p>
             </div>
 
             {/* Scrollable body */}

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNav } from "../_context/nav-context";
 import { useRouter } from "next/navigation";
-import { LayoutGrid, Search, Settings, ChevronRight } from "lucide-react";
+import { LayoutGrid, Search, ChevronRight } from "lucide-react";
 
 const DASHBOARDS = [
   { slug: "orderpage",                  name: "OrderPage",                reports: 6, updated: "11 hours ago"  },
@@ -46,12 +46,6 @@ export default function DashboardsScreen() {
         <div className="flex items-center gap-2.5">
           <LayoutGrid size={22} className="text-foreground shrink-0" strokeWidth={1.75} />
           <p className="text-xl font-bold text-foreground leading-tight flex-1">Dashboards</p>
-          <button
-            className="w-8 h-8 flex items-center justify-center rounded-full"
-            style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-          >
-            <Settings size={15} className="text-muted-foreground" strokeWidth={1.75} />
-          </button>
         </div>
 
         {/* Search */}

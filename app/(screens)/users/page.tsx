@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNav } from "../_context/nav-context";
 import { useRouter } from "next/navigation";
-import { Users, Search, Plus, Settings, ChevronRight } from "lucide-react";
+import { Users, Search, Plus, ChevronRight } from "lucide-react";
 import { USERS } from "./_data";
 
 export default function UsersScreen() {
@@ -41,12 +41,6 @@ export default function UsersScreen() {
               style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
             >
               <Plus size={16} className="text-foreground" strokeWidth={1.75} />
-            </button>
-            <button
-              className="w-8 h-8 flex items-center justify-center rounded-full"
-              style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-            >
-              <Settings size={15} className="text-muted-foreground" strokeWidth={1.75} />
             </button>
           </div>
         </div>

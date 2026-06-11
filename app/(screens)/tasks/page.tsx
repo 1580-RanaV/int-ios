@@ -3,8 +3,8 @@
 import { useState, useRef } from "react";
 import { useNav } from "../_context/nav-context";
 import {
-  CheckSquare2, Search, ChevronDown, Plus, Settings,
-  Mail, Phone, CalendarDays, MessageSquare, Check, Clock, X,
+  CheckSquare2, Search, ChevronDown, Plus,
+  Mail, Phone, CalendarDays, MessageSquare, Check, Clock,
 } from "lucide-react";
 
 function LinkedInIcon({ size = 15 }: { size?: number }) {
@@ -165,12 +165,6 @@ export default function TasksPage() {
               onClick={openCreate}
             >
               <Plus size={16} strokeWidth={1.75} className="text-foreground" />
-            </button>
-            <button
-              className="w-8 h-8 flex items-center justify-center rounded-full"
-              style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-            >
-              <Settings size={14} strokeWidth={1.75} className="text-muted-foreground" />
             </button>
           </div>
         </div>
@@ -368,12 +362,8 @@ export default function TasksPage() {
             </div>
 
             {/* Header */}
-            <div className="flex items-center justify-between px-5 pt-2 pb-3">
-              <button onClick={closeCreate}>
-                <X size={18} strokeWidth={1.75} className="text-muted-foreground" />
-              </button>
-              <p className="text-[15px] font-bold text-foreground">Create Task</p>
-              <div className="w-5" />
+            <div className="px-5 pt-2 pb-3">
+              <p className="text-lg font-bold text-foreground">Create Task</p>
             </div>
 
             {/* Scrollable body — same as settings profile sheet */}

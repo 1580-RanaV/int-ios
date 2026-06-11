@@ -3,7 +3,7 @@
 import { useState, use, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
-  ChevronLeft, Settings, Pause, Play, CircleX, ChevronDown,
+  ChevronLeft, Pause, Play, CircleX, ChevronDown,
   Check, Layers, Mail, Filter, BarChart2,
 } from "lucide-react";
 import {
@@ -78,18 +78,12 @@ export default function JourneyDetailPage({ params }: { params: Promise<{ slug: 
         <div className="flex items-center gap-3">
           <button
             onClick={handleBack}
-            className="w-9 h-9 flex items-center justify-center rounded-full shrink-0"
-            style={{ background: "var(--secondary)" }}
+            className="w-11 h-11 flex items-center justify-center rounded-full shrink-0"
+            style={{ background: "var(--raised)", border: "1px solid var(--border)", animation: "back-btn-in 0.42s cubic-bezier(0.34,1.56,0.64,1) 0.06s both" }}
           >
-            <ChevronLeft size={18} strokeWidth={1.75} className="text-foreground" />
+            <ChevronLeft size={22} strokeWidth={2} className="text-foreground" />
           </button>
           <p className="flex-1 text-lg font-bold text-foreground leading-tight truncate">{journey.name}</p>
-          <button
-            className="w-9 h-9 flex items-center justify-center rounded-full shrink-0"
-            style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-          >
-            <Settings size={16} className="text-muted-foreground" strokeWidth={1.75} />
-          </button>
         </div>
 
         {/* Status row */}

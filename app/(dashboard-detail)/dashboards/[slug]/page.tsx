@@ -3,7 +3,7 @@
 import { use, useRef, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  ChevronLeft, Settings, Filter, TrendingUp, Users2,
+  ChevronLeft, Filter, TrendingUp, Users2,
   BarChart2, PieChart, LineChart, Layers, Clock, FileText,
 } from "lucide-react";
 
@@ -165,21 +165,15 @@ export default function DashboardDetailPage({ params }: { params: Promise<{ slug
       <div className="shrink-0 px-4 pt-4 pb-3 flex items-center gap-3" style={{ background: "var(--page)" }}>
         <button
           onClick={() => router.back()}
-          className="w-8 h-8 flex items-center justify-center rounded-full shrink-0"
-          style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
+          className="w-11 h-11 flex items-center justify-center rounded-full shrink-0"
+          style={{ background: "var(--raised)", border: "1px solid var(--border)", animation: "back-btn-in 0.42s cubic-bezier(0.34,1.56,0.64,1) 0.06s both" }}
         >
-          <ChevronLeft size={17} strokeWidth={2} className="text-foreground" />
+          <ChevronLeft size={22} strokeWidth={2} className="text-foreground" />
         </button>
         <div className="flex-1 min-w-0">
           <p className="text-base font-bold text-foreground leading-tight truncate">{dashboard.name}</p>
           <p className="text-[11px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>Dashboard</p>
         </div>
-        <button
-          className="w-8 h-8 flex items-center justify-center rounded-full shrink-0"
-          style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-        >
-          <Settings size={15} strokeWidth={1.75} className="text-muted-foreground" />
-        </button>
       </div>
 
       {/* ── Scroll body ── */}

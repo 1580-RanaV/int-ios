@@ -3,7 +3,7 @@
 import { useState, use, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
-  ChevronLeft, Settings, Mail, Phone, MessageSquare,
+  ChevronLeft, Mail, Phone, MessageSquare,
   MapPin, Clock, Bot, Zap, Eye, Activity, CheckSquare2, Inbox,
   CheckCircle2, Circle, LogIn, Route, MousePointerClick, FileText,
   ChevronDown, Check, CalendarDays, Layers, Send, MailOpen, AlertCircle,
@@ -599,16 +599,10 @@ export default function UserDetailPage({ params }: { params: Promise<{ slug: str
         <div className="flex items-center justify-between px-5 pt-7 pb-5">
           <button
             onClick={handleBack}
-            className="w-9 h-9 flex items-center justify-center rounded-full shrink-0"
-            style={{ background: "var(--secondary)" }}
+            className="w-11 h-11 flex items-center justify-center rounded-full shrink-0"
+            style={{ background: "var(--raised)", border: "1px solid var(--border)", animation: "back-btn-in 0.42s cubic-bezier(0.34,1.56,0.64,1) 0.06s both" }}
           >
-            <ChevronLeft size={18} strokeWidth={1.75} className="text-foreground" />
-          </button>
-          <button
-            className="w-9 h-9 flex items-center justify-center rounded-full shrink-0"
-            style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-          >
-            <Settings size={16} strokeWidth={1.75} className="text-muted-foreground" />
+            <ChevronLeft size={22} strokeWidth={2} className="text-foreground" />
           </button>
         </div>
 

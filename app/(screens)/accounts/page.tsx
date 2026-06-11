@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNav } from "../_context/nav-context";
-import { Building2, Search, Plus, Settings, ChevronRight } from "lucide-react";
+import { Building2, Search, Plus, ChevronRight } from "lucide-react";
 
 const ACCOUNTS = [
   { name: "Waverly Digital",      users: 1,  updated: "2 hours ago"  },
@@ -58,12 +58,6 @@ export default function AccountsScreen() {
               style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
             >
               <Plus size={16} className="text-foreground" strokeWidth={1.75} />
-            </button>
-            <button
-              className="w-8 h-8 flex items-center justify-center rounded-full"
-              style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-            >
-              <Settings size={15} className="text-muted-foreground" strokeWidth={1.75} />
             </button>
           </div>
         </div>

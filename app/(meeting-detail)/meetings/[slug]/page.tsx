@@ -3,7 +3,7 @@
 import { useState, use, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
-  ChevronLeft, Settings, ChevronDown, ChevronUp,
+  ChevronLeft, ChevronDown, ChevronUp,
   Play, Pause, SkipBack, SkipForward, Maximize2,
   FileText, Lightbulb, Tag, CheckSquare2, Users,
   Check, Bot, Send, CalendarDays, Clock,
@@ -153,10 +153,10 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ slug: 
         <div className="flex items-start justify-between px-5 pt-7 pb-3">
           <button
             onClick={handleBack}
-            className="w-9 h-9 flex items-center justify-center rounded-full shrink-0"
-            style={{ background: "var(--secondary)" }}
+            className="w-11 h-11 flex items-center justify-center rounded-full shrink-0"
+            style={{ background: "var(--raised)", border: "1px solid var(--border)", animation: "back-btn-in 0.42s cubic-bezier(0.34,1.56,0.64,1) 0.06s both" }}
           >
-            <ChevronLeft size={18} strokeWidth={1.75} className="text-foreground" />
+            <ChevronLeft size={22} strokeWidth={2} className="text-foreground" />
           </button>
 
           <div className="flex-1 min-w-0 px-3">
@@ -173,12 +173,6 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ slug: 
             </div>
           </div>
 
-          <button
-            className="w-9 h-9 flex items-center justify-center rounded-full shrink-0"
-            style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-          >
-            <Settings size={16} strokeWidth={1.75} className="text-muted-foreground" />
-          </button>
         </div>
 
         {/* ── Video player ──────────────────────────────────────────── */}
