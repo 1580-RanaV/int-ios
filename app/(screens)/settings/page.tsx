@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useNav } from "../_context/nav-context";
 import {
-  ChevronRight, LayoutGrid, Globe, Moon, Bell, BarChart2,
+  ChevronRight, ChevronDown, LayoutGrid, Globe, Moon, Bell, BarChart2,
   Camera, Mic, ImageIcon, Sparkles, CalendarDays, Link2,
   Star, MessageSquare, HelpCircle, Shield, LogOut, UserCircle,
-  Settings, Sun, SunMoon, Check, Smartphone, Trash2, Mail, Phone, X,
+  Settings, Sun, SunMoon, Check, Smartphone, Trash2, Mail, Phone,
   Building2, FolderKanban,
 } from "lucide-react";
 
@@ -25,7 +25,7 @@ const ORGS: Org[] = [
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
-type Sheet = "appearance" | "reporting" | "connections" | "account" | "profile" | "orgSwitch" | null;
+type Sheet = "appearance" | "reporting" | "connections" | "account" | "profile" | "orgSwitch" | "locale" | "notifications" | "permissions" | null;
 type OrgTab = "Organizations" | "Projects";
 
 function formatDate(d: Date) {
@@ -168,6 +168,21 @@ export default function SettingsScreen() {
   const [gmailConn,     setGmailConn]     = useState(true);
   const [gcalConn,      setGcalConn]      = useState(false);
   const [now,           setNow]           = useState<Date | null>(null);
+  const [pushNotif,      setPushNotif]      = useState(true);
+  const [emailNotif,     setEmailNotif]     = useState(true);
+  const [meetingReminder,setMeetingReminder]= useState("15 minutes before");
+  const [reminderOpen,   setReminderOpen]   = useState(false);
+  const [reminderClosing,setReminderClosing]= useState(false);
+  const [language,       setLanguage]       = useState("English");
+  const [country,        setCountry]        = useState("United States of America");
+  const [dateFormat,     setDateFormat]     = useState("MM/DD/YYYY");
+  const [firstDayOfWeek, setFirstDayOfWeek] = useState("Sunday");
+  const [timeFormat,     setTimeFormat]     = useState("12-hour (2:30 PM)");
+  const [numberFormat,   setNumberFormat]   = useState("1,234.56");
+  const [currency,       setCurrency]       = useState("$ USD");
+  const [currencyPos,    setCurrencyPos]    = useState("Before amount ($100)");
+  const [locScrolled,    setLocScrolled]    = useState(false);
+  const [locAtBottom,    setLocAtBottom]    = useState(false);
   const [orgTab,           setOrgTab]           = useState<OrgTab>("Organizations");
   const [selectedOrg,     setSelectedOrg]      = useState<string>("intempt-ext");
   const [selectedProject, setSelectedProject]  = useState<string>("stockinvest-project");
@@ -292,11 +307,11 @@ export default function SettingsScreen() {
           <Card>
             <Row icon={LayoutGrid}  label="Workspace"         subtitle="Name, email sync, domains, Inbox AI" />
             <Divider />
-            <Row icon={Globe}       label="Language & Region"  subtitle="Date, time, currency formats" />
+            <Row icon={Globe}       label="Language & Region"  subtitle="Date, time, currency formats" onClick={() => openSheet("locale")} />
             <Divider />
             <Row icon={Moon}        label="Appearance"         value={appearance}    onClick={() => openSheet("appearance")} />
             <Divider />
-            <Row icon={Bell}        label="Notifications"      subtitle="Push, email, meeting reminders" />
+            <Row icon={Bell}        label="Notifications"      subtitle="Push, email, meeting reminders" onClick={() => openSheet("notifications")} />
             <Divider />
             <Row icon={BarChart2}   label="Reporting Period"   value={reportPeriod}  onClick={() => openSheet("reporting")} />
           </Card>
@@ -304,13 +319,7 @@ export default function SettingsScreen() {
           {/* Permissions */}
           <SectionLabel title="Permissions" />
           <Card>
-            <Row icon={Camera}    label="Camera"        subtitle="Required for taking photos"      notSet />
-            <Divider />
-            <Row icon={Mic}       label="Microphone"    subtitle="Required for meeting recordings" notSet />
-            <Divider />
-            <Row icon={ImageIcon} label="Photo Library" subtitle="Required for uploading images"   notSet />
-            <Divider />
-            <Row icon={Bell}      label="Notifications" subtitle="Alerts and reminders"            notSet />
+            <Row icon={Shield} label="Permissions" subtitle="Camera, microphone, photos & notifications" onClick={() => openSheet("permissions")} />
           </Card>
 
           {/* Brand & AI */}
@@ -367,12 +376,386 @@ export default function SettingsScreen() {
         />
       </div>
 
+      {/* ── Locale sheet ─────────────────────────────────────────────────── */}
+      {sheet === "locale" && (
+        <BottomSheet closing={sheetClosing} onClose={() => closeSheet()}>
+          <div className="px-5 pt-3 pb-2">
+            <p className="text-lg font-bold text-foreground">Language &amp; Region</p>
+          </div>
+
+          {/* Scrollable body */}
+          <div className="relative">
+            <div
+              className="overflow-y-auto scrollbar-hide"
+              style={{ maxHeight: 520 }}
+              onScroll={(e) => {
+                const el = e.currentTarget;
+                setLocScrolled(el.scrollTop > 8);
+                setLocAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
+              }}
+            >
+              <div className="px-5 pb-6 flex flex-col gap-5">
+
+                {/* LOCALE */}
+                <p className="text-[10px] font-bold uppercase tracking-widest -mb-2" style={{ color: "var(--muted-foreground)" }}>Locale</p>
+
+                {/* Language */}
+                <div>
+                  <p className="text-[13px] font-semibold text-foreground mb-1.5">Language</p>
+                  <div className="relative">
+                    <select
+                      className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none appearance-none"
+                      style={{ background: "var(--page)", border: "1px solid var(--border)" }}
+                      value={language}
+                      onChange={(e) => setLanguage(e.target.value)}
+                    >
+                      {["English", "Spanish", "French", "German", "Portuguese", "Japanese", "Chinese"].map((l) => (
+                        <option key={l} value={l}>{l === "English" ? "🇬🇧  English" : l}</option>
+                      ))}
+                    </select>
+                    <ChevronDown size={14} strokeWidth={1.75} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Country / Region */}
+                <div>
+                  <p className="text-[13px] font-semibold text-foreground mb-1.5">Country / Region</p>
+                  <div className="relative">
+                    <select
+                      className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none appearance-none"
+                      style={{ background: "var(--page)", border: "1px solid var(--border)" }}
+                      value={country}
+                      onChange={(e) => setCountry(e.target.value)}
+                    >
+                      {["United States of America", "United Kingdom", "Canada", "Australia", "Germany", "France", "India", "Japan"].map((c) => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                    <ChevronDown size={14} strokeWidth={1.75} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* DATE & TIME */}
+                <p className="text-[10px] font-bold uppercase tracking-widest -mb-2" style={{ color: "var(--muted-foreground)" }}>Date &amp; Time</p>
+
+                {/* Date Format */}
+                <div>
+                  <p className="text-[13px] font-semibold text-foreground mb-1.5">Date Format</p>
+                  <div className="relative">
+                    <select
+                      className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none appearance-none"
+                      style={{ background: "var(--page)", border: "1px solid var(--border)" }}
+                      value={dateFormat}
+                      onChange={(e) => setDateFormat(e.target.value)}
+                    >
+                      {["MM/DD/YYYY", "DD/MM/YYYY", "YYYY-MM-DD", "DD.MM.YYYY", "MMM D, YYYY"].map((f) => (
+                        <option key={f} value={f}>{f}</option>
+                      ))}
+                    </select>
+                    <ChevronDown size={14} strokeWidth={1.75} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* First Day of Week */}
+                <div>
+                  <p className="text-[13px] font-semibold text-foreground mb-1.5">First Day of Week</p>
+                  <div className="relative">
+                    <select
+                      className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none appearance-none"
+                      style={{ background: "var(--page)", border: "1px solid var(--border)" }}
+                      value={firstDayOfWeek}
+                      onChange={(e) => setFirstDayOfWeek(e.target.value)}
+                    >
+                      {["Sunday", "Monday", "Saturday"].map((d) => (
+                        <option key={d} value={d}>{d}</option>
+                      ))}
+                    </select>
+                    <ChevronDown size={14} strokeWidth={1.75} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Time Format */}
+                <div>
+                  <p className="text-[13px] font-semibold text-foreground mb-1.5">Time Format</p>
+                  <div className="relative">
+                    <select
+                      className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none appearance-none"
+                      style={{ background: "var(--page)", border: "1px solid var(--border)" }}
+                      value={timeFormat}
+                      onChange={(e) => setTimeFormat(e.target.value)}
+                    >
+                      {["12-hour (2:30 PM)", "24-hour (14:30)"].map((t) => (
+                        <option key={t} value={t}>{t}</option>
+                      ))}
+                    </select>
+                    <ChevronDown size={14} strokeWidth={1.75} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* NUMBERS & CURRENCY */}
+                <p className="text-[10px] font-bold uppercase tracking-widest -mb-2" style={{ color: "var(--muted-foreground)" }}>Numbers &amp; Currency</p>
+
+                {/* Number Format */}
+                <div>
+                  <p className="text-[13px] font-semibold text-foreground mb-1.5">Number Format</p>
+                  <div className="relative">
+                    <select
+                      className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none appearance-none"
+                      style={{ background: "var(--page)", border: "1px solid var(--border)" }}
+                      value={numberFormat}
+                      onChange={(e) => setNumberFormat(e.target.value)}
+                    >
+                      {["1,234.56", "1.234,56", "1 234,56", "1234.56"].map((f) => (
+                        <option key={f} value={f}>{f}</option>
+                      ))}
+                    </select>
+                    <ChevronDown size={14} strokeWidth={1.75} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Currency */}
+                <div>
+                  <p className="text-[13px] font-semibold text-foreground mb-1.5">Currency</p>
+                  <div className="relative">
+                    <select
+                      className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none appearance-none"
+                      style={{ background: "var(--page)", border: "1px solid var(--border)" }}
+                      value={currency}
+                      onChange={(e) => setCurrency(e.target.value)}
+                    >
+                      {["$ USD", "€ EUR", "£ GBP", "¥ JPY", "₹ INR", "C$ CAD", "A$ AUD"].map((c) => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                    <ChevronDown size={14} strokeWidth={1.75} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Currency Position */}
+                <div>
+                  <p className="text-[13px] font-semibold text-foreground mb-1.5">Currency Position</p>
+                  <div className="relative">
+                    <select
+                      className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none appearance-none"
+                      style={{ background: "var(--page)", border: "1px solid var(--border)" }}
+                      value={currencyPos}
+                      onChange={(e) => setCurrencyPos(e.target.value)}
+                    >
+                      {["Before amount ($100)", "After amount (100$)"].map((p) => (
+                        <option key={p} value={p}>{p}</option>
+                      ))}
+                    </select>
+                    <ChevronDown size={14} strokeWidth={1.75} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            {/* Top fade */}
+            <div className="absolute top-0 left-0 right-0 pointer-events-none transition-opacity duration-300"
+              style={{ height: 40, opacity: locScrolled ? 1 : 0, background: "linear-gradient(to bottom, var(--raised) 0%, transparent 100%)" }} />
+            {/* Bottom fade */}
+            <div className="absolute bottom-0 left-0 right-0 pointer-events-none transition-opacity duration-300"
+              style={{ height: 56, opacity: locScrolled ? 0 : locAtBottom ? 0 : 1, background: "linear-gradient(to top, var(--raised) 20%, transparent 100%)" }} />
+          </div>
+
+          {/* Save button */}
+          <div className="px-5 pt-2 pb-8">
+            <button
+              className="w-full py-3 rounded-2xl text-[14px] font-semibold text-white"
+              style={{ background: "#1d4ed8" }}
+              onClick={() => closeSheet()}
+            >
+              Save
+            </button>
+          </div>
+        </BottomSheet>
+      )}
+
+      {/* ── Notifications sheet ──────────────────────────────────────────── */}
+      {sheet === "notifications" && (
+        <BottomSheet closing={sheetClosing} onClose={() => closeSheet()}>
+          <div className="px-5 pt-3 pb-2">
+            <p className="text-lg font-bold text-foreground">Notifications</p>
+          </div>
+          <div className="px-5 pb-8 flex flex-col gap-2">
+
+            {/* NOTIFICATIONS section label */}
+            <p className="text-[10px] font-bold uppercase tracking-widest px-1 pt-2 pb-1" style={{ color: "var(--muted-foreground)" }}>
+              Notifications
+            </p>
+
+            {/* Push Notifications */}
+            <div className="flex items-center justify-between px-4 py-4 rounded-2xl" style={{ background: "var(--page)", border: "1px solid var(--border)" }}>
+              <div className="flex-1 min-w-0 pr-4">
+                <p className="text-[14px] font-semibold text-foreground">Push Notifications</p>
+                <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>Receive notifications on your device</p>
+              </div>
+              <button
+                onClick={() => setPushNotif(v => !v)}
+                className="shrink-0 relative rounded-full transition-all duration-300"
+                style={{
+                  width: 51, height: 31,
+                  background: pushNotif ? "#22c55e" : "var(--border)",
+                  transition: "background 0.25s ease",
+                }}
+              >
+                <span
+                  className="absolute top-0.75 rounded-full bg-white"
+                  style={{
+                    width: 25, height: 25,
+                    left: pushNotif ? 23 : 3,
+                    transition: "left 0.25s cubic-bezier(0.34,1.56,0.64,1)",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.18)",
+                  }}
+                />
+              </button>
+            </div>
+
+            {/* Email Notifications */}
+            <div className="flex items-center justify-between px-4 py-4 rounded-2xl" style={{ background: "var(--page)", border: "1px solid var(--border)" }}>
+              <div className="flex-1 min-w-0 pr-4">
+                <p className="text-[14px] font-semibold text-foreground">Email Notifications</p>
+                <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>Get updates via email</p>
+              </div>
+              <button
+                onClick={() => setEmailNotif(v => !v)}
+                className="shrink-0 relative rounded-full"
+                style={{
+                  width: 51, height: 31,
+                  background: emailNotif ? "#22c55e" : "var(--border)",
+                  transition: "background 0.25s ease",
+                }}
+              >
+                <span
+                  className="absolute top-0.75 rounded-full bg-white"
+                  style={{
+                    width: 25, height: 25,
+                    left: emailNotif ? 23 : 3,
+                    transition: "left 0.25s cubic-bezier(0.34,1.56,0.64,1)",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.18)",
+                  }}
+                />
+              </button>
+            </div>
+
+            {/* CALENDAR MEETINGS section label */}
+            <p className="text-[10px] font-bold uppercase tracking-widest px-1 pt-3 pb-1" style={{ color: "var(--muted-foreground)" }}>
+              Calendar Meetings
+            </p>
+
+            {/* Meeting reminder */}
+            <div className="px-4 py-4 rounded-2xl relative" style={{ background: "var(--page)", border: "1px solid var(--border)" }}>
+              <div className="flex items-center justify-between">
+                <div className="flex-1 min-w-0 pr-3">
+                  <p className="text-[14px] font-semibold text-foreground">Meeting reminder</p>
+                  <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>Get notified before meetings start</p>
+                </div>
+                <button
+                  onClick={() => { setReminderClosing(false); setReminderOpen(v => !v); }}
+                  className="flex items-center gap-1.5 shrink-0"
+                  style={{ color: "#1d4ed8" }}
+                >
+                  <span className="text-[13px] font-semibold">{meetingReminder}</span>
+                  <ChevronDown size={13} strokeWidth={2} style={{ transition: "transform 0.25s ease", transform: reminderOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
+                </button>
+              </div>
+
+              {reminderOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setReminderOpen(false)} />
+                  <div
+                    className="absolute right-4 top-full mt-2 z-50 rounded-2xl overflow-hidden"
+                    style={{
+                      width: 190,
+                      background: "var(--raised)",
+                      border: "1px solid var(--border)",
+                      boxShadow: "0 12px 40px rgba(0,0,0,0.13)",
+                      transformOrigin: "top right",
+                      animation: reminderClosing
+                        ? "dropdown-out 0.22s cubic-bezier(0.4,0,1,1) forwards"
+                        : "dropdown-in 0.28s cubic-bezier(0.34,1.56,0.64,1)",
+                    }}
+                  >
+                    {["5 minutes before", "10 minutes before", "15 minutes before", "30 minutes before", "1 hour before"].map((opt, i) => {
+                      const sel = meetingReminder === opt;
+                      return (
+                        <button
+                          key={opt}
+                          onClick={() => { setMeetingReminder(opt); setReminderOpen(false); }}
+                          className="flex items-center justify-between w-full px-4 py-2.5 text-left"
+                          style={{
+                            background: sel ? "rgba(59,130,246,0.07)" : "transparent",
+                            animation: "tab-in 0.2s ease-out both",
+                            animationDelay: `${i * 24}ms`,
+                          }}
+                          onMouseEnter={(e) => { if (!sel) e.currentTarget.style.background = "var(--secondary)"; }}
+                          onMouseLeave={(e) => { if (!sel) e.currentTarget.style.background = sel ? "rgba(59,130,246,0.07)" : "transparent"; }}
+                        >
+                          <span className="text-[13px] font-medium" style={{ color: sel ? "#1d4ed8" : "var(--foreground)" }}>{opt}</span>
+                          {sel && <Check size={13} strokeWidth={2} style={{ color: "#1d4ed8" }} />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </div>
+
+          </div>
+        </BottomSheet>
+      )}
+
+      {/* ── Permissions sheet ────────────────────────────────────────────── */}
+      {sheet === "permissions" && (
+        <BottomSheet closing={sheetClosing} onClose={() => closeSheet()}>
+          <div className="px-5 pt-3 pb-2">
+            <p className="text-lg font-bold text-foreground">Permissions</p>
+          </div>
+          <div className="px-5 pb-8 flex flex-col gap-2">
+            {[
+              { icon: Camera,    label: "Camera",            subtitle: "Required for taking photos",       status: "Allowed"  },
+              { icon: Mic,       label: "Microphone",        subtitle: "Required for meeting recordings",  status: "Allowed"  },
+              { icon: ImageIcon, label: "Photo Library",     subtitle: "Required for uploading images",    status: "Denied"   },
+              { icon: Bell,      label: "App Notifications", subtitle: "Alerts and reminders",             status: "Not Set"  },
+            ].map(({ icon: Icon, label, subtitle, status }) => {
+              const statusStyle =
+                status === "Allowed" ? { color: "#16a34a", bg: "rgba(22,163,74,0.1)" } :
+                status === "Denied"  ? { color: "#dc2626", bg: "rgba(220,38,38,0.1)" } :
+                                       { color: "#f59e0b", bg: "rgba(245,158,11,0.1)" };
+              return (
+                <div key={label} className="flex items-center gap-4 px-4 py-3.5 rounded-2xl" style={{ background: "var(--page)", border: "1px solid var(--border)" }}>
+                  <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--secondary)" }}>
+                    <Icon size={17} strokeWidth={1.8} style={{ color: "var(--muted-foreground)" }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[14px] font-semibold text-foreground">{label}</p>
+                    <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>{subtitle}</p>
+                  </div>
+                  <span
+                    className="text-[11px] font-semibold shrink-0 px-2.5 py-1 rounded-full"
+                    style={{ color: statusStyle.color, background: statusStyle.bg }}
+                  >
+                    {status}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </BottomSheet>
+      )}
+
       {/* ── Org / Project switcher sheet ─────────────────────────────────── */}
       {sheet === "orgSwitch" && (() => {
         const activeOrg = ORGS.find((o) => o.id === selectedOrg) ?? ORGS[2];
         const projects  = activeOrg.projects;
         return (
           <BottomSheet closing={sheetClosing} onClose={() => closeSheet()}>
+            <div className="px-5 pt-3 pb-2">
+              <p className="text-lg font-bold text-foreground">Switch Workspace</p>
+            </div>
+
             {/* Tab switcher — top */}
             <div className="px-3 pb-3 pt-1">
               <div className="flex p-1 rounded-[14px]" style={{ background: "var(--secondary)" }}>
@@ -480,13 +863,8 @@ export default function SettingsScreen() {
       {/* ── Profile sheet ────────────────────────────────────────────────── */}
       {sheet === "profile" && (
         <BottomSheet closing={sheetClosing} onClose={() => closeSheet()}>
-          {/* Header */}
-          <div className="flex items-center justify-between px-5 pt-2 pb-3">
-            <button onClick={() => closeSheet()}>
-              <X size={18} strokeWidth={1.75} className="text-muted-foreground" />
-            </button>
-            <p className="text-[15px] font-bold text-foreground">Profile</p>
-            <div className="w-5" />
+          <div className="px-5 pt-3 pb-2">
+            <p className="text-lg font-bold text-foreground">Profile</p>
           </div>
 
           {/* Scrollable body */}
@@ -701,10 +1079,11 @@ export default function SettingsScreen() {
               {/* Gmail */}
               <div className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl"
                 style={{ background: "var(--page)", border: "1px solid var(--border)" }}>
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-white text-sm font-bold"
-                  style={{ background: "linear-gradient(135deg,#ea4335,#fbbc05 50%,#34a853)" }}>
-                  <Mail size={16} strokeWidth={1.75} className="text-white" />
-                </div>
+                <img
+                  src="https://cdn.brandfetch.io/gmail.com/icon"
+                  alt="Gmail"
+                  className="w-9 h-9 rounded-xl object-cover shrink-0"
+                />
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-foreground">Gmail</p>
                   <p className="text-xs" style={{ color: gmailConn ? "#15803d" : "var(--muted-foreground)" }}>
@@ -726,10 +1105,11 @@ export default function SettingsScreen() {
               {/* Google Calendar */}
               <div className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl"
                 style={{ background: "var(--page)", border: "1px solid var(--border)" }}>
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-white text-xs font-bold"
-                  style={{ background: "#1d4ed8" }}>
-                  31
-                </div>
+                <img
+                  src="https://cdn.brandfetch.io/calendar.google.com/icon"
+                  alt="Google Calendar"
+                  className="w-9 h-9 rounded-xl object-cover shrink-0"
+                />
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-foreground">Google Calendar</p>
                   <p className="text-xs" style={{ color: gcalConn ? "#15803d" : "var(--muted-foreground)" }}>
