@@ -267,13 +267,20 @@ function LineChart({ data, color, id, valueLabel }: { data: number[]; color: str
       </svg>
 
       {/* Floating tooltip */}
-      {hoverIdx !== null && (
+      {hoverIdx !== null && (() => {
+        const nearLeft  = hoverIdx < 3;
+        const nearRight = hoverIdx > data.length - 4;
+        const anchorX   = nearLeft ? "0%" : nearRight ? "-100%" : "-50%";
+        // Caret alignment matches the anchor so it always points at the dot
+        const caretAlign = nearLeft ? "items-start" : nearRight ? "items-end" : "items-center";
+        const caretPad   = nearLeft ? "pl-3" : nearRight ? "pr-3" : "";
+        return (
         <div
-          className="absolute pointer-events-none z-10 flex flex-col items-center"
+          className={`absolute pointer-events-none z-10 flex flex-col ${caretAlign} ${caretPad}`}
           style={{
             left: `${tooltipPct}%`,
             top: pts[hoverIdx].y,
-            transform: "translate(-50%, calc(-100% - 6px))",
+            transform: `translate(${anchorX}, calc(-100% - 6px))`,
           }}
         >
           <div
@@ -290,14 +297,9 @@ function LineChart({ data, color, id, valueLabel }: { data: number[]; color: str
               {valueLabel}: {data[hoverIdx].toLocaleString()}
             </span>
           </div>
-          <div style={{
-            width: 0, height: 0, marginTop: 2,
-            borderLeft: "4px solid transparent",
-            borderRight: "4px solid transparent",
-            borderTop: `4px solid ${color}`,
-          }} />
         </div>
-      )}
+        );
+      })()}
 
       <div className="flex justify-between mt-2">
         {["May 10", "May 16", "May 22", "May 28", "Jun 9"].map((l) => (
