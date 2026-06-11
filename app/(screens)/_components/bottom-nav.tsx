@@ -23,9 +23,7 @@ const ALL_SWAPPABLE = [
 ];
 
 const SPRING = [
-  "left 0.52s cubic-bezier(0.34,1.4,0.64,1)",
-  "right 0.52s cubic-bezier(0.34,1.4,0.64,1)",
-  "bottom 0.44s cubic-bezier(0.34,1.4,0.64,1)",
+  "transform 0.55s cubic-bezier(0.22,1,0.36,1)",
   "box-shadow 0.3s ease",
 ].join(", ");
 
@@ -80,9 +78,14 @@ export default function BottomNav() {
       <div
         className="fixed z-30"
         style={{
-          bottom: scrolled ? 44 : 36,
-          left:   scrolled ? 60 : 12,
-          right:  scrolled ? 60 : 12,
+          bottom: 36,
+          left: 12,
+          right: 12,
+          transform: scrolled
+  ? "translateY(-8px) scale(0.95) translateZ(0)"
+  : "translateY(0px) scale(1) translateZ(0)",
+
+transformOrigin: "bottom center",
           borderRadius: 999,
           background: "var(--raised)",
           border: "1px solid var(--border)",
@@ -90,6 +93,9 @@ export default function BottomNav() {
             ? "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)"
             : "0 4px 16px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04)",
           transition: SPRING,
+          willChange: "transform",
+          backfaceVisibility: "hidden",
+          perspective: 1000,
         }}
       >
         <div className="flex items-center px-1 py-1">
@@ -116,8 +122,8 @@ export default function BottomNav() {
                     maxWidth: (active && !scrolled) ? "150px" : "0px",
                     opacity: (active && !scrolled) ? 1 : 0,
                     transition: (active && !scrolled)
-                      ? "max-width 0.45s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease-out 0.08s"
-                      : "max-width 0.3s cubic-bezier(0.4,0,0.6,1), opacity 0.15s ease-in",
+                      ? "max-width 0.46s cubic-bezier(0.34,1.3,0.64,1), opacity 0.28s ease-out 0.08s"
+                      : "max-width 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.14s ease-in",
                   }}
                 >
                   {label}
@@ -127,7 +133,7 @@ export default function BottomNav() {
 
             const wrapStyle = {
               flex: (active && !scrolled) ? 3 : 1,
-              transition: "flex 0.45s cubic-bezier(0.34,1.56,0.64,1)",
+              transition: "flex 0.42s cubic-bezier(0.4,0,0.2,1)",
             };
 
             return isMore ? (

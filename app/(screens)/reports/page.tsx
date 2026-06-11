@@ -167,7 +167,7 @@ export default function ReportsScreen() {
         <div
           className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-10 transition-opacity duration-300"
           style={{
-            opacity: atBottom ? 0 : 1,
+            opacity: scrolled ? 0 : atBottom ? 0 : 1,
             background: "linear-gradient(to top, var(--page) 0%, var(--page) 15%, transparent 100%)",
           }}
         />

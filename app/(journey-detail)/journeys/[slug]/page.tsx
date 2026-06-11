@@ -35,6 +35,7 @@ export default function JourneyDetailPage({ params }: { params: Promise<{ slug: 
   const [activeSheet,    setActiveSheet]    = useState<null | "messages" | "funnels">(null);
   const [sheetClosing,   setSheetClosing]   = useState(false);
   const [atBottom,       setAtBottom]       = useState(false);
+  const [scrolledDown,   setScrolledDown]   = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const journey = JOURNEYS.find((j) => encodeURIComponent(j.name) === slug);
@@ -111,6 +112,7 @@ export default function JourneyDetailPage({ params }: { params: Promise<{ slug: 
           className="absolute inset-0 overflow-y-auto scrollbar-hide"
           onScroll={(e) => {
             const el = e.currentTarget;
+            setScrolledDown(el.scrollTop > 8);
             setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
           }}
         >
@@ -318,11 +320,20 @@ export default function JourneyDetailPage({ params }: { params: Promise<{ slug: 
           )}
         </div>
 
+        {/* Top fade */}
+        <div
+          className="absolute top-0 left-0 right-0 h-8 pointer-events-none z-10 transition-opacity duration-300"
+          style={{
+            opacity: scrolledDown ? 1 : 0,
+            background: "linear-gradient(to bottom, var(--page) 0%, transparent 100%)",
+          }}
+        />
+
         {/* Bottom fade */}
         <div
           className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none z-10 transition-opacity duration-300"
           style={{
-            opacity: atBottom ? 0 : 1,
+            opacity: scrolledDown ? 0 : atBottom ? 0 : 1,
             background: "linear-gradient(to top, var(--page) 0%, transparent 100%)",
           }}
         />

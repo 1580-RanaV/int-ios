@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Moon, Sun, Smartphone } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Moon, Sun, Smartphone, Loader2, CheckCircle2, CircleX, Check, X } from "lucide-react";
 
 const PHONE_W = 390;
 const PHONE_H = 844;
@@ -47,35 +47,66 @@ function HomeIndicator() {
   );
 }
 
+type NotifType = "success" | "error";
+
+const NOTIF = {
+  success: {
+    title: "Changes saved",
+    message: "Your journey settings have been updated successfully.",
+    color: "#16a34a",
+  },
+  error: {
+    title: "Something went wrong",
+    message: "Failed to save changes. Please try again.",
+    color: "#dc2626",
+  },
+};
+
 export default function PhoneShell({ children }: { children: React.ReactNode }) {
-  const [preview, setPreview] = useState(false);
-  const [dark,    setDark]    = useState(false);
-  const [scale,   setScale]   = useState(1);
+  const [preview,      setPreview]      = useState(false);
+  const [dark,         setDark]         = useState(false);
+  const [scale,        setScale]        = useState(1);
+  const [notifType,    setNotifType]    = useState<NotifType | null>(null);
+  const [notifLeaving, setNotifLeaving] = useState(false);
+  const [loadVisible,  setLoadVisible]  = useState(false);
+  const notifTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const CONTROLS_H = 56; // approximate height of the button row
-    const GAP        = 20; // gap between phone and controls
-    const V_PAD      = 24; // top + bottom padding combined
-
+    const CONTROLS_H = 56;
+    const GAP        = 20;
+    const V_PAD      = 24;
     const update = () => {
       const scaleH = (window.innerHeight - CONTROLS_H - GAP - V_PAD) / PHONE_H;
       const scaleW = (window.innerWidth  - 32) / PHONE_W;
       setScale(Math.min(1, scaleH, scaleW));
     };
-
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
 
+  const triggerNotif = (type: NotifType) => {
+    if (notifTimer.current) clearTimeout(notifTimer.current);
+    setNotifLeaving(false);
+    setNotifType(type);
+    notifTimer.current = setTimeout(() => {
+      setNotifLeaving(true);
+      setTimeout(() => setNotifType(null), 320);
+    }, 3000);
+  };
+
+  const toggleLoad = () => setLoadVisible((v) => !v);
+
+  const ctrlBase = "flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold transition-all";
+
+  const notif = notifType ? NOTIF[notifType] : null;
+
   return (
-    // h-screen + overflow-hidden ensures the page never scrolls
     <div
       className="h-screen overflow-hidden bg-[#e8e8ee] flex flex-col items-center justify-center"
       style={{ gap: 20, paddingBlock: 12 }}
     >
-      {/* Wrapper collapses to the phone's VISUAL height so controls
-          sit flush below regardless of scale factor */}
+      {/* Phone wrapper */}
       <div style={{ width: PHONE_W, height: Math.round(PHONE_H * scale) }}>
         <div
           className={`relative flex flex-col overflow-hidden${dark ? " dark" : ""}`}
@@ -96,35 +127,115 @@ export default function PhoneShell({ children }: { children: React.ReactNode }) 
           </div>
 
           {preview && <HomeIndicator />}
+
+          {/* ── In-app notification ───────────────────────────────── */}
+          {notif && (
+            <div
+              className="absolute left-3 right-3 z-100 pointer-events-none"
+              style={{
+                top: preview ? 68 : 16,
+                willChange: "transform, opacity",
+                animation: notifLeaving
+                  ? "notif-out 0.3s cubic-bezier(0.4,0,1,1) forwards"
+                  : "notif-in 0.56s cubic-bezier(0.34,1.56,0.64,1)",
+              }}
+            >
+              <div
+                className="rounded-[20px] flex items-center overflow-hidden"
+                style={{
+                  background: dark ? "#1c1d21" : "#ffffff",
+                  boxShadow: dark
+                    ? "0 1px 3px rgba(0,0,0,0.5), 0 6px 16px rgba(0,0,0,0.5), 0 20px 48px rgba(0,0,0,0.45), 0 48px 80px rgba(0,0,0,0.3)"
+                    : "0 1px 3px rgba(0,0,0,0.06), 0 6px 16px rgba(0,0,0,0.10), 0 20px 48px rgba(0,0,0,0.13), 0 48px 80px rgba(0,0,0,0.08)",
+                }}
+              >
+                {/* Full-height filled icon */}
+                <div
+                  className="self-stretch flex items-center justify-center"
+                  style={{
+                    width: 68,
+                    flexShrink: 0,
+                    background: notifType === "success" ? "#16a34a" : "#dc2626",
+                    willChange: "transform, opacity",
+                    animation: "icon-pop 0.52s cubic-bezier(0.34,1.56,0.64,1) 0.12s both",
+                  }}
+                >
+                  {notifType === "success"
+                    ? <Check size={28} strokeWidth={3.5} color="#ffffff" />
+                    : <X     size={26} strokeWidth={3.5} color="#ffffff" />
+                  }
+                </div>
+
+                {/* Text */}
+                <div className="flex-1 min-w-0 px-4 py-3.5">
+                  <p
+                    className="text-[14px] font-bold leading-snug"
+                    style={{ color: dark ? "#f7f8f8" : "#111113" }}
+                  >
+                    {notif.title}
+                  </p>
+                  <p
+                    className="text-[12px] mt-0.5 leading-relaxed"
+                    style={{ color: dark ? "#8a8f98" : "#62666d" }}
+                  >
+                    {notif.message}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── Loading overlay ───────────────────────────────────── */}
+          {loadVisible && (
+            <div
+              className="absolute inset-0 z-200 flex items-center justify-center"
+              style={{
+                background: dark ? "#0f1011" : "#f7f8f8",
+                animation: "fade-in 0.22s ease",
+              }}
+            >
+              <img
+                src="/logo.png"
+                alt="Loading"
+                className="animate-logo-pulse"
+                style={{ width: 80, height: 80, objectFit: "contain" }}
+              />
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Controls */}
+      {/* ── Controls ──────────────────────────────────────────────── */}
       <div className="flex items-center gap-3 shrink-0">
-        <button
-          onClick={() => setDark((d) => !d)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold transition-all"
-          style={{
-            background: dark ? "#222326" : "#ffffff",
-            color: dark ? "#f7f8f8" : "#222326",
-            border: `1px solid ${dark ? "#383b3f" : "#d8dae5"}`,
-          }}
-        >
+
+        <button onClick={() => setDark((d) => !d)} className={ctrlBase}
+          style={{ background: dark ? "#222326" : "#ffffff", color: dark ? "#f7f8f8" : "#222326", border: `1px solid ${dark ? "#383b3f" : "#d8dae5"}` }}>
           {dark ? <Moon size={14} /> : <Sun size={14} />}
           {dark ? "Dark" : "Light"}
         </button>
 
-        <button
-          onClick={() => setPreview((p) => !p)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold transition-all"
-          style={{
-            background: preview ? "#3b82f6" : "#ffffff",
-            color: preview ? "#ffffff" : "#222326",
-            border: `1px solid ${preview ? "#3b82f6" : "#d8dae5"}`,
-          }}
-        >
+        <button onClick={() => setPreview((p) => !p)} className={ctrlBase}
+          style={{ background: preview ? "#3b82f6" : "#ffffff", color: preview ? "#ffffff" : "#222326", border: `1px solid ${preview ? "#3b82f6" : "#d8dae5"}` }}>
           <Smartphone size={14} />
-          {preview ? "Exit preview" : "Preview"}
+          {preview ? "Exit" : "Preview"}
+        </button>
+
+        <button onClick={() => triggerNotif("success")} className={ctrlBase}
+          style={{ background: "#ffffff", color: "#16a34a", border: "1px solid #bbf7d0" }}>
+          <CheckCircle2 size={14} strokeWidth={2} />
+          Saved
+        </button>
+
+        <button onClick={() => triggerNotif("error")} className={ctrlBase}
+          style={{ background: "#ffffff", color: "#dc2626", border: "1px solid #fecaca" }}>
+          <CircleX size={14} strokeWidth={2} />
+          Error
+        </button>
+
+        <button onClick={toggleLoad} className={ctrlBase}
+          style={{ background: loadVisible ? "#222326" : "#ffffff", color: loadVisible ? "#f7f8f8" : "#222326", border: `1px solid ${loadVisible ? "#383b3f" : "#d8dae5"}` }}>
+          <Loader2 size={14} />
+          {loadVisible ? "Hide" : "Loader"}
         </button>
       </div>
     </div>

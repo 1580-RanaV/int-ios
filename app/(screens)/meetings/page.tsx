@@ -2,10 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNav } from "../_context/nav-context";
+import { useRouter } from "next/navigation";
 import {
   CalendarDays, Plus, Settings, Search,
   Video, ChevronRight, Users, Clock, Timer, Copy, Pencil, X, ChevronDown,
 } from "lucide-react";
+import { COMING_UP, PAST_MEETINGS, BOOKING_TYPES, STATUS_STYLE } from "./_data";
+import type { MeetingStatus, BookingType } from "./_data";
 
 type MeetingTab = "Meetings" | "Bookings";
 
@@ -95,8 +98,6 @@ function BottomSheet({ closing, onClose, children }: { closing: boolean; onClose
 }
 
 // ── Edit Booking Sheet ────────────────────────────────────────────────────────
-
-type BookingType = { name: string; duration: string; platform: string };
 
 function EditBookingSheet({
   booking, closing, onClose,
@@ -229,62 +230,6 @@ function EditBookingSheet({
   );
 }
 
-const COMING_UP = [
-  { month: "JUN", day: 10, name: "Product Sync", time: "7:00 PM",  countdown: "in 4 hours" },
-  { month: "JUN", day: 10, name: "R&D check-in", time: "8:00 PM",  countdown: "in 5 hours" },
-  { month: "JUN", day: 13, name: "Test Meeting", time: "12:15 PM", countdown: "in 3 days"  },
-];
-
-type MeetingStatus = "Completed" | "Canceled" | "Denied entry";
-
-const STATUS_STYLE: Record<MeetingStatus, { background: string; color: string }> = {
-  Completed:      { background: "rgba(16,185,129,0.1)",  color: "#15803d" },
-  Canceled:       { background: "rgba(244,63,94,0.1)",   color: "#be123c" },
-  "Denied entry": { background: "rgba(234,179,8,0.1)",   color: "#92400e" },
-};
-
-const PAST_MEETINGS: {
-  dateLabel: string;
-  items: { initial: string; name: string; host: string; date: string; time: string; duration: string; attendees: number; status?: MeetingStatus }[];
-}[] = [
-  {
-    dateLabel: "Jun 12",
-    items: [
-      { initial: "B", name: "Apex studio follow up", host: "Beso Gugushvili", date: "Jun 12", time: "4:00 PM",  duration: "30 min", attendees: 2, status: "Canceled"     },
-    ],
-  },
-  {
-    dateLabel: "Jun 10",
-    items: [
-      { initial: "B", name: "Test Meeting",           host: "Beso Gugushvili", date: "Jun 10", time: "12:00 PM", duration: "15 min", attendees: 3, status: "Completed"    },
-      { initial: "B", name: "Product Sync",           host: "Beso Gugushvili", date: "Jun 10", time: "10:00 AM", duration: "45 min", attendees: 5, status: "Completed"    },
-      { initial: "A", name: "Design Review",          host: "Alina Marsh",     date: "Jun 10", time: "9:00 AM",  duration: "30 min", attendees: 4, status: "Denied entry" },
-    ],
-  },
-  {
-    dateLabel: "Jun 7",
-    items: [
-      { initial: "R", name: "Weekly Standup",         host: "Rana V",          date: "Jun 7",  time: "9:30 AM",  duration: "20 min", attendees: 6, status: "Completed"    },
-      { initial: "B", name: "Onboarding Call",        host: "Beso Gugushvili", date: "Jun 7",  time: "2:00 PM",  duration: "60 min", attendees: 2, status: "Completed"    },
-    ],
-  },
-  {
-    dateLabel: "Jun 5",
-    items: [
-      { initial: "A", name: "Investor Update",        host: "Alina Marsh",     date: "Jun 5",  time: "3:00 PM",  duration: "45 min", attendees: 8, status: "Canceled"     },
-      { initial: "R", name: "Q2 Planning",            host: "Rana V",          date: "Jun 5",  time: "11:00 AM", duration: "90 min", attendees: 7, status: "Denied entry" },
-    ],
-  },
-];
-
-const BOOKING_TYPES = [
-  { name: "Test Meeting",   duration: "15 m", platform: "Google Meet" },
-  { name: "Onboarding",     duration: "60 m", platform: "Google Meet" },
-  { name: "Product Demo",   duration: "30 m", platform: "Google Meet" },
-  { name: "Product Query",  duration: "30 m", platform: "Google Meet" },
-  { name: "Discovery Call", duration: "30 m", platform: "Google Meet" },
-  { name: "test-meeting",   duration: "30 m", platform: "Google Meet" },
-];
 
 export default function MeetingsScreen() {
   const [tab, setTab] = useState<MeetingTab>("Meetings");
@@ -293,6 +238,7 @@ export default function MeetingsScreen() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [atBottom, setAtBottom] = useState(false);
   const [editingBooking, setEditingBooking] = useState<BookingType | null>(null);
+  const router = useRouter();
   const [editClosing,    setEditClosing]    = useState(false);
 
   const openEdit  = (b: BookingType) => { setEditClosing(false); setEditingBooking(b); };
@@ -458,15 +404,16 @@ export default function MeetingsScreen() {
 
                     <div className="flex flex-col gap-2.5">
                       {group.items.map((item, i) => (
-                        <div
+                        <button
                           key={item.name + i}
-                          className="flex items-center gap-3 rounded-2xl p-3.5"
+                          className="flex items-center gap-3 rounded-2xl p-3.5 w-full text-left"
                           style={{
                             background: "var(--raised)",
                             border: "1px solid var(--border)",
                             animation: "tab-in 0.2s ease-out both",
                             animationDelay: `${(gi * 4 + i) * 35}ms`,
                           }}
+                          onClick={() => item.slug && router.push(`/meetings/${item.slug}`)}
                         >
                           {/* Avatar */}
                           <div
@@ -515,7 +462,7 @@ export default function MeetingsScreen() {
                               )}
                             </div>
                           </div>
-                        </div>
+                        </button>
                       ))}
                     </div>
                   </div>
@@ -586,7 +533,7 @@ export default function MeetingsScreen() {
         <div
           className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-10 transition-opacity duration-300"
           style={{
-            opacity: atBottom ? 0 : 1,
+            opacity: scrolled ? 0 : atBottom ? 0 : 1,
             background: "linear-gradient(to top, var(--page) 0%, var(--page) 15%, transparent 100%)",
           }}
         />

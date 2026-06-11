@@ -2,51 +2,12 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNav } from "../_context/nav-context";
+import { useRouter } from "next/navigation";
 import { FlaskConical, Search, Settings, ChevronDown, Monitor } from "lucide-react";
-
-type Status = "Active" | "Stopped" | "Ready For Review" | "Draft" | "Completed";
-type Filter = "All" | "Active" | "Stopped" | "Completed";
-
-const STATUS_COLOR: Record<Status, string> = {
-  Active:           "#15803d",
-  Stopped:          "#be123c",
-  "Ready For Review": "#1d4ed8",
-  Draft:            "#4b5563",
-  Completed:        "#15803d",
-};
-
-const STATUS_BG: Record<Status, string> = {
-  Active:           "rgba(16,185,129,0.1)",
-  Stopped:          "rgba(244,63,94,0.1)",
-  "Ready For Review": "rgba(59,130,246,0.1)",
-  Draft:            "rgba(138,143,152,0.1)",
-  Completed:        "rgba(16,185,129,0.1)",
-};
-
-type Experience = {
-  name: string;
-  type: "Experiment" | "Personalization";
-  status: Status;
-  progress?: number;
-};
-
-const EXPERIENCES: Experience[] = [
-  { name: "TEZZT",          type: "Experiment",     status: "Stopped",          progress: 0  },
-  { name: "Untitled-1",     type: "Experiment",     status: "Ready For Review"               },
-  { name: "intempt.com",    type: "Experiment",     status: "Ready For Review"               },
-  { name: "Untitled-2",     type: "Experiment",     status: "Draft"                          },
-  { name: "Untitled-3",     type: "Experiment",     status: "Draft"                          },
-  { name: "Untitled-4",     type: "Personalization", status: "Draft"                         },
-  { name: "Untitled-5",     type: "Experiment",     status: "Draft"                          },
-  { name: "Untitled-6",     type: "Personalization", status: "Draft"                         },
-  { name: "Untitled-7",     type: "Experiment",     status: "Draft"                          },
-  { name: "Homepage Hero",  type: "Experiment",     status: "Active",           progress: 62 },
-  { name: "Pricing Page A/B", type: "Experiment",   status: "Active",           progress: 38 },
-  { name: "Onboard Flow V2", type: "Personalization", status: "Completed",      progress: 100},
-];
-
-const GROUP_ORDER: Status[] = ["Active", "Ready For Review", "Stopped", "Completed", "Draft"];
-const FILTERS: Filter[] = ["All", "Active", "Stopped", "Completed"];
+import {
+  EXPERIENCES, GROUP_ORDER, FILTERS, STATUS_COLOR, STATUS_BG,
+  type Status, type Filter,
+} from "./_data";
 
 export default function ExperiencesScreen() {
   const [query,       setQuery]       = useState("");
@@ -56,6 +17,7 @@ export default function ExperiencesScreen() {
   const { scrolled, setScrolled } = useNav();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [atBottom, setAtBottom] = useState(false);
+  const router = useRouter();
 
   useEffect(() => { setScrolled(false); }, []);
 
@@ -269,15 +231,16 @@ export default function ExperiencesScreen() {
 
               <div className="flex flex-col gap-2.5">
                 {items.map((exp, i) => (
-                  <div
+                  <button
                     key={exp.name}
-                    className="rounded-2xl p-4"
+                    className="rounded-2xl p-4 w-full text-left"
                     style={{
                       background: "var(--raised)",
                       border: "1px solid var(--border)",
                       animation: "tab-in 0.25s ease-out both",
                       animationDelay: `${i * 40}ms`,
                     }}
+                    onClick={() => router.push(`/experiences/${encodeURIComponent(exp.name)}`)}
                   >
                     <p className="text-base font-bold text-foreground leading-snug mb-2.5">{exp.name}</p>
 
@@ -320,7 +283,7 @@ export default function ExperiencesScreen() {
                         </div>
                       </div>
                     )}
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
@@ -337,7 +300,7 @@ export default function ExperiencesScreen() {
         <div
           className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-10 transition-opacity duration-300"
           style={{
-            opacity: atBottom ? 0 : 1,
+            opacity: scrolled ? 0 : atBottom ? 0 : 1,
             background: "linear-gradient(to top, var(--page) 0%, var(--page) 15%, transparent 100%)",
           }}
         />

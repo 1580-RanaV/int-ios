@@ -6,12 +6,27 @@ import {
   ChevronRight, LayoutGrid, Globe, Moon, Bell, BarChart2,
   Camera, Mic, ImageIcon, Sparkles, CalendarDays, Link2,
   Star, MessageSquare, HelpCircle, Shield, LogOut, UserCircle,
-  Settings, Sun, SunMoon, Check, Smartphone, Trash2, Mail,
+  Settings, Sun, SunMoon, Check, Smartphone, Trash2, Mail, Phone, X,
+  Building2, FolderKanban,
 } from "lucide-react";
+
+// ─── Org / project data ──────────────────────────────────────────────────────
+
+type OrgProject = { id: string; name: string };
+type Org = { id: string; name: string; color: string; initial: string; projects: OrgProject[] };
+
+const ORGS: Org[] = [
+  { id: "fieldsusa",   name: "fieldsusa",                  color: "#111827", initial: "F", projects: [] },
+  { id: "intempt-int", name: "Intempt Internal Use Only",  color: "#9333ea", initial: "I", projects: [] },
+  { id: "intempt-ext", name: "Intempt External Use",       color: "#7c3aed", initial: "I", projects: [{ id: "stockinvest-project", name: "stockinvest-project" }] },
+  { id: "stockinvest", name: "StockInvest.us",             color: "#6d28d9", initial: "S", projects: [] },
+  { id: "intempt-tec", name: "Intempt Technologies",       color: "#be185d", initial: "I", projects: [] },
+];
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
-type Sheet = "appearance" | "reporting" | "connections" | "account" | null;
+type Sheet = "appearance" | "reporting" | "connections" | "account" | "profile" | "orgSwitch" | null;
+type OrgTab = "Organizations" | "Projects";
 
 function formatDate(d: Date) {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -153,6 +168,14 @@ export default function SettingsScreen() {
   const [gmailConn,     setGmailConn]     = useState(true);
   const [gcalConn,      setGcalConn]      = useState(false);
   const [now,           setNow]           = useState<Date | null>(null);
+  const [orgTab,           setOrgTab]           = useState<OrgTab>("Organizations");
+  const [selectedOrg,     setSelectedOrg]      = useState<string>("intempt-ext");
+  const [selectedProject, setSelectedProject]  = useState<string>("stockinvest-project");
+  const [profileName,      setProfileName]      = useState("Rana V");
+  const [profileDisplay,   setProfileDisplay]   = useState("");
+  const [profilePhone,     setProfilePhone]     = useState("+1 (555) 123-4567");
+  const [profileScrolled,  setProfileScrolled]  = useState(false);
+  const [profileAtBottom,  setProfileAtBottom]  = useState(false);
 
   useEffect(() => { setScrolled(false); setNow(new Date()); }, []);
 
@@ -204,32 +227,65 @@ export default function SettingsScreen() {
             setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
           }}
         >
-          {/* User */}
-          <div className="pt-2">
-            <Card>
-              <Row icon={UserCircle} label="rana" subtitle="rana@intempt.com" />
-            </Card>
+          {/* User profile — Instagram-style */}
+          <div className="pt-3 pb-1">
+
+            {/* Avatar + name row */}
+            <div className="flex items-center gap-4 mb-3">
+              <img
+                src="/dp.png"
+                alt="Rana V"
+                className="w-18 h-18 rounded-full object-cover shrink-0"
+                style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.15)" }}
+              />
+              <div className="flex-1 min-w-0">
+                <p className="text-[18px] font-bold text-foreground leading-tight">Rana V</p>
+                <p className="text-[13px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>rana@intempt.com</p>
+              </div>
+            </div>
+
+            {/* Edit Profile button — full width below */}
+            <button
+              className="w-full py-2.5 rounded-2xl text-[13px] font-semibold transition-all duration-150"
+              style={{ background: "var(--raised)", border: "1px solid var(--border)", color: "var(--foreground)" }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--secondary)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "var(--raised)"; }}
+              onClick={() => openSheet("profile")}
+            >
+              Edit Profile
+            </button>
           </div>
 
           {/* Org */}
-          <div className="mt-2">
-            <Card>
-              <button
-                className="flex items-center gap-3.5 w-full px-4 text-left"
-                style={{ paddingTop: 13, paddingBottom: 13 }}
-              >
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-white text-sm font-bold"
-                  style={{ background: "#1d4ed8" }}>
-                  S
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground leading-snug">StockInvest.us</p>
-                  <p className="text-xs mt-0.5" style={{ color: "var(--muted-foreground)" }}>stockinvest-project</p>
-                </div>
-                <ChevronRight size={15} strokeWidth={1.75} style={{ color: "var(--muted-foreground)" }} />
-              </button>
-            </Card>
-          </div>
+          {(() => {
+            const activeOrg = ORGS.find((o) => o.id === selectedOrg) ?? ORGS[2];
+            const activeProject = activeOrg.projects.find((p) => p.id === selectedProject);
+            return (
+              <div className="mt-2">
+                <Card>
+                  <button
+                    className="flex items-center gap-3.5 w-full px-4 text-left"
+                    style={{ paddingTop: 13, paddingBottom: 13 }}
+                    onClick={() => { setOrgTab("Organizations"); openSheet("orgSwitch"); }}
+                  >
+                    <div
+                      className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-white text-sm font-bold"
+                      style={{ background: activeOrg.color }}
+                    >
+                      {activeOrg.initial}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground leading-snug truncate">{activeOrg.name}</p>
+                      <p className="text-xs mt-0.5 truncate" style={{ color: "var(--muted-foreground)" }}>
+                        {activeProject?.name ?? `${activeOrg.projects.length} project${activeOrg.projects.length !== 1 ? "s" : ""}`}
+                      </p>
+                    </div>
+                    <ChevronRight size={15} strokeWidth={1.75} style={{ color: "var(--muted-foreground)" }} />
+                  </button>
+                </Card>
+              </div>
+            );
+          })()}
 
           {/* General */}
           <SectionLabel title="General" />
@@ -305,11 +361,256 @@ export default function SettingsScreen() {
         <div
           className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-10 transition-opacity duration-300"
           style={{
-            opacity: atBottom ? 0 : 1,
+            opacity: scrolled ? 0 : atBottom ? 0 : 1,
             background: "linear-gradient(to top, var(--page) 0%, var(--page) 15%, transparent 100%)",
           }}
         />
       </div>
+
+      {/* ── Org / Project switcher sheet ─────────────────────────────────── */}
+      {sheet === "orgSwitch" && (() => {
+        const activeOrg = ORGS.find((o) => o.id === selectedOrg) ?? ORGS[2];
+        const projects  = activeOrg.projects;
+        return (
+          <BottomSheet closing={sheetClosing} onClose={() => closeSheet()}>
+            {/* Tab switcher — top */}
+            <div className="px-3 pb-3 pt-1">
+              <div className="flex p-1 rounded-[14px]" style={{ background: "var(--secondary)" }}>
+                {(["Organizations", "Projects"] as OrgTab[]).map((tab) => {
+                  const isActive = orgTab === tab;
+                  return (
+                    <button
+                      key={tab}
+                      onClick={() => setOrgTab(tab)}
+                      className="flex-1 flex items-center justify-center gap-1.5 h-9 rounded-[10px] text-[13px] font-semibold transition-all duration-200"
+                      style={{
+                        background: isActive ? "var(--raised)" : "transparent",
+                        color: isActive ? "#1d4ed8" : "var(--muted-foreground)",
+                        boxShadow: isActive ? "0 1px 4px rgba(0,0,0,0.08)" : "none",
+                      }}
+                    >
+                      {tab === "Organizations"
+                        ? <Building2 size={14} strokeWidth={1.75} />
+                        : <FolderKanban size={14} strokeWidth={1.75} />
+                      }
+                      {tab}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* List */}
+            <div className="overflow-y-auto scrollbar-hide" style={{ maxHeight: 420 }}>
+              {orgTab === "Organizations" ? (
+                <div className="px-3 pt-1 pb-3 flex flex-col gap-0.5">
+                  {ORGS.map((org) => {
+                    const isSelected = org.id === selectedOrg;
+                    return (
+                      <button
+                        key={org.id}
+                        className="flex items-center gap-3.5 w-full px-3.5 py-3 rounded-2xl text-left transition-colors duration-150"
+                        style={{ background: isSelected ? "rgba(59,130,246,0.07)" : "transparent" }}
+                        onMouseEnter={(e) => { if (!isSelected) e.currentTarget.style.background = "var(--secondary)"; }}
+                        onMouseLeave={(e) => { if (!isSelected) e.currentTarget.style.background = "transparent"; }}
+                        onClick={() => {
+                          setSelectedOrg(org.id);
+                          setSelectedProject(org.projects[0]?.id ?? "");
+                          setTimeout(() => setOrgTab("Projects"), 180);
+                        }}
+                      >
+                        <div
+                          className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-white text-[15px] font-bold"
+                          style={{ background: org.color }}
+                        >
+                          {org.initial}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[14px] font-semibold text-foreground leading-snug">{org.name}</p>
+                          <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>
+                            {org.projects.length} project{org.projects.length !== 1 ? "s" : ""}
+                          </p>
+                        </div>
+                        {isSelected && <Check size={16} strokeWidth={2.5} style={{ color: "#1d4ed8", flexShrink: 0 }} />}
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="px-3 pt-1 pb-3 flex flex-col gap-0.5">
+                  {projects.length === 0 ? (
+                    <div className="py-10 flex flex-col items-center gap-2">
+                      <FolderKanban size={28} strokeWidth={1.5} className="text-muted-foreground opacity-40" />
+                      <p className="text-[13px] text-muted-foreground">No projects in this org</p>
+                    </div>
+                  ) : projects.map((proj) => {
+                    const isSelected = proj.id === selectedProject;
+                    return (
+                      <button
+                        key={proj.id}
+                        className="flex items-center gap-3.5 w-full px-3.5 py-3 rounded-2xl text-left transition-colors duration-150"
+                        style={{ background: isSelected ? "rgba(59,130,246,0.07)" : "transparent" }}
+                        onMouseEnter={(e) => { if (!isSelected) e.currentTarget.style.background = "var(--secondary)"; }}
+                        onMouseLeave={(e) => { if (!isSelected) e.currentTarget.style.background = "transparent"; }}
+                        onClick={() => { setSelectedProject(proj.id); closeSheet(); }}
+                      >
+                        <div
+                          className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+                          style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}
+                        >
+                          <FolderKanban size={16} strokeWidth={1.75} style={{ color: "var(--muted-foreground)" }} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[14px] font-semibold text-foreground leading-snug">{proj.name}</p>
+                          <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>{activeOrg.name}</p>
+                        </div>
+                        {isSelected && <Check size={16} strokeWidth={2.5} style={{ color: "#1d4ed8", flexShrink: 0 }} />}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            <div className="pb-8" />
+          </BottomSheet>
+        );
+      })()}
+
+      {/* ── Profile sheet ────────────────────────────────────────────────── */}
+      {sheet === "profile" && (
+        <BottomSheet closing={sheetClosing} onClose={() => closeSheet()}>
+          {/* Header */}
+          <div className="flex items-center justify-between px-5 pt-2 pb-3">
+            <button onClick={() => closeSheet()}>
+              <X size={18} strokeWidth={1.75} className="text-muted-foreground" />
+            </button>
+            <p className="text-[15px] font-bold text-foreground">Profile</p>
+            <div className="w-5" />
+          </div>
+
+          {/* Scrollable body */}
+          <div className="relative">
+          <div
+            className="overflow-y-auto scrollbar-hide"
+            style={{ maxHeight: 520 }}
+            onScroll={(e) => {
+              const el = e.currentTarget;
+              setProfileScrolled(el.scrollTop > 8);
+              setProfileAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
+            }}
+          >
+            <div className="px-5 pb-6 flex flex-col gap-5">
+
+              {/* Avatar + upload */}
+              <div className="flex flex-col items-center gap-3 pt-1">
+                <img
+                  src="/dp.png"
+                  alt="Rana V"
+                  className="w-20 h-20 rounded-full object-cover"
+                  style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.15)" }}
+                />
+                <button
+                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[12px] font-semibold"
+                  style={{ background: "rgba(59,130,246,0.08)", color: "#1d4ed8", border: "1px solid rgba(59,130,246,0.2)" }}
+                >
+                  <ImageIcon size={13} strokeWidth={1.75} />
+                  Upload
+                </button>
+              </div>
+
+              {/* Section label */}
+              <p className="text-[10px] font-bold uppercase tracking-widest -mb-2" style={{ color: "var(--muted-foreground)" }}>
+                Personal Information
+              </p>
+
+              {/* Full Name */}
+              <div>
+                <p className="text-[13px] font-semibold text-foreground mb-1.5">Full Name</p>
+                <input
+                  className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none"
+                  style={{ background: "var(--page)", border: "1px solid var(--border)" }}
+                  value={profileName}
+                  onChange={(e) => setProfileName(e.target.value)}
+                />
+              </div>
+
+              {/* Display Name */}
+              <div>
+                <p className="text-[13px] font-semibold text-foreground mb-0.5">Display Name</p>
+                <p className="text-[11px] mb-1.5" style={{ color: "var(--muted-foreground)" }}>How others see you in conversations</p>
+                <input
+                  className="w-full px-3.5 py-2.5 rounded-xl text-[14px] outline-none"
+                  style={{ background: "var(--page)", border: "1px solid var(--border)", color: "var(--foreground)" }}
+                  placeholder="How you appear in chat"
+                  value={profileDisplay}
+                  onChange={(e) => setProfileDisplay(e.target.value)}
+                />
+              </div>
+
+              {/* Email — read only */}
+              <div>
+                <p className="text-[13px] font-semibold text-foreground mb-1.5">Email</p>
+                <div
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl"
+                  style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}
+                >
+                  <Mail size={14} strokeWidth={1.75} style={{ color: "var(--muted-foreground)" }} />
+                  <span className="text-[14px]" style={{ color: "var(--muted-foreground)" }}>rana@intempt.com</span>
+                </div>
+                <p className="text-[11px] mt-1.5" style={{ color: "var(--muted-foreground)" }}>Email cannot be changed</p>
+              </div>
+
+              {/* Phone */}
+              <div>
+                <p className="text-[13px] font-semibold text-foreground mb-1.5">Phone</p>
+                <div
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl"
+                  style={{ background: "var(--page)", border: "1px solid var(--border)" }}
+                >
+                  <Phone size={14} strokeWidth={1.75} style={{ color: "var(--muted-foreground)" }} />
+                  <input
+                    className="flex-1 bg-transparent text-[14px] text-foreground outline-none"
+                    value={profilePhone}
+                    onChange={(e) => setProfilePhone(e.target.value)}
+                  />
+                </div>
+              </div>
+
+            </div>
+          </div>
+          {/* Top fade */}
+          <div
+            className="absolute top-0 left-0 right-0 pointer-events-none transition-opacity duration-300"
+            style={{
+              height: 48,
+              opacity: profileScrolled ? 1 : 0,
+              background: "linear-gradient(to bottom, var(--raised) 0%, transparent 100%)",
+            }}
+          />
+          {/* Bottom fade */}
+          <div
+            className="absolute bottom-0 left-0 right-0 pointer-events-none transition-opacity duration-300"
+            style={{
+              height: 64,
+              opacity: profileScrolled ? 0 : profileAtBottom ? 0 : 1,
+              background: "linear-gradient(to top, var(--raised) 30%, transparent 100%)",
+            }}
+          />
+          </div>
+
+          {/* Sticky Save */}
+          <div className="px-5 pt-2 pb-8">
+            <button
+              className="w-full py-3 rounded-2xl text-[14px] font-semibold text-white"
+              style={{ background: "#1d4ed8" }}
+              onClick={() => closeSheet()}
+            >
+              Save
+            </button>
+          </div>
+        </BottomSheet>
+      )}
 
       {/* ── Appearance sheet ─────────────────────────────────────────────── */}
       {sheet === "appearance" && (
