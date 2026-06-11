@@ -2,23 +2,25 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNav } from "../_context/nav-context";
+import { useRouter } from "next/navigation";
 import { LayoutGrid, Search, Settings, ChevronRight } from "lucide-react";
 
 const DASHBOARDS = [
-  { name: "OrderPage",                reports: 6, updated: "11 hours ago"  },
-  { name: "Untitled Dashboard-rwmu",  reports: 0, updated: "5 days ago"    },
-  { name: "Untitled Dashboard-dq0u",  reports: 0, updated: "8 days ago"    },
-  { name: "Untitled Dashboard-mivb",  reports: 3, updated: "11 days ago"   },
-  { name: "Untitled Dashboard-3p6o",  reports: 7, updated: "15 days ago"   },
-  { name: "Untitled Dashboard-gsgv",  reports: 6, updated: "21 days ago"   },
-  { name: "Action Trackings",         reports: 6, updated: "1 month ago"   },
-  { name: "Revenue Overview",         reports: 4, updated: "1 month ago"   },
-  { name: "User Funnel",              reports: 2, updated: "2 months ago"  },
+  { slug: "orderpage",                  name: "OrderPage",                reports: 6, updated: "11 hours ago"  },
+  { slug: "untitled-dashboard-rwmu",    name: "Untitled Dashboard-rwmu",  reports: 0, updated: "5 days ago"    },
+  { slug: "untitled-dashboard-dq0u",    name: "Untitled Dashboard-dq0u",  reports: 0, updated: "8 days ago"    },
+  { slug: "untitled-dashboard-mivb",    name: "Untitled Dashboard-mivb",  reports: 3, updated: "11 days ago"   },
+  { slug: "untitled-dashboard-3p6o",    name: "Untitled Dashboard-3p6o",  reports: 7, updated: "15 days ago"   },
+  { slug: "untitled-dashboard-gsgv",    name: "Untitled Dashboard-gsgv",  reports: 6, updated: "21 days ago"   },
+  { slug: "action-trackings",           name: "Action Trackings",         reports: 6, updated: "1 month ago"   },
+  { slug: "revenue-overview",           name: "Revenue Overview",         reports: 4, updated: "1 month ago"   },
+  { slug: "user-funnel",                name: "User Funnel",              reports: 2, updated: "2 months ago"  },
 ];
 
 export default function DashboardsScreen() {
   const [query, setQuery] = useState("");
   const { scrolled, setScrolled } = useNav();
+  const router = useRouter();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [atBottom, setAtBottom] = useState(false);
 
@@ -87,6 +89,7 @@ export default function DashboardsScreen() {
               {filtered.map((dashboard, i) => (
                 <button
                   key={dashboard.name}
+                  onClick={() => router.push(`/dashboards/${dashboard.slug}`)}
                   className="flex items-center gap-3 w-full px-4 py-3.5 rounded-2xl text-left"
                   style={{
                     background: "var(--raised)",
