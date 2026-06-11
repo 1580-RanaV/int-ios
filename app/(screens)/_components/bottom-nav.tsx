@@ -110,7 +110,7 @@ export default function BottomNav() {
                   borderRadius: 999,
                   background: active ? "rgba(59,130,246,0.12)" : "transparent",
                   color: active ? "#1d4ed8" : "var(--icon)",
-                  transition: "gap 0.42s cubic-bezier(0.4,0,0.2,1), background 0.35s ease, color 0.3s ease",
+                  transition: "gap 0.6s cubic-bezier(0.34,1.2,0.64,1), background 0.35s ease, color 0.3s ease",
                 }}
               >
                 <Icon size={19} strokeWidth={1.75} />
@@ -121,8 +121,8 @@ export default function BottomNav() {
                     maxWidth: (active && !scrolled) ? "150px" : "0px",
                     opacity: (active && !scrolled) ? 1 : 0,
                     transition: (active && !scrolled)
-                      ? "max-width 0.46s cubic-bezier(0.34,1.3,0.64,1), opacity 0.28s ease-out 0.08s"
-                      : "max-width 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.14s ease-in",
+                      ? "max-width 0.6s cubic-bezier(0.34,1.2,0.64,1), opacity 0.3s ease-out 0.08s"
+                      : "max-width 0.6s cubic-bezier(0.34,1.2,0.64,1), opacity 0.2s ease-in",
                   }}
                 >
                   {label}
@@ -132,7 +132,7 @@ export default function BottomNav() {
 
             const wrapStyle = {
               flex: (active && !scrolled) ? 3 : 1,
-              transition: "flex 0.42s cubic-bezier(0.4,0,0.2,1)",
+              transition: "flex 0.6s cubic-bezier(0.34,1.2,0.64,1)",
             };
 
             return isMore ? (
