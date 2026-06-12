@@ -57,15 +57,15 @@ function Sparkline({ data }: { data: number[] }) {
     >
       <defs>
         <linearGradient id="spark-grad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%"   stopColor="#3b82f6" stopOpacity={isEmpty ? 0 : 0.22} />
-          <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+          <stop offset="0%"   stopColor="#0080FF" stopOpacity={isEmpty ? 0 : 0.22} />
+          <stop offset="100%" stopColor="#0080FF" stopOpacity="0" />
         </linearGradient>
       </defs>
       {!isEmpty && <path d={fillPath} fill="url(#spark-grad)" />}
       <path
         d={isEmpty ? `M 0 ${H - pad} L ${W} ${H - pad}` : linePath}
         fill="none"
-        stroke={isEmpty ? "var(--border)" : "#3b82f6"}
+        stroke={isEmpty ? "var(--border)" : "#0080FF"}
         strokeWidth={isEmpty ? "1" : "2"}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -166,7 +166,7 @@ function OverviewTab({ user }: { user: User }) {
                   <span className="text-[13px] text-foreground font-medium truncate flex-1 mr-3">{page.url}</span>
                   <span
                     className="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0"
-                    style={{ background: "rgba(59,130,246,0.1)", color: "#1d4ed8" }}
+                    style={{ background: "rgba(0,128,255,0.1)", color: "#0080FF" }}
                   >
                     {page.views} views
                   </span>
@@ -232,7 +232,7 @@ function OverviewTab({ user }: { user: User }) {
                   className="flex items-start gap-2.5 py-2.5"
                   style={{ borderTop: i > 0 ? "1px solid var(--border)" : "none" }}
                 >
-                  <div className="w-1.5 h-1.5 rounded-full mt-1.25 shrink-0" style={{ background: "#3b82f6" }} />
+                  <div className="w-1.5 h-1.5 rounded-full mt-1.25 shrink-0" style={{ background: "#0080FF" }} />
                   <p className="text-[13px] text-foreground leading-snug">{signal}</p>
                 </div>
               ))}
@@ -255,7 +255,7 @@ const ACTIVITY_ICON: Record<ActivityEventType, React.ElementType> = {
 };
 
 const ACTIVITY_COLOR: Record<ActivityEventType, string> = {
-  email:     "#1d4ed8",
+  email:     "#0080FF",
   page_view: "#6d28d9",
   journey:   "#15803d",
   login:     "#8a8f98",
@@ -264,7 +264,7 @@ const ACTIVITY_COLOR: Record<ActivityEventType, string> = {
 };
 
 const ACTIVITY_BG: Record<ActivityEventType, string> = {
-  email:     "rgba(59,130,246,0.10)",
+  email:     "rgba(0,128,255,0.10)",
   page_view: "rgba(139,92,246,0.10)",
   journey:   "rgba(16,185,129,0.10)",
   login:     "var(--secondary)",
@@ -505,9 +505,9 @@ function EmailsTab({ user, emailFilter, onOpenSheet }: { user: User; emailFilter
               >
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                  style={{ background: email.opened ? "rgba(59,130,246,0.1)" : "var(--secondary)" }}
+                  style={{ background: email.opened ? "rgba(0,128,255,0.1)" : "var(--secondary)" }}
                 >
-                  <Mail size={14} strokeWidth={1.75} style={{ color: email.opened ? "#1d4ed8" : "var(--muted-foreground)" }} />
+                  <Mail size={14} strokeWidth={1.75} style={{ color: email.opened ? "#0080FF" : "var(--muted-foreground)" }} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2 mb-0.5">
@@ -854,7 +854,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ slug: str
                     <Icon size={18} strokeWidth={1.75} className="text-foreground" />
                   </div>
                   <span className="flex-1 text-left text-[15px] font-medium text-foreground">{label}</span>
-                  {activeKey === key && <Check size={16} strokeWidth={2.5} style={{ color: "#1d4ed8" }} />}
+                  {activeKey === key && <Check size={16} strokeWidth={2.5} style={{ color: "#0080FF" }} />}
                 </button>
               ))}
 

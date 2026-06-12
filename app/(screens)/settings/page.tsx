@@ -208,7 +208,7 @@ export default function SettingsScreen() {
           {/* General */}
           <SectionLabel title="General" />
           <Card>
-            <Row icon={LayoutGrid}  label="Workspace"         subtitle="Name, email sync, domains, Inbox AI" />
+            <Row icon={LayoutGrid}  label="Workspace"         subtitle="Name, email sync, domains, Inbox AI" onClick={() => go("workspace")} />
             <Divider />
             <Row icon={Globe}       label="Language & Region"  subtitle="Date, time, currency formats"        onClick={() => go("locale")} />
             <Divider />
@@ -228,13 +228,13 @@ export default function SettingsScreen() {
           {/* Brand & AI */}
           <SectionLabel title="Brand & AI" />
           <Card>
-            <Row icon={Sparkles} label="Brand & AI" subtitle="Voice, personas, knowledge base" />
+            <Row icon={Sparkles} label="Brand & AI" subtitle="Voice, personas, knowledge base" onClick={() => go("brandai")} />
           </Card>
 
           {/* Meetings */}
           <SectionLabel title="Meetings" />
           <Card>
-            <Row icon={CalendarDays} label="Meetings" subtitle="Booking, availability, recording" />
+            <Row icon={CalendarDays} label="Meetings" subtitle="Booking, availability, recording" onClick={() => go("meetings")} />
           </Card>
 
           {/* Connections */}

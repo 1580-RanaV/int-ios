@@ -249,7 +249,7 @@ export default function TasksPage() {
                         onClick={() => closeDrop(value)}
                         className="flex items-center gap-2.5 w-full px-4 py-2.5 text-left transition-colors duration-100"
                         style={{
-                          background: sel ? "#1d4ed8" : "transparent",
+                          background: sel ? "#0080FF" : "transparent",
                           animation: "tab-in 0.2s ease-out both",
                           animationDelay: `${i * 28}ms`,
                         }}
@@ -553,7 +553,7 @@ export default function TasksPage() {
             <div className="px-5 pt-2 pb-8">
               <button
                 className="w-full py-3.5 rounded-2xl text-[14px] font-semibold text-white"
-                style={{ background: "#1d4ed8" }}
+                style={{ background: "#0080FF" }}
                 onClick={closeCreate}
               >
                 Create

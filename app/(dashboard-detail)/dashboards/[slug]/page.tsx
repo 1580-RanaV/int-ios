@@ -28,7 +28,7 @@ type Dashboard = {
 
 const REPORT_TYPE_META: Record<ReportType, { icon: React.ElementType; color: string; bg: string; label: string }> = {
   Funnel:    { icon: Filter,    color: "#8b5cf6", bg: "rgba(139,92,246,0.1)",  label: "Funnel Report"    },
-  Insights:  { icon: TrendingUp,color: "#3b82f6", bg: "rgba(59,130,246,0.1)",  label: "Insights Report"  },
+  Insights:  { icon: TrendingUp,color: "#0080FF", bg: "rgba(0,128,255,0.1)",  label: "Insights Report"  },
   Retention: { icon: Users2,    color: "#16a34a", bg: "rgba(22,163,74,0.1)",   label: "Retention Report" },
   Analytics: { icon: BarChart2, color: "#f59e0b", bg: "rgba(245,158,11,0.1)",  label: "Analytics Report" },
   Cohort:    { icon: Layers,    color: "#ec4899", bg: "rgba(236,72,153,0.1)",   label: "Cohort Report"    },

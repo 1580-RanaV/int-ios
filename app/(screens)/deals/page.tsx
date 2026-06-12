@@ -27,7 +27,7 @@ function DealCard({ deal }: { deal: Deal }) {
       {/* Owner avatar */}
       <div
         className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-white text-[11px] font-bold"
-        style={{ background: "#1d4ed8" }}
+        style={{ background: "#0080FF" }}
       >
         {deal.ownerInitial}
       </div>
@@ -176,8 +176,8 @@ export default function DealsPage() {
           </div>
           <div className="w-px h-3.5" style={{ background: "var(--border)" }} />
           <div className="flex items-center gap-1.5">
-            <TrendingUp size={13} strokeWidth={1.75} style={{ color: "#3b82f6" }} />
-            <span className="text-[12px] font-semibold" style={{ color: "#3b82f6" }}>
+            <TrendingUp size={13} strokeWidth={1.75} style={{ color: "#0080FF" }} />
+            <span className="text-[12px] font-semibold" style={{ color: "#0080FF" }}>
               {openDeals} open
             </span>
           </div>
@@ -243,7 +243,7 @@ export default function DealsPage() {
                         onClick={() => closeDrop(value)}
                         className="flex items-center gap-2.5 w-full px-4 py-2.5 text-left transition-colors duration-100"
                         style={{
-                          background: sel ? "#1d4ed8" : "transparent",
+                          background: sel ? "#0080FF" : "transparent",
                           animation: "tab-in 0.2s ease-out both",
                           animationDelay: `${i * 28}ms`,
                         }}
@@ -427,7 +427,7 @@ export default function DealsPage() {
             <div className="px-5 pt-2 pb-8">
               <button
                 className="w-full py-3.5 rounded-2xl text-[14px] font-semibold text-white"
-                style={{ background: "#1d4ed8" }}
+                style={{ background: "#0080FF" }}
                 onClick={closeCreate}
               >
                 Create

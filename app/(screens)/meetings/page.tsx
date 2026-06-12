@@ -194,7 +194,7 @@ function EditBookingSheet({
           <button
             onClick={addTriggerWord}
             className="h-11 px-5 rounded-2xl text-sm font-semibold text-white shrink-0"
-            style={{ background: "#1d4ed8" }}
+            style={{ background: "#0080FF" }}
           >Add</button>
         </div>
         {triggerWords.length > 0 && (
@@ -222,7 +222,7 @@ function EditBookingSheet({
       <div className="shrink-0 px-5 pb-8 pt-3" style={{ borderTop: "1px solid var(--border)" }}>
         <button
           className="w-full h-12 rounded-2xl text-sm font-bold text-white"
-          style={{ background: "#1d4ed8" }}
+          style={{ background: "#0080FF" }}
           onClick={onClose}
         >Save</button>
       </div>
@@ -360,10 +360,10 @@ export default function MeetingsScreen() {
                       {/* Date box */}
                       <div
                         className="w-12 h-12 rounded-2xl flex flex-col items-center justify-center shrink-0"
-                        style={{ background: "rgba(59,130,246,0.1)" }}
+                        style={{ background: "rgba(0,128,255,0.1)" }}
                       >
-                        <span className="text-xs font-semibold leading-none" style={{ color: "#1d4ed8" }}>{m.month}</span>
-                        <span className="text-lg font-bold leading-tight mt-0.5" style={{ color: "#1d4ed8" }}>{m.day}</span>
+                        <span className="text-xs font-semibold leading-none" style={{ color: "#0080FF" }}>{m.month}</span>
+                        <span className="text-lg font-bold leading-tight mt-0.5" style={{ color: "#0080FF" }}>{m.day}</span>
                       </div>
 
                       {/* Info */}
@@ -381,7 +381,7 @@ export default function MeetingsScreen() {
                       {/* Join button */}
                       <button
                         className="flex items-center gap-1.5 px-3 py-2 rounded-full shrink-0"
-                        style={{ background: "#1d4ed8" }}
+                        style={{ background: "#0080FF" }}
                       >
                         <Video size={13} strokeWidth={1.75} className="text-white" />
                         <span className="text-xs font-semibold text-white">Join now</span>

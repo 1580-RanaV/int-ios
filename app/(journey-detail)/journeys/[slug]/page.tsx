@@ -399,7 +399,7 @@ export default function JourneyDetailPage({ params }: { params: Promise<{ slug: 
                       <Icon size={18} strokeWidth={1.75} className="text-foreground" />
                     </div>
                     <span className="flex-1 text-left text-[15px] font-medium text-foreground leading-snug">{m.label}</span>
-                    {msgFilter === m.label && <Check size={16} strokeWidth={2.5} style={{ color: "#1d4ed8" }} />}
+                    {msgFilter === m.label && <Check size={16} strokeWidth={2.5} style={{ color: "#0080FF" }} />}
                   </button>
                 );
               })}
@@ -423,7 +423,7 @@ export default function JourneyDetailPage({ params }: { params: Promise<{ slug: 
                       <Icon size={18} strokeWidth={1.75} className="text-foreground" />
                     </div>
                     <span className="flex-1 text-left text-[15px] font-medium text-foreground leading-snug">{label}</span>
-                    {sel && <Check size={16} strokeWidth={2.5} style={{ color: "#1d4ed8" }} />}
+                    {sel && <Check size={16} strokeWidth={2.5} style={{ color: "#0080FF" }} />}
                   </button>
                 );
               })}

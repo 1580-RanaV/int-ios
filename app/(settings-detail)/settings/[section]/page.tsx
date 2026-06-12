@@ -6,7 +6,8 @@ import {
   ChevronLeft, Sun, Moon, SunMoon, Check, ChevronDown,
   Camera, Mic, ImageIcon, Bell, Mail, Phone,
   Building2, FolderKanban, Shield,
-  Smartphone, Trash2, UserCircle, LogOut,
+  Smartphone, Trash2, UserCircle, LogOut, X, ExternalLink,
+  BookOpen, Plus, Clock, Copy, Info, Calendar, CalendarDays,
 } from "lucide-react";
 
 // ─── Exit animation context ───────────────────────────────────────────────────
@@ -81,6 +82,44 @@ function SelectField({ label, value, onChange, options }: {
   );
 }
 
+function PickerDrawer({ label, sub, value, onChange, options }: {
+  label: string; sub?: string; value: string; onChange: (v: string) => void; options: string[];
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border)", background: "var(--raised)" }}>
+      <button onClick={() => setOpen(v => !v)} className="flex items-start gap-3 w-full px-4 py-3.5 outline-none">
+        <div className="flex-1 text-left">
+          <p className="text-[15px] font-bold text-foreground">{label}</p>
+          {sub && <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>{sub}</p>}
+        </div>
+        <div className="flex items-center gap-2 shrink-0 mt-0.5">
+          <span className="text-[12px] font-semibold max-w-[120px] truncate text-right" style={{ color: "#0080FF" }}>{value}</span>
+          <ChevronDown size={15} strokeWidth={2} className="text-muted-foreground shrink-0"
+            style={{ transform: open ? "rotate(0deg)" : "rotate(-90deg)", transition: "transform 0.2s ease" }} />
+        </div>
+      </button>
+      {open && (
+        <div className="flex flex-col gap-2 px-4 pb-4" style={{ borderTop: "1px solid var(--border)", paddingTop: 12 }}>
+          {options.map((opt) => {
+            const sel = opt === value;
+            return (
+              <button key={opt} onClick={() => { onChange(opt); setOpen(false); }}
+                className="flex items-center w-full px-4 py-3 rounded-2xl text-left"
+                style={{ background: sel ? "#0080FF" : "var(--raised)", border: `1px solid ${sel ? "#0080FF" : "var(--border)"}` }}>
+                <span className="flex-1 text-[14px] font-semibold" style={{ color: sel ? "#fff" : "var(--foreground)" }}>
+                  {opt}
+                </span>
+                {sel && <Check size={16} strokeWidth={2.5} className="text-white shrink-0" />}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function SaveButton() {
   const goBack = useContext(ExitCtx);
   return (
@@ -88,7 +127,7 @@ function SaveButton() {
       <button
         onClick={goBack}
         className="w-full py-3 rounded-2xl text-[14px] font-semibold text-white"
-        style={{ background: "#1d4ed8" }}
+        style={{ background: "#0080FF" }}
       >
         Save
       </button>
@@ -96,9 +135,9 @@ function SaveButton() {
   );
 }
 
-function SectionLabel({ title }: { title: string }) {
+function SectionLabel({ title, blue }: { title: string; blue?: boolean }) {
   return (
-    <p className="text-[10px] font-bold uppercase tracking-widest px-1 pt-2 pb-1" style={{ color: "var(--muted-foreground)" }}>
+    <p className="text-[10px] font-bold uppercase tracking-widest px-1 pt-2 pb-1" style={{ color: blue ? "#0080FF" : "var(--muted-foreground)" }}>
       {title}
     </p>
   );
@@ -170,7 +209,7 @@ function AppearancePage() {
                 key={key}
                 onClick={() => setAppearance(key)}
                 className="flex items-center gap-3.5 w-full px-3.5 py-3 rounded-2xl text-left"
-                style={{ background: active ? "#1d4ed8" : "var(--raised)", border: `1px solid ${active ? "#1d4ed8" : "var(--border)"}` }}
+                style={{ background: active ? "#0080FF" : "var(--raised)", border: `1px solid ${active ? "#0080FF" : "var(--border)"}` }}
               >
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
                   style={{ background: active ? "rgba(255,255,255,0.15)" : "var(--secondary)" }}>
@@ -213,7 +252,7 @@ function ReportingPage() {
                 key={value}
                 onClick={() => setPeriod(value)}
                 className="flex items-center justify-between w-full px-4 py-3.5 rounded-2xl text-left"
-                style={{ background: active ? "#1d4ed8" : "var(--raised)", border: `1px solid ${active ? "#1d4ed8" : "var(--border)"}` }}
+                style={{ background: active ? "#0080FF" : "var(--raised)", border: `1px solid ${active ? "#0080FF" : "var(--border)"}` }}
               >
                 <span className="text-[14px] font-semibold" style={{ color: active ? "#fff" : "var(--foreground)" }}>{label}</span>
                 {active && <Check size={16} strokeWidth={2.5} style={{ color: "#fff" }} />}
@@ -254,7 +293,7 @@ function ConnectionsPage() {
                 className="text-[13px] font-semibold px-3 py-1.5 rounded-full"
                 style={connected
                   ? { color: "#be123c", background: "rgba(244,63,94,0.08)" }
-                  : { color: "#1d4ed8", background: "rgba(59,130,246,0.08)" }}
+                  : { color: "#0080FF", background: "rgba(0,128,255,0.08)" }}
               >
                 {connected ? "Disconnect" : "Connect"}
               </button>
@@ -329,7 +368,7 @@ function ProfilePage() {
           <div className="flex flex-col items-center gap-3 pt-1">
             <img src="/dp.png" alt="Rana V" className="w-20 h-20 rounded-full object-cover" style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.15)" }} />
             <button className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[12px] font-semibold"
-              style={{ background: "rgba(59,130,246,0.08)", color: "#1d4ed8", border: "1px solid rgba(59,130,246,0.2)" }}>
+              style={{ background: "rgba(0,128,255,0.08)", color: "#0080FF", border: "1px solid rgba(0,128,255,0.2)" }}>
               <ImageIcon size={13} strokeWidth={1.75} /> Upload
             </button>
           </div>
@@ -405,7 +444,7 @@ function OrgPage() {
               return (
                 <button key={org.id}
                   className="flex items-center gap-3.5 w-full px-3.5 py-3 rounded-2xl text-left"
-                  style={{ background: isSel ? "#1d4ed8" : "var(--raised)", border: `1px solid ${isSel ? "#1d4ed8" : "var(--border)"}` }}
+                  style={{ background: isSel ? "#0080FF" : "var(--raised)", border: `1px solid ${isSel ? "#0080FF" : "var(--border)"}` }}
                   onClick={() => { setSelectedOrg(org.id); setSelectedProject(org.projects[0]?.id ?? ""); setTimeout(() => setOrgTab("Projects"), 180); }}
                 >
                   <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-white text-[15px] font-bold" style={{ background: org.color }}>{org.initial}</div>
@@ -430,7 +469,7 @@ function OrgPage() {
               return (
                 <button key={proj.id}
                   className="flex items-center gap-3.5 w-full px-3.5 py-3 rounded-2xl text-left"
-                  style={{ background: isSel ? "#1d4ed8" : "var(--raised)", border: `1px solid ${isSel ? "#1d4ed8" : "var(--border)"}` }}
+                  style={{ background: isSel ? "#0080FF" : "var(--raised)", border: `1px solid ${isSel ? "#0080FF" : "var(--border)"}` }}
                   onClick={() => { setSelectedProject(proj.id); goBack(); }}
                 >
                   <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: isSel ? "rgba(255,255,255,0.15)" : "var(--secondary)", border: `1px solid ${isSel ? "transparent" : "var(--border)"}` }}>
@@ -515,7 +554,7 @@ function NotificationsPage() {
                 <p className="text-[14px] font-semibold text-foreground">Meeting reminder</p>
                 <p className="text-[12px] mt-0.5 text-muted-foreground">Get notified before meetings start</p>
               </div>
-              <button onClick={() => setReminderOpen(v => !v)} className="flex items-center gap-1.5 shrink-0" style={{ color: "#1d4ed8" }}>
+              <button onClick={() => setReminderOpen(v => !v)} className="flex items-center gap-1.5 shrink-0" style={{ color: "#0080FF" }}>
                 <span className="text-[13px] font-semibold">{meetingReminder}</span>
                 <ChevronDown size={13} strokeWidth={2} style={{ transform: reminderOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.25s ease" }} />
               </button>
@@ -530,7 +569,7 @@ function NotificationsPage() {
                     return (
                       <button key={opt} onClick={() => { setMeetingReminder(opt); setReminderOpen(false); }}
                         className="flex items-center justify-between w-full px-4 py-2.5 text-left"
-                        style={{ background: sel ? "#1d4ed8" : "transparent", animation: "tab-in 0.2s ease-out both", animationDelay: `${i * 24}ms` }}>
+                        style={{ background: sel ? "#0080FF" : "transparent", animation: "tab-in 0.2s ease-out both", animationDelay: `${i * 24}ms` }}>
                         <span className="text-[13px] font-medium" style={{ color: sel ? "#fff" : "var(--foreground)" }}>{opt}</span>
                         {sel && <Check size={13} strokeWidth={2} style={{ color: "#fff" }} />}
                       </button>
@@ -581,6 +620,675 @@ function PermissionsPage() {
   );
 }
 
+function WorkspacePage() {
+  const [wsName,         setWsName]         = useState("Dev Playground");
+  const [website,        setWebsite]        = useState("");
+  const [syncMode,       setSyncMode]       = useState("External only");
+  const [syncHistory,    setSyncHistory]    = useState("Last 90 days");
+  const [filterType,     setFilterType]     = useState("Blocklist — Sync everything except these");
+  const [filterEmail,    setFilterEmail]    = useState("");
+  const [filteredEmails, setFilteredEmails] = useState(["email@example.com"]);
+  const [domain,         setDomain]         = useState("");
+  const [domains,        setDomains]        = useState<string[]>([]);
+  const [inboxAI,        setInboxAI]        = useState(true);
+  const [signature,      setSignature]      = useState("");
+  const [fontFamily,     setFontFamily]     = useState("Arial");
+  const [fontSize,       setFontSize]       = useState("14px");
+  const [fontColor,      setFontColor]      = useState("#1F2937");
+  const [primaryColor,   setPrimaryColor]   = useState("#006EE0");
+  const [textColor,      setTextColor]      = useState("#1F2937");
+  const [physicalAddr,   setPhysicalAddr]   = useState(false);
+
+  const CATEGORIES = [
+    { name: "Comment",        sub: "Mentions and comments from tools (Docs, Notion...)", action: "Move to folder",     blue: false },
+    { name: "Notification",   sub: "Automated system emails (password resets, expiry...)", action: "Move to folder",  blue: false },
+    { name: "Meeting update", sub: "Calendar invites, time changes, cancellations",      action: "Move to folder",     blue: false },
+    { name: "Awaiting reply", sub: "You've replied, waiting on them",                    action: "Move to folder",     blue: false },
+    { name: "Actioned",       sub: "Conversations that appear finished",                 action: "Move to folder",     blue: false },
+    { name: "Marketing",      sub: "Newsletters, promos, cold outreach",                 action: "Move to folder",     blue: false },
+    { name: "To respond",     sub: "Emails needing your reply",                          action: "Label & keep",       blue: true  },
+    { name: "FYI",            sub: "Info only, no action needed",                        action: "Move to folder",     blue: false },
+  ];
+
+  const addFilterEmail = () => { if (filterEmail.trim()) { setFilteredEmails(v => [...v, filterEmail.trim()]); setFilterEmail(""); } };
+  const addDomain      = () => { if (domain.trim()) { setDomains(v => [...v, domain.trim()]); setDomain(""); } };
+
+  function ColorRow({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+    return (
+      <div>
+        <p className="text-[13px] font-semibold text-foreground mb-1.5">{label}</p>
+        <div className="flex items-center gap-2.5">
+          <div className="w-11 h-10 rounded-xl shrink-0 relative overflow-hidden cursor-pointer" style={{ border: "1px solid var(--border)" }}>
+            <div className="absolute inset-0" style={{ background: value }} />
+            <input type="color" value={value} onChange={(e) => onChange(e.target.value)} className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />
+          </div>
+          <input className="flex-1 px-3.5 py-2.5 rounded-xl text-[14px] font-mono text-foreground outline-none"
+            style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
+            value={value} onChange={(e) => onChange(e.target.value)} />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <PageContainer>
+      <PageHeader title="Workspace" />
+      <ScrollFade className="px-4 pb-4">
+        <div className="flex flex-col gap-5 pt-2">
+
+          {/* Logo */}
+          <div>
+            <SectionLabel title="Logo" />
+            <div className="flex flex-col items-center gap-3 pt-2 pb-1">
+              <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+                <span className="text-2xl font-bold text-foreground">D</span>
+              </div>
+              <button className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[13px] font-semibold"
+                style={{ color: "#0080FF", border: "1px solid #0080FF", background: "transparent" }}>
+                <ImageIcon size={13} strokeWidth={1.75} /> Upload
+              </button>
+            </div>
+          </div>
+
+          {/* Basic info */}
+          <div className="flex flex-col gap-4">
+            <div>
+              <p className="text-[13px] font-semibold text-foreground mb-1.5">Workspace name</p>
+              <input className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none"
+                style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
+                value={wsName} onChange={(e) => setWsName(e.target.value)} />
+            </div>
+            <div>
+              <p className="text-[13px] font-semibold text-foreground mb-1.5">Website</p>
+              <input className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none"
+                style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
+                placeholder="https://yourcompany.com"
+                value={website} onChange={(e) => setWebsite(e.target.value)} />
+            </div>
+          </div>
+
+          {/* Email Sync */}
+          <div className="flex flex-col gap-3">
+            <div>
+              <SectionLabel title="Email Sync" blue />
+              <p className="text-[12px] px-1 -mt-0.5" style={{ color: "var(--muted-foreground)" }}>Which emails to sync from your mailbox</p>
+            </div>
+            <SelectField label="Sync mode" value={syncMode} onChange={setSyncMode}
+              options={["External only", "All emails", "Internal only"]} />
+            <SelectField label="Sync history" value={syncHistory} onChange={setSyncHistory}
+              options={["Last 30 days", "Last 90 days", "Last 6 months", "Last year", "All time"]} />
+          </div>
+
+          {/* Mail Filtering */}
+          <div className="flex flex-col gap-3">
+            <div>
+              <SectionLabel title="Mail Filtering" blue />
+              <p className="text-[12px] px-1 -mt-0.5" style={{ color: "var(--muted-foreground)" }}>Control which emails are included or excluded</p>
+            </div>
+            <SelectField label="Filter type" value={filterType} onChange={setFilterType}
+              options={["Blocklist — Sync everything except these", "Allowlist — Only sync these", "No filter"]} />
+            <div>
+              <p className="text-[13px] font-semibold text-foreground mb-1.5">Blocked addresses</p>
+              <div className="flex gap-2">
+                <input className="flex-1 px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none"
+                  style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
+                  placeholder="example.com or user@example.com"
+                  value={filterEmail} onChange={(e) => setFilterEmail(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && addFilterEmail()} />
+                <button onClick={addFilterEmail} className="px-4 py-2.5 rounded-xl text-[14px] font-semibold text-white shrink-0" style={{ background: "#0080FF" }}>Add</button>
+              </div>
+              {filteredEmails.length > 0 && (
+                <div className="flex flex-col gap-1.5 mt-2">
+                  {filteredEmails.map((email) => (
+                    <div key={email} className="flex items-center justify-between px-3.5 py-2.5 rounded-xl"
+                      style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
+                      <span className="text-[13px] text-foreground">{email}</span>
+                      <button onClick={() => setFilteredEmails(v => v.filter(e => e !== email))}>
+                        <X size={13} strokeWidth={2} className="text-muted-foreground" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Company Domains */}
+          <div className="flex flex-col gap-3">
+            <div>
+              <SectionLabel title="Company Domains" />
+              <p className="text-[12px] px-1 -mt-0.5" style={{ color: "var(--muted-foreground)" }}>Domains used to identify internal team members</p>
+            </div>
+            <div>
+              <div className="flex gap-2">
+                <input className="flex-1 px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none"
+                  style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
+                  placeholder="company.com"
+                  value={domain} onChange={(e) => setDomain(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && addDomain()} />
+                <button onClick={addDomain} className="px-4 py-2.5 rounded-xl text-[14px] font-semibold text-white shrink-0" style={{ background: "#0080FF" }}>Add</button>
+              </div>
+              {domains.length === 0
+                ? <p className="text-[12px] px-1 mt-2" style={{ color: "var(--muted-foreground)" }}>No domains configured</p>
+                : (
+                  <div className="flex flex-col gap-1.5 mt-2">
+                    {domains.map((d) => (
+                      <div key={d} className="flex items-center justify-between px-3.5 py-2.5 rounded-xl"
+                        style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
+                        <span className="text-[13px] text-foreground">{d}</span>
+                        <button onClick={() => setDomains(v => v.filter(x => x !== d))}><X size={13} strokeWidth={2} className="text-muted-foreground" /></button>
+                      </div>
+                    ))}
+                  </div>
+                )
+              }
+            </div>
+          </div>
+
+          {/* Inbox Intelligence */}
+          <div className="flex flex-col gap-3">
+            <div>
+              <SectionLabel title="Inbox Intelligence" />
+              <p className="text-[12px] px-1 -mt-0.5" style={{ color: "var(--muted-foreground)" }}>AI-powered email categorization for your workspace</p>
+            </div>
+            <button onClick={() => setInboxAI(v => !v)}
+              className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-left w-full"
+              style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
+              <Mail size={17} strokeWidth={1.75} className="text-muted-foreground shrink-0" />
+              <span className="flex-1 text-[14px] font-semibold text-foreground">Inbox Intelligence</span>
+              <span className="text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0"
+                style={{ color: inboxAI ? "#15803d" : "var(--muted-foreground)", background: inboxAI ? "rgba(22,163,74,0.12)" : "var(--secondary)" }}>
+                {inboxAI ? "Enabled" : "Disabled"}
+              </span>
+            </button>
+            <div className="flex flex-col gap-2">
+              {CATEGORIES.map((cat) => (
+                <div key={cat.name} className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+                  style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-semibold text-foreground">{cat.name}</p>
+                    <p className="text-[11px] mt-0.5 truncate" style={{ color: "var(--muted-foreground)" }}>{cat.sub}</p>
+                  </div>
+                  <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full shrink-0"
+                    style={{
+                      color:      cat.blue ? "#0080FF" : "var(--foreground)",
+                      background: cat.blue ? "rgba(0,128,255,0.08)" : "var(--secondary)",
+                      border:     `1px solid ${cat.blue ? "rgba(0,128,255,0.2)" : "var(--border)"}`,
+                    }}>
+                    {cat.action}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <button className="flex items-center gap-2 px-1">
+              <ExternalLink size={13} strokeWidth={1.75} style={{ color: "#0080FF" }} />
+              <span className="text-[13px] font-semibold" style={{ color: "#0080FF" }}>Manage inbox settings on web</span>
+            </button>
+          </div>
+
+          {/* Email Appearance */}
+          <div className="flex flex-col gap-3">
+            <div>
+              <SectionLabel title="Email Appearance" blue />
+              <p className="text-[12px] px-1 -mt-0.5" style={{ color: "var(--muted-foreground)" }}>Signature, branding, and CAN-SPAM compliance</p>
+            </div>
+            <div>
+              <p className="text-[13px] font-semibold text-foreground mb-1.5">Email Signature</p>
+              <textarea className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none resize-none"
+                style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
+                placeholder="Your email signature..." rows={3}
+                value={signature} onChange={(e) => setSignature(e.target.value)} />
+            </div>
+            <SelectField label="Font Family" value={fontFamily} onChange={setFontFamily}
+              options={["Arial", "Helvetica", "Georgia", "Times New Roman", "Verdana", "Courier New"]} />
+            <SelectField label="Font Size" value={fontSize} onChange={setFontSize}
+              options={["12px", "13px", "14px", "15px", "16px", "18px"]} />
+            <ColorRow label="Font Color" value={fontColor} onChange={setFontColor} />
+          </div>
+
+          {/* Email Branding */}
+          <div className="flex flex-col gap-3">
+            <SectionLabel title="Email Branding" blue />
+            <div>
+              <p className="text-[13px] font-semibold text-foreground mb-1.5">Email Logo (override)</p>
+              <div className="flex items-center gap-2.5">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+                  <ImageIcon size={18} strokeWidth={1.5} className="text-muted-foreground" />
+                </div>
+                <button className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-[13px] font-semibold"
+                  style={{ color: "#0080FF", border: "1px solid #0080FF", background: "transparent" }}>
+                  <ImageIcon size={13} strokeWidth={1.75} /> Upload
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-col gap-3">
+              <SectionLabel title="Email Colors" />
+              <ColorRow label="Primary" value={primaryColor} onChange={setPrimaryColor} />
+              <ColorRow label="Text" value={textColor} onChange={setTextColor} />
+            </div>
+            <div className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl"
+              style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
+              <div className="flex-1">
+                <p className="text-[13px] font-semibold text-foreground">Physical Address</p>
+                <p className="text-[11px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>Required for CAN-SPAM compliance</p>
+              </div>
+              <Toggle value={physicalAddr} onChange={setPhysicalAddr} />
+            </div>
+          </div>
+
+        </div>
+      </ScrollFade>
+      <SaveButton />
+    </PageContainer>
+  );
+}
+
+function MeetingsPage() {
+  const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  type DS = { enabled: boolean; start: string; end: string };
+  const [hours, setHours] = useState<Record<string, DS>>({
+    Sun: { enabled: false, start: "09:00", end: "17:00" },
+    Mon: { enabled: false, start: "09:00", end: "17:00" },
+    Tue: { enabled: true,  start: "09:00", end: "17:00" },
+    Wed: { enabled: true,  start: "09:00", end: "17:00" },
+    Thu: { enabled: true,  start: "09:00", end: "17:00" },
+    Fri: { enabled: true,  start: "09:00", end: "17:00" },
+    Sat: { enabled: false, start: "09:00", end: "17:00" },
+  });
+  const toggleDay  = (d: string) => setHours(h => ({ ...h, [d]: { ...h[d], enabled: !h[d].enabled } }));
+  const setTime    = (d: string, f: "start" | "end", v: string) => setHours(h => ({ ...h, [d]: { ...h[d], [f]: v } }));
+  const copyToAll  = (d: string) => { const { start, end } = hours[d]; setHours(h => Object.fromEntries(DAYS.map(k => [k, { ...h[k], start, end }]))); };
+
+  const [weeksOpen,     setWeeksOpen]     = useState(false);
+  const [overridesOpen, setOverridesOpen] = useState(false);
+  const [bookingOpen,   setBookingOpen]   = useState(false);
+  const [bluOpen,       setBluOpen]       = useState(false);
+  const [oooOpen,       setOooOpen]       = useState(false);
+  const [autoJoin,      setAutoJoin]      = useState("Only meetings that I own");
+  const [autoDelete,    setAutoDelete]    = useState("Delete after 30 days");
+  const [overrides,     setOverrides]     = useState([
+    { id: 1, date: "Mar 26, 2026", range: "01:00 - 05:00" },
+    { id: 2, date: "Mar 18, 2026", range: "09:00 - 17:00" },
+  ]);
+  const [minNotice,     setMinNotice]     = useState(1);
+  const [minUnit,       setMinUnit]       = useState("Hours");
+  const [bufBefore,     setBufBefore]     = useState("No buffer");
+  const [bufAfter,      setBufAfter]      = useState("No buffer");
+  const [maxMtg,        setMaxMtg]        = useState(10);
+  const [autoDetect,    setAutoDetect]    = useState(true);
+  const [duration,      setDuration]      = useState("30 min");
+  const [slots,         setSlots]         = useState("3 slots");
+  const [notifyBooked,  setNotifyBooked]  = useState(false);
+  const [oooStart,      setOooStart]      = useState("2026-06-12");
+  const [oooEnd,        setOooEnd]        = useState("2026-06-12");
+  const [oooReason,     setOooReason]     = useState("");
+
+  function Stepper({ value, onChange, min = 0 }: { value: number; onChange: (n: number) => void; min?: number }) {
+    return (
+      <div className="flex items-center rounded-xl overflow-hidden shrink-0" style={{ border: "1px solid var(--border)", background: "var(--secondary)" }}>
+        <span className="px-3 py-2 text-[14px] font-semibold text-foreground min-w-[2.5rem] text-center">{value}</span>
+        <div className="flex flex-col" style={{ borderLeft: "1px solid var(--border)" }}>
+          <button onClick={() => onChange(value + 1)} className="px-2 py-0.5 flex items-center justify-center" style={{ borderBottom: "1px solid var(--border)" }}>
+            <ChevronDown size={11} strokeWidth={2.5} className="text-muted-foreground" style={{ transform: "rotate(180deg)" }} />
+          </button>
+          <button onClick={() => onChange(Math.max(min, value - 1))} className="px-2 py-0.5 flex items-center justify-center">
+            <ChevronDown size={11} strokeWidth={2.5} className="text-muted-foreground" />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  function InlineSelect({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: string[] }) {
+    return (
+      <div className="relative">
+        <select value={value} onChange={(e) => onChange(e.target.value)}
+          className="appearance-none pl-3 pr-7 py-1.5 rounded-xl text-[13px] text-foreground outline-none"
+          style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+          {options.map(o => <option key={o}>{o}</option>)}
+        </select>
+        <ChevronDown size={13} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+      </div>
+    );
+  }
+
+  return (
+    <PageContainer>
+      <PageHeader title="Meetings" />
+      <ScrollFade className="px-4 pb-4">
+        <div className="flex flex-col gap-4 pt-2">
+
+          {/* Auto-join + Auto-delete */}
+          <PickerDrawer label="Auto-join type" value={autoJoin} onChange={setAutoJoin}
+            options={["All meetings", "Only meetings that I own", "Only meetings with @intempt.com participants", "Only meetings with non-@intempt.com participants", "Only meetings with teammates"]} />
+          <PickerDrawer label="Auto-delete recordings" sub="Automatically remove meeting recordings after a set period"
+            value={autoDelete} onChange={setAutoDelete}
+            options={["Delete after 7 days", "Delete after 30 days", "Delete after 90 days", "Never delete"]} />
+
+          {/* My Weekly Hours */}
+          <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border)", background: "var(--raised)" }}>
+            <button onClick={() => setWeeksOpen(v => !v)} className="flex items-start gap-3 w-full px-4 py-3.5 outline-none">
+              <div className="flex-1 text-left">
+                <p className="text-[15px] font-bold text-foreground">My Weekly Hours</p>
+                <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>Set your personal availability for each day of the week</p>
+              </div>
+              <ChevronDown size={15} strokeWidth={2} className="text-muted-foreground shrink-0 mt-0.5"
+                style={{ transform: weeksOpen ? "rotate(0deg)" : "rotate(-90deg)", transition: "transform 0.2s ease" }} />
+            </button>
+            {weeksOpen && DAYS.map((day, i) => {
+              const d = hours[day];
+              const isFirstActive = d.enabled && !DAYS.slice(0, i).some(pd => hours[pd].enabled);
+              return (
+                <div key={day} className="flex items-center gap-2 px-4 py-2.5" style={{ borderTop: "1px solid var(--border)" }}>
+                  <button onClick={() => toggleDay(day)}
+                    className="w-11 h-8 rounded-lg flex items-center justify-center shrink-0 text-[12px] font-bold"
+                    style={{ background: d.enabled ? "#0080FF" : "transparent", color: d.enabled ? "#fff" : "var(--foreground)", border: d.enabled ? "none" : "1px solid var(--border)" }}>
+                    {day}
+                  </button>
+                  {d.enabled ? (
+                    <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                      <div className="flex items-center px-2 py-1.5 rounded-lg flex-1 min-w-0" style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+                        <input type="time" value={d.start} onChange={(e) => setTime(day, "start", e.target.value)}
+                          className="flex-1 bg-transparent text-[11px] text-foreground outline-none min-w-0 w-0" />
+                      </div>
+                      <span className="text-[10px] text-muted-foreground shrink-0">to</span>
+                      <div className="flex items-center px-2 py-1.5 rounded-lg flex-1 min-w-0" style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+                        <input type="time" value={d.end} onChange={(e) => setTime(day, "end", e.target.value)}
+                          className="flex-1 bg-transparent text-[11px] text-foreground outline-none min-w-0 w-0" />
+                      </div>
+                      <button className="w-6 h-6 rounded-full flex items-center justify-center shrink-0" style={{ border: "1px solid var(--border)" }}>
+                        <Plus size={11} strokeWidth={2.5} className="text-muted-foreground" />
+                      </button>
+                      {isFirstActive && (
+                        <button onClick={() => copyToAll(day)} className="flex items-center gap-1 shrink-0">
+                          <Copy size={10} strokeWidth={1.75} style={{ color: "#0080FF" }} />
+                          <span className="text-[10px] font-semibold" style={{ color: "#0080FF" }}>Copy to all</span>
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="text-[13px]" style={{ color: "var(--muted-foreground)" }}>Unavailable</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Date Overrides */}
+          <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border)", background: "var(--raised)" }}>
+            <button onClick={() => setOverridesOpen(v => !v)} className="flex items-start gap-3 w-full px-4 py-3.5 outline-none">
+              <div className="flex-1 text-left">
+                <p className="text-[15px] font-bold text-foreground">Date Overrides</p>
+                <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>Specific dates when your availability differs</p>
+              </div>
+              <ChevronDown size={15} strokeWidth={2} className="text-muted-foreground shrink-0 mt-0.5"
+                style={{ transform: overridesOpen ? "rotate(0deg)" : "rotate(-90deg)", transition: "transform 0.2s ease" }} />
+            </button>
+            {overridesOpen && (
+              <>
+                {overrides.map((o) => (
+                  <div key={o.id} className="flex items-center px-4 py-3" style={{ borderTop: "1px solid var(--border)" }}>
+                    <span className="text-[13px] font-semibold text-foreground flex-1">{o.date}</span>
+                    <span className="text-[13px] mr-3" style={{ color: "var(--muted-foreground)" }}>{o.range}</span>
+                    <button onClick={() => setOverrides(v => v.filter(x => x.id !== o.id))}>
+                      <Trash2 size={15} strokeWidth={1.75} style={{ color: "#dc2626" }} />
+                    </button>
+                  </div>
+                ))}
+                <div className="px-4 py-3" style={{ borderTop: "1px solid var(--border)" }}>
+                  <button className="flex items-center gap-1.5" style={{ color: "#0080FF" }}>
+                    <Plus size={13} strokeWidth={2.5} />
+                    <span className="text-[13px] font-semibold">Add Override</span>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Booking Preferences */}
+          <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border)", background: "var(--raised)" }}>
+            <button onClick={() => setBookingOpen(v => !v)} className="flex items-start gap-3 w-full px-4 py-3.5 outline-none">
+              <div className="flex-1 text-left">
+                <p className="text-[15px] font-bold text-foreground">Booking Preferences</p>
+                <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>Personal buffer times and booking limits</p>
+              </div>
+              <ChevronDown size={15} strokeWidth={2} className="text-muted-foreground shrink-0 mt-0.5"
+                style={{ transform: bookingOpen ? "rotate(0deg)" : "rotate(-90deg)", transition: "transform 0.2s ease" }} />
+            </button>
+            {bookingOpen && <div className="flex flex-col gap-4 px-4 pb-4" style={{ borderTop: "1px solid var(--border)", paddingTop: 16 }}>
+              <div>
+                <p className="text-[13px] font-semibold text-foreground mb-1.5 flex items-center gap-1">
+                  Minimum Notice <Info size={11} strokeWidth={2} className="text-muted-foreground" />
+                </p>
+                <div className="flex items-center gap-2">
+                  <Stepper value={minNotice} onChange={setMinNotice} />
+                  <div className="relative flex-1">
+                    <select value={minUnit} onChange={(e) => setMinUnit(e.target.value)}
+                      className="w-full appearance-none px-3.5 py-2 rounded-xl text-[14px] text-foreground outline-none pr-8"
+                      style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+                      {["Minutes", "Hours", "Days"].map(o => <option key={o}>{o}</option>)}
+                    </select>
+                    <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {([["Buffer Before", bufBefore, setBufBefore], ["Buffer After", bufAfter, setBufAfter]] as [string, string, (v: string) => void][]).map(([lbl, val, set]) => (
+                  <div key={lbl}>
+                    <p className="text-[13px] font-semibold text-foreground mb-1.5">{lbl}</p>
+                    <div className="relative">
+                      <select value={val} onChange={(e) => set(e.target.value)}
+                        className="w-full appearance-none px-3 py-2 rounded-xl text-[13px] text-foreground outline-none pr-7"
+                        style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+                        {["No buffer", "5 min", "10 min", "15 min", "30 min"].map(o => <option key={o}>{o}</option>)}
+                      </select>
+                      <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div>
+                <p className="text-[13px] font-semibold text-foreground mb-1.5">Max Meetings Per Day</p>
+                <div className="flex items-center gap-2.5">
+                  <Stepper value={maxMtg} onChange={setMaxMtg} min={1} />
+                  <span className="text-[14px] font-semibold" style={{ color: "#0080FF" }}>meetings</span>
+                </div>
+              </div>
+            </div>}
+          </div>
+
+          {/* Blu Preferences */}
+          <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border)", background: "var(--raised)" }}>
+            <button onClick={() => setBluOpen(v => !v)} className="flex items-center gap-3 w-full px-4 py-3.5 outline-none">
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+                <CalendarDays size={17} strokeWidth={1.75} className="text-foreground" />
+              </div>
+              <div className="flex-1 text-left">
+                <p className="text-[14px] font-bold text-foreground">Blu Preferences</p>
+                <p className="text-[11px]" style={{ color: "var(--muted-foreground)" }}>How Blu handles scheduling on your behalf</p>
+              </div>
+              <ChevronDown size={15} strokeWidth={2} className="text-muted-foreground shrink-0"
+                style={{ transform: bluOpen ? "rotate(0deg)" : "rotate(-90deg)", transition: "transform 0.2s ease" }} />
+            </button>
+            {bluOpen && <div style={{ borderTop: "1px solid var(--border)" }}>
+              <div className="flex items-center gap-3 px-4 py-3.5">
+                <p className="flex-1 text-[13px] font-semibold text-foreground flex items-center gap-1">
+                  Auto-detect scheduling discussions <Info size={11} strokeWidth={2} className="text-muted-foreground shrink-0" />
+                </p>
+                <Toggle value={autoDetect} onChange={setAutoDetect} />
+              </div>
+              <div style={{ height: 1, background: "var(--border)" }} />
+              <div className="flex items-center px-4 py-3">
+                <p className="flex-1 text-[13px] font-semibold text-foreground">Default meeting duration</p>
+                <InlineSelect value={duration} onChange={setDuration} options={["15 min", "30 min", "45 min", "60 min", "90 min"]} />
+              </div>
+              <div style={{ height: 1, background: "var(--border)" }} />
+              <div className="flex items-center px-4 py-3">
+                <p className="flex-1 text-[13px] font-semibold text-foreground">Time slots to suggest</p>
+                <InlineSelect value={slots} onChange={setSlots} options={["1 slot", "2 slots", "3 slots", "4 slots", "5 slots"]} />
+              </div>
+              <div style={{ height: 1, background: "var(--border)" }} />
+              <div className="flex items-center gap-3 px-4 py-3.5">
+                <p className="flex-1 text-[13px] font-semibold text-foreground flex items-center gap-1">
+                  Notify me when meetings are booked <Info size={11} strokeWidth={2} className="text-muted-foreground shrink-0" />
+                </p>
+                <Toggle value={notifyBooked} onChange={setNotifyBooked} />
+              </div>
+            </div>}
+          </div>
+
+          {/* Out of Office */}
+          <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border)", background: "var(--raised)" }}>
+            <button onClick={() => setOooOpen(v => !v)} className="flex items-start gap-3 w-full px-4 py-3.5 outline-none">
+              <div className="flex-1 text-left">
+                <p className="text-[15px] font-bold text-foreground">Out of Office</p>
+                <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>Block a date range when you're unavailable for meetings.</p>
+              </div>
+              <ChevronDown size={15} strokeWidth={2} className="text-muted-foreground shrink-0 mt-0.5"
+                style={{ transform: oooOpen ? "rotate(0deg)" : "rotate(-90deg)", transition: "transform 0.2s ease" }} />
+            </button>
+            {oooOpen && <div className="flex flex-col gap-4 px-4 pb-4" style={{ borderTop: "1px solid var(--border)", paddingTop: 16 }}>
+              {(["Start Date", "End Date"] as const).map((lbl) => {
+                const val  = lbl === "Start Date" ? oooStart : oooEnd;
+                const setV = lbl === "Start Date" ? setOooStart : setOooEnd;
+                return (
+                  <div key={lbl}>
+                    <p className="text-[13px] font-semibold text-foreground mb-1.5">{lbl}</p>
+                    <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl" style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+                      <Calendar size={15} strokeWidth={1.75} className="text-muted-foreground shrink-0" />
+                      <input type="date" value={val} onChange={(e) => setV(e.target.value)}
+                        className="flex-1 bg-transparent text-[14px] text-foreground outline-none" />
+                    </div>
+                  </div>
+                );
+              })}
+              <div>
+                <p className="text-[13px] font-semibold text-foreground mb-1.5">Reason (optional)</p>
+                <input className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none"
+                  style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}
+                  placeholder="e.g., Vacation, Conference"
+                  value={oooReason} onChange={(e) => setOooReason(e.target.value)} />
+              </div>
+            </div>}
+          </div>
+
+        </div>
+      </ScrollFade>
+      <SaveButton />
+    </PageContainer>
+  );
+}
+
+function BrandAIPage() {
+  const [profileOpen,   setProfileOpen]   = useState(false);
+  const [kbOpen,        setKbOpen]        = useState(false);
+  const [companyName,   setCompanyName]   = useState("");
+  const [website,       setWebsite]       = useState("");
+  const [products,      setProducts]      = useState("");
+  const [useCases,      setUseCases]      = useState("");
+  const [about,         setAbout]         = useState("");
+  const [competitors,   setCompetitors]   = useState("");
+  const [objections,    setObjections]    = useState("");
+  const [mission,       setMission]       = useState("");
+  const [goals,         setGoals]         = useState("");
+
+  function FieldInput({ label, value, onChange, placeholder }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string }) {
+    return (
+      <div>
+        <p className="text-[14px] font-semibold text-foreground mb-1.5">{label}</p>
+        <input className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none"
+          style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}
+          placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)} />
+      </div>
+    );
+  }
+
+  function FieldArea({ label, value, onChange, placeholder }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string }) {
+    return (
+      <div>
+        <p className="text-[14px] font-semibold text-foreground mb-1.5">{label}</p>
+        <textarea className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none resize-none"
+          style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}
+          placeholder={placeholder} rows={3} value={value} onChange={(e) => onChange(e.target.value)} />
+      </div>
+    );
+  }
+
+  function CollapsibleCard({ icon, title, open, onToggle, children }: {
+    icon: React.ReactNode; title: string; open: boolean; onToggle: () => void; children: React.ReactNode;
+  }) {
+    return (
+      <div className="rounded-2xl overflow-hidden" style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
+        <button onClick={onToggle} className="flex items-center gap-3 w-full px-4 py-3.5 text-left">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+            style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+            {icon}
+          </div>
+          <span className="flex-1 text-[15px] font-bold text-foreground">{title}</span>
+          <ChevronDown size={16} strokeWidth={2} className="text-muted-foreground shrink-0 transition-transform duration-200"
+            style={{ transform: open ? "rotate(0deg)" : "rotate(-90deg)" }} />
+        </button>
+        {open && (
+          <>
+            <div style={{ height: 1, background: "var(--border)" }} />
+            <div className="flex flex-col gap-4 px-4 py-4">
+              {children}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <PageContainer>
+      <PageHeader title="Brand & AI" />
+      <ScrollFade className="px-4 pb-4">
+        <div className="flex flex-col gap-3 pt-2">
+
+          <CollapsibleCard
+            icon={<Building2 size={17} strokeWidth={1.75} className="text-foreground" />}
+            title="Company Profile"
+            open={profileOpen}
+            onToggle={() => setProfileOpen(v => !v)}
+          >
+            <FieldInput  label="Company name"       value={companyName}  onChange={setCompanyName}  placeholder="e.g., Acme Inc." />
+            <FieldInput  label="Website"            value={website}      onChange={setWebsite}      placeholder="https://yourbrand.com" />
+            <FieldArea   label="Products & services" value={products}    onChange={setProducts}     placeholder="List your main products or services" />
+            <FieldArea   label="Use cases"          value={useCases}     onChange={setUseCases}     placeholder="How customers use your product" />
+            <FieldArea   label="About your company" value={about}        onChange={setAbout}        placeholder="Your company story and what sets you apart" />
+            <FieldInput  label="Competitors"        value={competitors}  onChange={setCompetitors}  placeholder="Competitor A, Competitor B, Competitor C" />
+            <FieldArea   label="Common objections"  value={objections}   onChange={setObjections}   placeholder="Objections your sales team hears most" />
+            <FieldArea   label="Mission & values"   value={mission}      onChange={setMission}      placeholder="Your company mission and core values" />
+            <FieldArea   label="Goals"              value={goals}        onChange={setGoals}        placeholder="Key business goals" />
+          </CollapsibleCard>
+
+          <CollapsibleCard
+            icon={<BookOpen size={17} strokeWidth={1.75} className="text-foreground" />}
+            title="Knowledge Base"
+            open={kbOpen}
+            onToggle={() => setKbOpen(v => !v)}
+          >
+            <div className="flex items-start gap-3">
+              <p className="flex-1 text-[13px] leading-relaxed" style={{ color: "var(--muted-foreground)" }}>
+                Provide documentation, websites, or text snippets to help Blu understand your product and company.
+              </p>
+              <button className="flex items-center gap-1.5 px-4 py-2.5 rounded-full text-[13px] font-semibold text-white shrink-0"
+                style={{ background: "#0080FF" }}>
+                <Plus size={14} strokeWidth={2.5} /> Add Source
+              </button>
+            </div>
+            <p className="text-[13px]" style={{ color: "var(--muted-foreground)" }}>No sources added yet.</p>
+          </CollapsibleCard>
+
+        </div>
+      </ScrollFade>
+      <SaveButton />
+    </PageContainer>
+  );
+}
+
 // ─── Router ───────────────────────────────────────────────────────────────────
 
 const PAGES: Record<string, React.FC> = {
@@ -593,6 +1301,9 @@ const PAGES: Record<string, React.FC> = {
   locale:       LocalePage,
   notifications: NotificationsPage,
   permissions:  PermissionsPage,
+  workspace:    WorkspacePage,
+  brandai:      BrandAIPage,
+  meetings:     MeetingsPage,
 };
 
 export default function SettingsSectionPage({ params }: { params: Promise<{ section: string }> }) {

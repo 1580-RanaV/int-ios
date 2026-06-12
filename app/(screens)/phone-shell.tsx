@@ -64,14 +64,16 @@ const NOTIF = {
 
 export default function PhoneShell({ children }: { children: React.ReactNode }) {
   const [preview,      setPreview]      = useState(false);
-  const [dark,         setDark]         = useState(() =>
-    typeof window !== "undefined" && localStorage.getItem("phoneDark") === "1"
-  );
+  const [dark,         setDark]         = useState(false);
   const [scale,        setScale]        = useState(1);
   const [notifType,    setNotifType]    = useState<NotifType | null>(null);
   const [notifLeaving, setNotifLeaving] = useState(false);
   const [loadVisible,  setLoadVisible]  = useState(false);
   const notifTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setDark(localStorage.getItem("phoneDark") === "1");
+  }, []);
 
   useEffect(() => {
     const CONTROLS_H = 56;
@@ -217,7 +219,7 @@ export default function PhoneShell({ children }: { children: React.ReactNode }) 
         </button>
 
         <button onClick={() => setPreview((p) => !p)} className={ctrlBase}
-          style={{ background: preview ? "#3b82f6" : "#ffffff", color: preview ? "#ffffff" : "#222326", border: `1px solid ${preview ? "#3b82f6" : "#d8dae5"}` }}>
+          style={{ background: preview ? "#0080FF" : "#ffffff", color: preview ? "#ffffff" : "#222326", border: `1px solid ${preview ? "#0080FF" : "#d8dae5"}` }}>
           <Smartphone size={14} />
           {preview ? "Exit" : "Preview"}
         </button>

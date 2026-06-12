@@ -33,7 +33,7 @@ function Waveform({ progress }: { progress: number }) {
           style={{
             width: 2,
             height: `${(h / 9) * 100}%`,
-            background: i < filled ? "#1d4ed8" : "rgba(59,130,246,0.25)",
+            background: i < filled ? "#0080FF" : "rgba(0,128,255,0.25)",
             transition: "background 0.1s",
           }}
         />
@@ -202,7 +202,7 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ slug: 
               <button
                 className="w-14 h-14 rounded-full flex items-center justify-center relative"
                 style={{
-                  background: "#1d4ed8",
+                  background: "#0080FF",
                   transition: "transform 0.18s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.18s ease",
                   boxShadow: "0 4px 20px rgba(29,78,216,0.5)",
                 }}
@@ -244,7 +244,7 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ slug: 
               }}
             >
               <div className="relative rounded-full" style={{ height: 3, background: "rgba(255,255,255,0.28)" }}>
-                <div className="absolute left-0 top-0 h-full rounded-full" style={{ width: `${progress * 100}%`, background: "#3b82f6" }} />
+                <div className="absolute left-0 top-0 h-full rounded-full" style={{ width: `${progress * 100}%`, background: "#0080FF" }} />
                 <div
                   className="absolute top-1/2 rounded-full bg-white"
                   style={{ left: `${progress * 100}%`, transform: "translate(-50%,-50%)", width: 11, height: 11, boxShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
@@ -378,9 +378,9 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ slug: 
                         <div key={i} className="flex gap-2.5 items-start">
                           <div
                             className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                            style={{ background: "rgba(59,130,246,0.1)" }}
+                            style={{ background: "rgba(0,128,255,0.1)" }}
                           >
-                            <span className="text-[10px] font-bold" style={{ color: "#1d4ed8" }}>{i + 1}</span>
+                            <span className="text-[10px] font-bold" style={{ color: "#0080FF" }}>{i + 1}</span>
                           </div>
                           <p className="text-[13px] text-foreground leading-relaxed">{t}</p>
                         </div>
@@ -416,7 +416,7 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ slug: 
                           <div
                             className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5"
                             style={{
-                              background: item.done ? "#1d4ed8" : "transparent",
+                              background: item.done ? "#0080FF" : "transparent",
                               border: item.done ? "none" : "1.5px solid var(--border)",
                             }}
                           >
@@ -516,7 +516,7 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ slug: 
                       <div key={i} className="flex gap-3 items-start">
                         <div
                           className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
-                          style={{ background: "#1d4ed8" }}
+                          style={{ background: "#0080FF" }}
                         >
                           <span className="text-[11px] font-bold text-white">{line.initials}</span>
                         </div>
@@ -525,7 +525,7 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ slug: 
                             <span className="text-[13px] font-bold text-foreground">{line.speaker}</span>
                             <span
                               className="text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0"
-                              style={{ background: "rgba(59,130,246,0.12)", color: "#1d4ed8" }}
+                              style={{ background: "rgba(0,128,255,0.12)", color: "#0080FF" }}
                             >
                               {line.time}
                             </span>
@@ -575,7 +575,7 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ slug: 
                         className="flex items-center gap-1.5 px-3.5 py-2 rounded-full"
                         style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
                       >
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "#1d4ed8", flexShrink: 0 }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "#0080FF", flexShrink: 0 }}>
                           <path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
                         </svg>
                         <span className="text-[12px] font-medium text-foreground">{q}</span>
@@ -600,7 +600,7 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ slug: 
                     <button
                       onClick={sendBlu}
                       className="w-9 h-9 flex items-center justify-center rounded-full shrink-0"
-                      style={{ background: bluInput.trim() ? "#1d4ed8" : "var(--secondary)" }}
+                      style={{ background: bluInput.trim() ? "#0080FF" : "var(--secondary)" }}
                     >
                       <Send size={15} strokeWidth={1.75} style={{ color: bluInput.trim() ? "white" : "var(--muted-foreground)" }} />
                     </button>
@@ -617,7 +617,7 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ slug: 
                         {msg.role === "blu" && (
                           <div
                             className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                            style={{ background: "#1d4ed8" }}
+                            style={{ background: "#0080FF" }}
                           >
                             <Bot size={14} strokeWidth={1.75} className="text-white" />
                           </div>
@@ -625,7 +625,7 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ slug: 
                         <div
                           className="max-w-[78%] px-3.5 py-2.5 text-[13px] leading-relaxed"
                           style={{
-                            background: msg.role === "user" ? "#1d4ed8" : "var(--raised)",
+                            background: msg.role === "user" ? "#0080FF" : "var(--raised)",
                             color: msg.role === "user" ? "white" : "var(--foreground)",
                             border: msg.role === "user" ? "none" : "1px solid var(--border)",
                             borderRadius: 18,
@@ -656,7 +656,7 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ slug: 
                     <button
                       onClick={sendBlu}
                       className="w-9 h-9 flex items-center justify-center rounded-full shrink-0"
-                      style={{ background: bluInput.trim() ? "#1d4ed8" : "var(--secondary)" }}
+                      style={{ background: bluInput.trim() ? "#0080FF" : "var(--secondary)" }}
                     >
                       <Send size={15} strokeWidth={1.75} style={{ color: bluInput.trim() ? "white" : "var(--muted-foreground)" }} />
                     </button>

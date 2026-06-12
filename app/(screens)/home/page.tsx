@@ -39,7 +39,7 @@ type Stat = {
 };
 
 const salesStats: Stat[] = [
-  { icon: Users,        label: "Users",    value: 20,  color: "#1d4ed8", bg: "rgba(59,130,246,0.10)",  href: "/users"    },
+  { icon: Users,        label: "Users",    value: 20,  color: "#0080FF", bg: "rgba(0,128,255,0.10)",  href: "/users"    },
   { icon: Building2,    label: "Accounts", value: 51,  color: "#6d28d9", bg: "rgba(139,92,246,0.10)",  href: "/accounts" },
   { icon: CheckSquare2, label: "Tasks",    value: 0,   color: "#15803d", bg: "rgba(16,185,129,0.10)",  href: "/tasks"    },
   { icon: Handshake,    label: "Deals",    value: 0,   color: "#f59e0b", bg: "rgba(245,158,11,0.10)",  href: "/deals"    },
@@ -47,7 +47,7 @@ const salesStats: Stat[] = [
 ];
 
 const marketingStats: Stat[] = [
-  { icon: Route,        label: "Active Journeys",     value: 30,      color: "#1d4ed8", bg: "rgba(59,130,246,0.10)",  href: "/journeys"     },
+  { icon: Route,        label: "Active Journeys",     value: 30,      color: "#0080FF", bg: "rgba(0,128,255,0.10)",  href: "/journeys"     },
   { icon: FlaskConical, label: "Active Experiences",  value: 0,       color: "#6d28d9", bg: "rgba(139,92,246,0.10)",  href: "/experiences"  },
   { icon: TrendingUp,   label: "Revenue",             value: "$0.00", color: "#15803d", bg: "rgba(16,185,129,0.10)"  },
   { icon: Users,        label: "Users",               value: "3.94K", color: "#f59e0b", bg: "rgba(245,158,11,0.10)", change: { label: "-37.21%", positive: false } },
@@ -63,7 +63,7 @@ const ANALYTICS_CATEGORIES = [
     label: "Traffic",
     subtitle: "Sources, pages, geography, devices",
     icon: Eye,
-    color: "#1d4ed8",
+    color: "#0080FF",
     total: "3.94K",
     totalLabel: "Total users",
     valueLabel: "Users",
