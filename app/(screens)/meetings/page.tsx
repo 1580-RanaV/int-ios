@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import {
   CalendarDays, Plus, Search,
   Video, ChevronRight, Users, Clock, Timer, Copy, Pencil, X, ChevronDown,
+  Mic, Phone, Link2, Upload,
 } from "lucide-react";
 import { COMING_UP, PAST_MEETINGS, BOOKING_TYPES, STATUS_STYLE } from "./_data";
 import type { MeetingStatus, BookingType } from "./_data";
@@ -94,6 +95,41 @@ function BottomSheet({ closing, onClose, children }: { closing: boolean; onClose
         {children}
       </div>
     </>
+  );
+}
+
+// ── New Meeting Sheet ─────────────────────────────────────────────────────────
+
+const NEW_MEETING_OPTIONS = [
+  { icon: Mic,    label: "Record Meeting",  sub: "Start recording audio now"        },
+  { icon: Phone,  label: "Phone Call",      sub: "Record a phone conversation"       },
+  { icon: Link2,  label: "Capture Meeting", sub: "Blu bot joins your live meeting"   },
+  { icon: Upload, label: "Upload Audio",    sub: "Upload a recorded audio file"      },
+];
+
+function NewMeetingSheet({ closing, onClose }: { closing: boolean; onClose: () => void }) {
+  return (
+    <BottomSheet closing={closing} onClose={onClose}>
+      <div className="px-5 pt-3 pb-2 shrink-0">
+        <p className="text-lg font-bold text-foreground">New Meeting</p>
+      </div>
+      <div className="flex flex-col px-4 pb-8 gap-2">
+        {NEW_MEETING_OPTIONS.map(({ icon: Icon, label, sub }) => (
+          <button key={label} onClick={onClose}
+            className="flex items-center gap-4 w-full px-4 py-3.5 rounded-2xl text-left"
+            style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+              style={{ background: "var(--secondary)" }}>
+              <Icon size={19} strokeWidth={1.75} className="text-foreground" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[15px] font-bold text-foreground">{label}</p>
+              <p className="text-[12px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>{sub}</p>
+            </div>
+          </button>
+        ))}
+      </div>
+    </BottomSheet>
   );
 }
 
@@ -240,12 +276,16 @@ export default function MeetingsScreen() {
   const [editingBooking, setEditingBooking] = useState<BookingType | null>(null);
   const router = useRouter();
   const [editClosing,    setEditClosing]    = useState(false);
+  const [newMtgOpen,     setNewMtgOpen]     = useState(false);
+  const [newMtgClosing,  setNewMtgClosing]  = useState(false);
 
   const openEdit  = (b: BookingType) => { setEditClosing(false); setEditingBooking(b); };
   const closeEdit = () => {
     setEditClosing(true);
     setTimeout(() => { setEditingBooking(null); setEditClosing(false); }, 320);
   };
+  const openNewMtg  = () => { setNewMtgClosing(false); setNewMtgOpen(true); };
+  const closeNewMtg = () => { setNewMtgClosing(true); setTimeout(() => { setNewMtgOpen(false); setNewMtgClosing(false); }, 320); };
 
   useEffect(() => { setScrolled(false); }, []);
 
@@ -285,6 +325,7 @@ export default function MeetingsScreen() {
             <button
               className="w-8 h-8 flex items-center justify-center rounded-full"
               style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
+              onClick={openNewMtg}
             >
               <Plus size={16} className="text-foreground" strokeWidth={1.75} />
             </button>
@@ -550,6 +591,9 @@ export default function MeetingsScreen() {
           onClose={closeEdit}
         />
       )}
+
+      {/* New meeting sheet */}
+      {newMtgOpen && <NewMeetingSheet closing={newMtgClosing} onClose={closeNewMtg} />}
     </div>
   );
 }

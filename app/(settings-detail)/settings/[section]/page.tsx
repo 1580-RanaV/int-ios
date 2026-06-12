@@ -182,8 +182,8 @@ function ScrollFade({ children, className }: { children: React.ReactNode; classN
       </div>
       <div className="absolute top-0 left-0 right-0 h-8 pointer-events-none z-10 transition-opacity duration-300"
         style={{ opacity: scrolled ? 1 : 0, background: "linear-gradient(to bottom, var(--page), transparent)" }} />
-      <div className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none z-10 transition-opacity duration-300"
-        style={{ opacity: atBottom ? 0 : 1, background: "linear-gradient(to top, var(--page) 0%, var(--page) 15%, transparent 100%)" }} />
+      <div className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none z-10 transition-opacity duration-300"
+        style={{ opacity: atBottom ? 0 : 1, background: "linear-gradient(to top, var(--page) 0%, var(--page) 10%, transparent 100%)" }} />
     </div>
   );
 }
@@ -211,10 +211,7 @@ function AppearancePage() {
                 className="flex items-center gap-3.5 w-full px-3.5 py-3 rounded-2xl text-left"
                 style={{ background: active ? "#0080FF" : "var(--raised)", border: `1px solid ${active ? "#0080FF" : "var(--border)"}` }}
               >
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: active ? "rgba(255,255,255,0.15)" : "var(--secondary)" }}>
-                  <Icon size={17} strokeWidth={1.75} style={{ color: active ? "#fff" : "var(--icon)" }} />
-                </div>
+                <Icon size={22} strokeWidth={2} style={{ color: active ? "#fff" : "var(--icon)", flexShrink: 0 }} />
                 <div className="flex-1">
                   <p className="text-sm font-semibold" style={{ color: active ? "#fff" : "var(--foreground)" }}>{label}</p>
                   <p className="text-xs mt-0.5" style={{ color: active ? "rgba(255,255,255,0.65)" : "var(--muted-foreground)" }}>{sub}</p>
@@ -243,8 +240,7 @@ function ReportingPage() {
     <PageContainer>
       <PageHeader title="Reporting Period" />
       <ScrollFade className="px-4 pb-4">
-        <p className="text-[13px] text-muted-foreground mb-4 pt-2">Choose the default time window for reports and dashboards.</p>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 pt-2">
           {PERIODS.map(({ value, label }) => {
             const active = period === value;
             return (
@@ -273,8 +269,7 @@ function ConnectionsPage() {
     <PageContainer>
       <PageHeader title="Connections" />
       <ScrollFade className="px-4 pb-8">
-        <p className="text-[13px] text-muted-foreground mb-4 pt-2">Connect external services to sync your data.</p>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 pt-2">
           {[
             { src: "https://cdn.brandfetch.io/gmail.com/icon",          alt: "Gmail",           connected: gmailConn, toggle: () => setGmailConn(v => !v) },
             { src: "https://cdn.brandfetch.io/calendar.google.com/icon", alt: "Google Calendar", connected: gcalConn,  toggle: () => setGcalConn(v => !v)  },
@@ -317,9 +312,7 @@ function AccountPage() {
             <SectionLabel title="Trusted Devices" />
             <div className="rounded-2xl overflow-hidden" style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
               <div className="flex items-center gap-3.5 px-4 py-3.5">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
-                  <Smartphone size={16} strokeWidth={1.75} className="text-muted-foreground" />
-                </div>
+                <Smartphone size={22} strokeWidth={2} className="text-muted-foreground shrink-0" />
                 <div className="flex-1 min-w-0">
                   <p className="text-[14px] font-semibold text-foreground">This device</p>
                   <p className="text-[12px] text-muted-foreground mt-0.5">Now</p>
@@ -334,9 +327,7 @@ function AccountPage() {
           {/* Log out everywhere */}
           <button className="flex items-center gap-3 w-full px-4 py-3.5 rounded-2xl text-left"
             style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(190,18,60,0.08)" }}>
-              <LogOut size={16} strokeWidth={1.75} style={{ color: "#be123c" }} />
-            </div>
+            <LogOut size={20} strokeWidth={2} style={{ color: "#be123c", flexShrink: 0 }} />
             <span className="text-[14px] font-semibold" style={{ color: "#be123c" }}>Log out everywhere</span>
           </button>
 
@@ -344,9 +335,9 @@ function AccountPage() {
           <div>
             <SectionLabel title="Danger Zone" />
             <button className="flex items-center justify-center gap-2 w-full px-4 py-3.5 rounded-2xl"
-              style={{ background: "transparent", border: "1px solid rgba(190,18,60,0.35)" }}>
-              <Trash2 size={15} strokeWidth={1.75} style={{ color: "#be123c" }} />
-              <span className="text-[14px] font-semibold" style={{ color: "#be123c" }}>Delete account</span>
+              style={{ background: "#be123c", border: "none" }}>
+              <Trash2 size={15} strokeWidth={2} style={{ color: "#fff" }} />
+              <span className="text-[14px] font-semibold text-white">Delete account</span>
             </button>
           </div>
 
@@ -366,7 +357,7 @@ function ProfilePage() {
       <ScrollFade className="px-4 pb-4">
         <div className="flex flex-col gap-5 pt-2">
           <div className="flex flex-col items-center gap-3 pt-1">
-            <img src="/dp.png" alt="Rana V" className="w-20 h-20 rounded-full object-cover" style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.15)" }} />
+            <img src="/dp.png" alt="Rana V" className="w-28 h-28 rounded-full object-cover" style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.15)" }} />
             <button className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[12px] font-semibold"
               style={{ background: "rgba(0,128,255,0.08)", color: "#0080FF", border: "1px solid rgba(0,128,255,0.2)" }}>
               <ImageIcon size={13} strokeWidth={1.75} /> Upload
@@ -603,9 +594,7 @@ function PermissionsPage() {
             return (
               <div key={label} className="flex items-center gap-4 px-4 py-3.5 rounded-2xl"
                 style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--secondary)" }}>
-                  <Icon size={17} strokeWidth={1.8} className="text-muted-foreground" />
-                </div>
+                <Icon size={22} strokeWidth={2} className="text-muted-foreground shrink-0" />
                 <div className="flex-1 min-w-0">
                   <p className="text-[14px] font-semibold text-foreground">{label}</p>
                   <p className="text-[12px] mt-0.5 text-muted-foreground">{subtitle}</p>
@@ -630,45 +619,9 @@ function WorkspacePage() {
   const [filteredEmails, setFilteredEmails] = useState(["email@example.com"]);
   const [domain,         setDomain]         = useState("");
   const [domains,        setDomains]        = useState<string[]>([]);
-  const [inboxAI,        setInboxAI]        = useState(true);
-  const [signature,      setSignature]      = useState("");
-  const [fontFamily,     setFontFamily]     = useState("Arial");
-  const [fontSize,       setFontSize]       = useState("14px");
-  const [fontColor,      setFontColor]      = useState("#1F2937");
-  const [primaryColor,   setPrimaryColor]   = useState("#006EE0");
-  const [textColor,      setTextColor]      = useState("#1F2937");
-  const [physicalAddr,   setPhysicalAddr]   = useState(false);
-
-  const CATEGORIES = [
-    { name: "Comment",        sub: "Mentions and comments from tools (Docs, Notion...)", action: "Move to folder",     blue: false },
-    { name: "Notification",   sub: "Automated system emails (password resets, expiry...)", action: "Move to folder",  blue: false },
-    { name: "Meeting update", sub: "Calendar invites, time changes, cancellations",      action: "Move to folder",     blue: false },
-    { name: "Awaiting reply", sub: "You've replied, waiting on them",                    action: "Move to folder",     blue: false },
-    { name: "Actioned",       sub: "Conversations that appear finished",                 action: "Move to folder",     blue: false },
-    { name: "Marketing",      sub: "Newsletters, promos, cold outreach",                 action: "Move to folder",     blue: false },
-    { name: "To respond",     sub: "Emails needing your reply",                          action: "Label & keep",       blue: true  },
-    { name: "FYI",            sub: "Info only, no action needed",                        action: "Move to folder",     blue: false },
-  ];
 
   const addFilterEmail = () => { if (filterEmail.trim()) { setFilteredEmails(v => [...v, filterEmail.trim()]); setFilterEmail(""); } };
   const addDomain      = () => { if (domain.trim()) { setDomains(v => [...v, domain.trim()]); setDomain(""); } };
-
-  function ColorRow({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
-    return (
-      <div>
-        <p className="text-[13px] font-semibold text-foreground mb-1.5">{label}</p>
-        <div className="flex items-center gap-2.5">
-          <div className="w-11 h-10 rounded-xl shrink-0 relative overflow-hidden cursor-pointer" style={{ border: "1px solid var(--border)" }}>
-            <div className="absolute inset-0" style={{ background: value }} />
-            <input type="color" value={value} onChange={(e) => onChange(e.target.value)} className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />
-          </div>
-          <input className="flex-1 px-3.5 py-2.5 rounded-xl text-[14px] font-mono text-foreground outline-none"
-            style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-            value={value} onChange={(e) => onChange(e.target.value)} />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <PageContainer>
@@ -676,204 +629,129 @@ function WorkspacePage() {
       <ScrollFade className="px-4 pb-4">
         <div className="flex flex-col gap-5 pt-2">
 
-          {/* Logo */}
-          <div>
-            <SectionLabel title="Logo" />
-            <div className="flex flex-col items-center gap-3 pt-2 pb-1">
-              <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
-                <span className="text-2xl font-bold text-foreground">D</span>
+          {/* Identity card: logo + name + website */}
+          <div className="rounded-2xl overflow-hidden" style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
+            {/* Logo row */}
+            <div className="flex items-center gap-3.5 px-4 py-3.5">
+              <div className="w-11 h-11 rounded-full flex items-center justify-center shrink-0"
+                style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+                <span className="text-lg font-bold text-foreground">D</span>
               </div>
-              <button className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[13px] font-semibold"
-                style={{ color: "#0080FF", border: "1px solid #0080FF", background: "transparent" }}>
-                <ImageIcon size={13} strokeWidth={1.75} /> Upload
+              <div className="flex-1 min-w-0">
+                <p className="text-[14px] font-semibold text-foreground">Workspace logo</p>
+                <p className="text-[12px] mt-0.5 text-muted-foreground">JPG, PNG or SVG</p>
+              </div>
+              <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold shrink-0"
+                style={{ color: "#0080FF", border: "1px solid rgba(0,128,255,0.25)", background: "rgba(0,128,255,0.06)" }}>
+                <ImageIcon size={12} strokeWidth={2} /> Upload
               </button>
             </div>
-          </div>
 
-          {/* Basic info */}
-          <div className="flex flex-col gap-4">
-            <div>
-              <p className="text-[13px] font-semibold text-foreground mb-1.5">Workspace name</p>
-              <input className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none"
-                style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-                value={wsName} onChange={(e) => setWsName(e.target.value)} />
+            <div style={{ height: 1, background: "var(--border)", marginInline: 16 }} />
+
+            {/* Workspace name */}
+            <div className="px-4 pt-3 pb-2.5">
+              <p className="text-[10px] font-bold uppercase tracking-wider mb-1.5 text-muted-foreground">Workspace name</p>
+              <input
+                className="w-full text-[14px] font-medium text-foreground outline-none bg-transparent"
+                value={wsName} onChange={(e) => setWsName(e.target.value)}
+                placeholder="Your workspace name"
+              />
             </div>
-            <div>
-              <p className="text-[13px] font-semibold text-foreground mb-1.5">Website</p>
-              <input className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none"
-                style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
+
+            <div style={{ height: 1, background: "var(--border)", marginInline: 16 }} />
+
+            {/* Website */}
+            <div className="px-4 pt-3 pb-2.5">
+              <p className="text-[10px] font-bold uppercase tracking-wider mb-1.5 text-muted-foreground">Website</p>
+              <input
+                className="w-full text-[14px] font-medium text-foreground outline-none bg-transparent"
+                value={website} onChange={(e) => setWebsite(e.target.value)}
                 placeholder="https://yourcompany.com"
-                value={website} onChange={(e) => setWebsite(e.target.value)} />
+              />
             </div>
           </div>
 
           {/* Email Sync */}
-          <div className="flex flex-col gap-3">
-            <div>
-              <SectionLabel title="Email Sync" blue />
-              <p className="text-[12px] px-1 -mt-0.5" style={{ color: "var(--muted-foreground)" }}>Which emails to sync from your mailbox</p>
-            </div>
-            <SelectField label="Sync mode" value={syncMode} onChange={setSyncMode}
+          <div className="flex flex-col gap-2">
+            <SectionLabel title="Email Sync" />
+            <PickerDrawer label="Sync mode" value={syncMode} onChange={setSyncMode}
               options={["External only", "All emails", "Internal only"]} />
-            <SelectField label="Sync history" value={syncHistory} onChange={setSyncHistory}
+            <PickerDrawer label="Sync history" value={syncHistory} onChange={setSyncHistory}
               options={["Last 30 days", "Last 90 days", "Last 6 months", "Last year", "All time"]} />
           </div>
 
           {/* Mail Filtering */}
-          <div className="flex flex-col gap-3">
-            <div>
-              <SectionLabel title="Mail Filtering" blue />
-              <p className="text-[12px] px-1 -mt-0.5" style={{ color: "var(--muted-foreground)" }}>Control which emails are included or excluded</p>
-            </div>
-            <SelectField label="Filter type" value={filterType} onChange={setFilterType}
+          <div className="flex flex-col gap-2">
+            <SectionLabel title="Mail Filtering" />
+            <PickerDrawer label="Filter type" value={filterType} onChange={setFilterType}
               options={["Blocklist — Sync everything except these", "Allowlist — Only sync these", "No filter"]} />
-            <div>
-              <p className="text-[13px] font-semibold text-foreground mb-1.5">Blocked addresses</p>
-              <div className="flex gap-2">
-                <input className="flex-1 px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none"
-                  style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-                  placeholder="example.com or user@example.com"
-                  value={filterEmail} onChange={(e) => setFilterEmail(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && addFilterEmail()} />
-                <button onClick={addFilterEmail} className="px-4 py-2.5 rounded-xl text-[14px] font-semibold text-white shrink-0" style={{ background: "#0080FF" }}>Add</button>
-              </div>
-              {filteredEmails.length > 0 && (
-                <div className="flex flex-col gap-1.5 mt-2">
-                  {filteredEmails.map((email) => (
-                    <div key={email} className="flex items-center justify-between px-3.5 py-2.5 rounded-xl"
-                      style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
-                      <span className="text-[13px] text-foreground">{email}</span>
-                      <button onClick={() => setFilteredEmails(v => v.filter(e => e !== email))}>
-                        <X size={13} strokeWidth={2} className="text-muted-foreground" />
-                      </button>
-                    </div>
-                  ))}
+            <div className="rounded-2xl" style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
+              <div className="px-4 py-3.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider mb-2.5 text-muted-foreground">Blocked addresses</p>
+                <div className="flex gap-2">
+                  <input
+                    className="flex-1 px-3 py-2 rounded-xl text-[13px] text-foreground outline-none"
+                    style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}
+                    placeholder="example.com or user@example.com"
+                    value={filterEmail} onChange={(e) => setFilterEmail(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && addFilterEmail()}
+                  />
+                  <button onClick={addFilterEmail}
+                    className="px-3.5 py-2 rounded-xl text-[13px] font-semibold text-white shrink-0"
+                    style={{ background: "#0080FF" }}>Add</button>
                 </div>
-              )}
+                {filteredEmails.length > 0 && (
+                  <div className="flex flex-col gap-1.5 mt-2.5">
+                    {filteredEmails.map((email) => (
+                      <div key={email} className="flex items-center justify-between px-3 py-2 rounded-xl"
+                        style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+                        <span className="text-[13px] text-foreground">{email}</span>
+                        <button onClick={() => setFilteredEmails(v => v.filter(e => e !== email))}>
+                          <X size={13} strokeWidth={2} className="text-muted-foreground" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
           {/* Company Domains */}
-          <div className="flex flex-col gap-3">
-            <div>
-              <SectionLabel title="Company Domains" />
-              <p className="text-[12px] px-1 -mt-0.5" style={{ color: "var(--muted-foreground)" }}>Domains used to identify internal team members</p>
-            </div>
-            <div>
-              <div className="flex gap-2">
-                <input className="flex-1 px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none"
-                  style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-                  placeholder="company.com"
-                  value={domain} onChange={(e) => setDomain(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && addDomain()} />
-                <button onClick={addDomain} className="px-4 py-2.5 rounded-xl text-[14px] font-semibold text-white shrink-0" style={{ background: "#0080FF" }}>Add</button>
-              </div>
-              {domains.length === 0
-                ? <p className="text-[12px] px-1 mt-2" style={{ color: "var(--muted-foreground)" }}>No domains configured</p>
-                : (
-                  <div className="flex flex-col gap-1.5 mt-2">
-                    {domains.map((d) => (
-                      <div key={d} className="flex items-center justify-between px-3.5 py-2.5 rounded-xl"
-                        style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
-                        <span className="text-[13px] text-foreground">{d}</span>
-                        <button onClick={() => setDomains(v => v.filter(x => x !== d))}><X size={13} strokeWidth={2} className="text-muted-foreground" /></button>
-                      </div>
-                    ))}
-                  </div>
-                )
-              }
-            </div>
-          </div>
-
-          {/* Inbox Intelligence */}
-          <div className="flex flex-col gap-3">
-            <div>
-              <SectionLabel title="Inbox Intelligence" />
-              <p className="text-[12px] px-1 -mt-0.5" style={{ color: "var(--muted-foreground)" }}>AI-powered email categorization for your workspace</p>
-            </div>
-            <button onClick={() => setInboxAI(v => !v)}
-              className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-left w-full"
-              style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
-              <Mail size={17} strokeWidth={1.75} className="text-muted-foreground shrink-0" />
-              <span className="flex-1 text-[14px] font-semibold text-foreground">Inbox Intelligence</span>
-              <span className="text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0"
-                style={{ color: inboxAI ? "#15803d" : "var(--muted-foreground)", background: inboxAI ? "rgba(22,163,74,0.12)" : "var(--secondary)" }}>
-                {inboxAI ? "Enabled" : "Disabled"}
-              </span>
-            </button>
-            <div className="flex flex-col gap-2">
-              {CATEGORIES.map((cat) => (
-                <div key={cat.name} className="flex items-center gap-3 px-4 py-3 rounded-2xl"
-                  style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-semibold text-foreground">{cat.name}</p>
-                    <p className="text-[11px] mt-0.5 truncate" style={{ color: "var(--muted-foreground)" }}>{cat.sub}</p>
-                  </div>
-                  <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full shrink-0"
-                    style={{
-                      color:      cat.blue ? "#0080FF" : "var(--foreground)",
-                      background: cat.blue ? "rgba(0,128,255,0.08)" : "var(--secondary)",
-                      border:     `1px solid ${cat.blue ? "rgba(0,128,255,0.2)" : "var(--border)"}`,
-                    }}>
-                    {cat.action}
-                  </span>
+          <div className="flex flex-col gap-2">
+            <SectionLabel title="Company Domains" />
+            <div className="rounded-2xl" style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
+              <div className="px-4 py-3.5">
+                <div className="flex gap-2">
+                  <input
+                    className="flex-1 px-3 py-2 rounded-xl text-[13px] text-foreground outline-none"
+                    style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}
+                    placeholder="company.com"
+                    value={domain} onChange={(e) => setDomain(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && addDomain()}
+                  />
+                  <button onClick={addDomain}
+                    className="px-3.5 py-2 rounded-xl text-[13px] font-semibold text-white shrink-0"
+                    style={{ background: "#0080FF" }}>Add</button>
                 </div>
-              ))}
-            </div>
-            <button className="flex items-center gap-2 px-1">
-              <ExternalLink size={13} strokeWidth={1.75} style={{ color: "#0080FF" }} />
-              <span className="text-[13px] font-semibold" style={{ color: "#0080FF" }}>Manage inbox settings on web</span>
-            </button>
-          </div>
-
-          {/* Email Appearance */}
-          <div className="flex flex-col gap-3">
-            <div>
-              <SectionLabel title="Email Appearance" blue />
-              <p className="text-[12px] px-1 -mt-0.5" style={{ color: "var(--muted-foreground)" }}>Signature, branding, and CAN-SPAM compliance</p>
-            </div>
-            <div>
-              <p className="text-[13px] font-semibold text-foreground mb-1.5">Email Signature</p>
-              <textarea className="w-full px-3.5 py-2.5 rounded-xl text-[14px] text-foreground outline-none resize-none"
-                style={{ background: "var(--raised)", border: "1px solid var(--border)" }}
-                placeholder="Your email signature..." rows={3}
-                value={signature} onChange={(e) => setSignature(e.target.value)} />
-            </div>
-            <SelectField label="Font Family" value={fontFamily} onChange={setFontFamily}
-              options={["Arial", "Helvetica", "Georgia", "Times New Roman", "Verdana", "Courier New"]} />
-            <SelectField label="Font Size" value={fontSize} onChange={setFontSize}
-              options={["12px", "13px", "14px", "15px", "16px", "18px"]} />
-            <ColorRow label="Font Color" value={fontColor} onChange={setFontColor} />
-          </div>
-
-          {/* Email Branding */}
-          <div className="flex flex-col gap-3">
-            <SectionLabel title="Email Branding" blue />
-            <div>
-              <p className="text-[13px] font-semibold text-foreground mb-1.5">Email Logo (override)</p>
-              <div className="flex items-center gap-2.5">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
-                  <ImageIcon size={18} strokeWidth={1.5} className="text-muted-foreground" />
-                </div>
-                <button className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-[13px] font-semibold"
-                  style={{ color: "#0080FF", border: "1px solid #0080FF", background: "transparent" }}>
-                  <ImageIcon size={13} strokeWidth={1.75} /> Upload
-                </button>
+                {domains.length === 0
+                  ? <p className="text-[12px] mt-2 text-muted-foreground">No domains configured</p>
+                  : (
+                    <div className="flex flex-col gap-1.5 mt-2.5">
+                      {domains.map((d) => (
+                        <div key={d} className="flex items-center justify-between px-3 py-2 rounded-xl"
+                          style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+                          <span className="text-[13px] text-foreground">{d}</span>
+                          <button onClick={() => setDomains(v => v.filter(x => x !== d))}>
+                            <X size={13} strokeWidth={2} className="text-muted-foreground" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )
+                }
               </div>
-            </div>
-            <div className="flex flex-col gap-3">
-              <SectionLabel title="Email Colors" />
-              <ColorRow label="Primary" value={primaryColor} onChange={setPrimaryColor} />
-              <ColorRow label="Text" value={textColor} onChange={setTextColor} />
-            </div>
-            <div className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl"
-              style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
-              <div className="flex-1">
-                <p className="text-[13px] font-semibold text-foreground">Physical Address</p>
-                <p className="text-[11px] mt-0.5" style={{ color: "var(--muted-foreground)" }}>Required for CAN-SPAM compliance</p>
-              </div>
-              <Toggle value={physicalAddr} onChange={setPhysicalAddr} />
             </div>
           </div>
 
@@ -927,7 +805,7 @@ function MeetingsPage() {
   function Stepper({ value, onChange, min = 0 }: { value: number; onChange: (n: number) => void; min?: number }) {
     return (
       <div className="flex items-center rounded-xl overflow-hidden shrink-0" style={{ border: "1px solid var(--border)", background: "var(--secondary)" }}>
-        <span className="px-3 py-2 text-[14px] font-semibold text-foreground min-w-[2.5rem] text-center">{value}</span>
+        <span className="px-3 py-2 text-[14px] font-semibold text-foreground min-w-10 text-center">{value}</span>
         <div className="flex flex-col" style={{ borderLeft: "1px solid var(--border)" }}>
           <button onClick={() => onChange(value + 1)} className="px-2 py-0.5 flex items-center justify-center" style={{ borderBottom: "1px solid var(--border)" }}>
             <ChevronDown size={11} strokeWidth={2.5} className="text-muted-foreground" style={{ transform: "rotate(180deg)" }} />
@@ -1101,9 +979,7 @@ function MeetingsPage() {
           {/* Blu Preferences */}
           <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border)", background: "var(--raised)" }}>
             <button onClick={() => setBluOpen(v => !v)} className="flex items-center gap-3 w-full px-4 py-3.5 outline-none">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
-                <CalendarDays size={17} strokeWidth={1.75} className="text-foreground" />
-              </div>
+              <CalendarDays size={22} strokeWidth={2} className="text-foreground shrink-0" />
               <div className="flex-1 text-left">
                 <p className="text-[14px] font-bold text-foreground">Blu Preferences</p>
                 <p className="text-[11px]" style={{ color: "var(--muted-foreground)" }}>How Blu handles scheduling on your behalf</p>
@@ -1221,10 +1097,7 @@ function BrandAIPage() {
     return (
       <div className="rounded-2xl overflow-hidden" style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
         <button onClick={onToggle} className="flex items-center gap-3 w-full px-4 py-3.5 text-left">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
-            {icon}
-          </div>
+          <span className="shrink-0">{icon}</span>
           <span className="flex-1 text-[15px] font-bold text-foreground">{title}</span>
           <ChevronDown size={16} strokeWidth={2} className="text-muted-foreground shrink-0 transition-transform duration-200"
             style={{ transform: open ? "rotate(0deg)" : "rotate(-90deg)" }} />
@@ -1248,7 +1121,7 @@ function BrandAIPage() {
         <div className="flex flex-col gap-3 pt-2">
 
           <CollapsibleCard
-            icon={<Building2 size={17} strokeWidth={1.75} className="text-foreground" />}
+            icon={<Building2 size={22} strokeWidth={2} className="text-foreground" />}
             title="Company Profile"
             open={profileOpen}
             onToggle={() => setProfileOpen(v => !v)}
@@ -1265,7 +1138,7 @@ function BrandAIPage() {
           </CollapsibleCard>
 
           <CollapsibleCard
-            icon={<BookOpen size={17} strokeWidth={1.75} className="text-foreground" />}
+            icon={<BookOpen size={22} strokeWidth={2} className="text-foreground" />}
             title="Knowledge Base"
             open={kbOpen}
             onToggle={() => setKbOpen(v => !v)}

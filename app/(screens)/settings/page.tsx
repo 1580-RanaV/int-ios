@@ -204,13 +204,13 @@ export default function SettingsScreen() {
           {/* General */}
           <SectionLabel title="General" />
           <Card>
-            <Row icon={LayoutGrid}  label="Workspace"         subtitle="Name, email sync, domains, Inbox AI" onClick={() => go("workspace")} />
+            <Row icon={LayoutGrid}  label="Workspace"         onClick={() => go("workspace")} />
             <Divider />
-            <Row icon={Globe}       label="Language & Region"  subtitle="Date, time, currency formats"        onClick={() => go("locale")} />
+            <Row icon={Globe}       label="Language & Region" onClick={() => go("locale")} />
             <Divider />
-            <Row icon={Moon}        label="Appearance"         value={appearance}                             onClick={() => go("appearance")} />
+            <Row icon={Moon}        label="Appearance"        value={appearance} onClick={() => go("appearance")} />
             <Divider />
-            <Row icon={Bell}        label="Notifications"      subtitle="Push, email, meeting reminders"      onClick={() => go("notifications")} />
+            <Row icon={Bell}        label="Notifications"     onClick={() => go("notifications")} />
             <Divider />
             <Row icon={BarChart2}   label="Reporting Period"   value={reportPeriod}                           onClick={() => go("reporting")} />
           </Card>
@@ -218,25 +218,25 @@ export default function SettingsScreen() {
           {/* Permissions */}
           <SectionLabel title="Permissions" />
           <Card>
-            <Row icon={Shield} label="Permissions" subtitle="Camera, microphone, photos & notifications" onClick={() => go("permissions")} />
+            <Row icon={Shield} label="Permissions" onClick={() => go("permissions")} />
           </Card>
 
           {/* Brand & AI */}
           <SectionLabel title="Brand & AI" />
           <Card>
-            <Row icon={Sparkles} label="Brand & AI" subtitle="Voice, personas, knowledge base" onClick={() => go("brandai")} />
+            <Row icon={Sparkles} label="Brand & AI" onClick={() => go("brandai")} />
           </Card>
 
           {/* Meetings */}
           <SectionLabel title="Meetings" />
           <Card>
-            <Row icon={CalendarDays} label="Meetings" subtitle="Booking, availability, recording" onClick={() => go("meetings")} />
+            <Row icon={CalendarDays} label="Meetings" onClick={() => go("meetings")} />
           </Card>
 
           {/* Connections */}
           <SectionLabel title="Connections" />
           <Card>
-            <Row icon={Link2} label="Connections" subtitle="Gmail, Google Calendar, providers" onClick={() => go("connections")} />
+            <Row icon={Link2} label="Connections" onClick={() => go("connections")} />
           </Card>
 
           {/* Support */}

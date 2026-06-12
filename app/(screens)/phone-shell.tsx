@@ -73,6 +73,7 @@ export default function PhoneShell({ children }: { children: React.ReactNode }) 
 
   useEffect(() => {
     setDark(localStorage.getItem("phoneDark") === "1");
+    setPreview(localStorage.getItem("phonePreview") === "1");
   }, []);
 
   useEffect(() => {
@@ -218,7 +219,7 @@ export default function PhoneShell({ children }: { children: React.ReactNode }) 
           {dark ? "Dark" : "Light"}
         </button>
 
-        <button onClick={() => setPreview((p) => !p)} className={ctrlBase}
+        <button onClick={() => setPreview((p) => { const next = !p; localStorage.setItem("phonePreview", next ? "1" : "0"); return next; })} className={ctrlBase}
           style={{ background: preview ? "#0080FF" : "#ffffff", color: preview ? "#ffffff" : "#222326", border: `1px solid ${preview ? "#0080FF" : "#d8dae5"}` }}>
           <Smartphone size={14} />
           {preview ? "Exit" : "Preview"}
