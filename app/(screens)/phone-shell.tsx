@@ -64,7 +64,9 @@ const NOTIF = {
 
 export default function PhoneShell({ children }: { children: React.ReactNode }) {
   const [preview,      setPreview]      = useState(false);
-  const [dark,         setDark]         = useState(false);
+  const [dark,         setDark]         = useState(() =>
+    typeof window !== "undefined" && localStorage.getItem("phoneDark") === "1"
+  );
   const [scale,        setScale]        = useState(1);
   const [notifType,    setNotifType]    = useState<NotifType | null>(null);
   const [notifLeaving, setNotifLeaving] = useState(false);
@@ -208,7 +210,7 @@ export default function PhoneShell({ children }: { children: React.ReactNode }) 
       {/* ── Controls ──────────────────────────────────────────────── */}
       <div className="flex items-center gap-3 shrink-0">
 
-        <button onClick={() => setDark((d) => !d)} className={ctrlBase}
+        <button onClick={() => setDark((d) => { const next = !d; localStorage.setItem("phoneDark", next ? "1" : "0"); return next; })} className={ctrlBase}
           style={{ background: dark ? "#222326" : "#ffffff", color: dark ? "#f7f8f8" : "#222326", border: `1px solid ${dark ? "#383b3f" : "#d8dae5"}` }}>
           {dark ? <Moon size={14} /> : <Sun size={14} />}
           {dark ? "Dark" : "Light"}

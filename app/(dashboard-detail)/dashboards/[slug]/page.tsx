@@ -149,6 +149,8 @@ export default function DashboardDetailPage({ params }: { params: Promise<{ slug
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled]     = useState(false);
   const [atBottom, setAtBottom]     = useState(false);
+  const [exiting,  setExiting]      = useState(false);
+  const goBack = () => { setExiting(true); setTimeout(() => router.back(), 320); };
 
   const dashboard = DASHBOARDS.find((d) => d.slug === slug) ?? DASHBOARDS[0];
 
@@ -159,14 +161,14 @@ export default function DashboardDetailPage({ params }: { params: Promise<{ slug
   }, []);
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-page" style={{ animation: "slide-in-right 0.45s cubic-bezier(0.25,0.46,0.45,0.94)" }}>
+    <div className="flex flex-col flex-1 min-h-0 bg-page" style={{ animation: exiting ? "slide-out-right 0.32s ease-in-out forwards" : "slide-in-right 0.32s ease-in-out" }}>
 
       {/* ── Header ── */}
       <div className="shrink-0 px-4 pt-4 pb-3 flex items-center gap-3" style={{ background: "var(--page)" }}>
         <button
-          onClick={() => router.back()}
+          onClick={goBack}
           className="w-11 h-11 flex items-center justify-center rounded-full shrink-0"
-          style={{ background: "var(--raised)", border: "1px solid var(--border)", animation: "back-btn-in 0.42s cubic-bezier(0.34,1.56,0.64,1) 0.06s both" }}
+          style={{ background: "var(--raised)", border: "1px solid var(--border)", animation: "back-btn-in 0.42s cubic-bezier(0.34,1.56,0.64,1) 0.32s both" }}
         >
           <ChevronLeft size={22} strokeWidth={2} className="text-foreground" />
         </button>

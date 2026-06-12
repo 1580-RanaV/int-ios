@@ -257,10 +257,19 @@ export default function MeetingsScreen() {
 
   const totalMeetings = COMING_UP.length + PAST_MEETINGS.reduce((s, g) => s + g.items.length, 0);
 
+  const [animate] = useState<"tab-in" | "reveal-in">(() => {
+    if (typeof window === "undefined") return "tab-in";
+    const ret = sessionStorage.getItem("meetingsNav");
+    if (ret) { sessionStorage.removeItem("meetingsNav"); return "reveal-in"; }
+    return "tab-in";
+  });
+
+  const goTo = (slug: string) => { sessionStorage.setItem("meetingsNav", "1"); router.push(`/meetings/${slug}`); };
+
   return (
     <div
       className="flex flex-col flex-1 min-h-0 bg-page relative"
-      style={{ animation: "slide-in-right 0.45s cubic-bezier(0.25,0.46,0.45,0.94)" }}
+      style={{ animation: animate === "reveal-in" ? "reveal-in 0.28s ease-out" : "tab-in 0.25s ease-out" }}
     >
       {/* Header */}
       <div className="shrink-0 bg-page px-5 pt-5 pb-4">
@@ -407,7 +416,7 @@ export default function MeetingsScreen() {
                             animation: "tab-in 0.2s ease-out both",
                             animationDelay: `${(gi * 4 + i) * 35}ms`,
                           }}
-                          onClick={() => item.slug && router.push(`/meetings/${item.slug}`)}
+                          onClick={() => item.slug && goTo(item.slug)}
                         >
                           {/* Avatar */}
                           <div

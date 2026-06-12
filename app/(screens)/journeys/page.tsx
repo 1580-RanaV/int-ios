@@ -52,10 +52,19 @@ export default function JourneysScreen() {
 
   const filterActive = filter !== "All";
 
+  const [animate] = useState<"tab-in" | "reveal-in">(() => {
+    if (typeof window === "undefined") return "tab-in";
+    const ret = sessionStorage.getItem("journeysNav");
+    if (ret) { sessionStorage.removeItem("journeysNav"); return "reveal-in"; }
+    return "tab-in";
+  });
+
+  const goTo = (slug: string) => { sessionStorage.setItem("journeysNav", "1"); router.push(`/journeys/${slug}`); };
+
   return (
     <div
       className="flex flex-col flex-1 min-h-0 bg-page relative"
-      style={{ animation: "slide-in-right 0.45s cubic-bezier(0.25,0.46,0.45,0.94)" }}
+      style={{ animation: animate === "reveal-in" ? "reveal-in 0.28s ease-out" : "tab-in 0.25s ease-out" }}
     >
       {/* ── List view ───────────────────────────────────────────────────────── */}
       <div className="flex flex-col flex-1 min-h-0">
@@ -180,7 +189,7 @@ export default function JourneysScreen() {
                           onClick={() => closeDrop(value)}
                           className="flex items-center gap-2.5 w-full px-4 py-2.5 text-left transition-colors duration-100"
                           style={{
-                            background: sel ? "rgba(59,130,246,0.07)" : "transparent",
+                            background: sel ? "#1d4ed8" : "transparent",
                             animation: "tab-in 0.2s ease-out both",
                             animationDelay: `${i * 28}ms`,
                           }}
@@ -191,7 +200,7 @@ export default function JourneysScreen() {
                             ? <span className="w-2 h-2 rounded-full shrink-0" style={{ background: color }} />
                             : <span className="w-2 h-2 shrink-0" />
                           }
-                          <span className="text-sm font-medium" style={{ color: sel ? "#1d4ed8" : "var(--foreground)" }}>
+                          <span className="text-sm font-medium" style={{ color: sel ? "#fff" : "var(--foreground)" }}>
                             {value}
                           </span>
                         </button>
@@ -233,7 +242,7 @@ export default function JourneysScreen() {
                   {items.map((journey, i) => (
                     <div
                       key={journey.name}
-                      onClick={() => router.push('/journeys/' + encodeURIComponent(journey.name))}
+                      onClick={() => goTo(encodeURIComponent(journey.name))}
                       className="rounded-2xl p-4"
                       style={{
                         background: "var(--raised)",

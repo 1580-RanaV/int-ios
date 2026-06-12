@@ -147,7 +147,7 @@ export default function DealsPage() {
   return (
     <div
       className="flex flex-col flex-1 min-h-0 bg-page relative"
-      style={{ animation: "slide-in-right 0.45s cubic-bezier(0.25,0.46,0.45,0.94)" }}
+      style={{ animation: "tab-in 0.25s ease-out" }}
     >
       {/* ── Header ────────────────────────────────────────────────────────── */}
       <div className="shrink-0 px-5 pt-5 pb-0">
@@ -243,7 +243,7 @@ export default function DealsPage() {
                         onClick={() => closeDrop(value)}
                         className="flex items-center gap-2.5 w-full px-4 py-2.5 text-left transition-colors duration-100"
                         style={{
-                          background: sel ? "rgba(59,130,246,0.07)" : "transparent",
+                          background: sel ? "#1d4ed8" : "transparent",
                           animation: "tab-in 0.2s ease-out both",
                           animationDelay: `${i * 28}ms`,
                         }}
@@ -254,8 +254,8 @@ export default function DealsPage() {
                           ? <span className="w-2 h-2 rounded-full shrink-0" style={{ background: color }} />
                           : <span className="w-2 h-2 shrink-0" />
                         }
-                        <span className="text-sm font-medium flex-1" style={{ color: sel ? "#1d4ed8" : "var(--foreground)" }}>{value}</span>
-                        {sel && <Check size={13} strokeWidth={2} style={{ color: "#1d4ed8" }} />}
+                        <span className="text-sm font-medium flex-1" style={{ color: sel ? "#fff" : "var(--foreground)" }}>{value}</span>
+                        {sel && <Check size={13} strokeWidth={2} style={{ color: "#fff" }} />}
                       </button>
                     );
                   })}

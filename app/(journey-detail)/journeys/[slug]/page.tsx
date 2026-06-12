@@ -69,8 +69,8 @@ export default function JourneyDetailPage({ params }: { params: Promise<{ slug: 
       className="flex flex-col flex-1 min-h-0 bg-page relative"
       style={{
         animation: closing
-          ? "slide-out-right 0.32s cubic-bezier(0.25,0.46,0.45,0.94) forwards"
-          : "slide-in-right 0.42s cubic-bezier(0.25,0.46,0.45,0.94)",
+          ? "slide-out-right 0.32s ease-in-out forwards"
+          : "slide-in-right 0.32s ease-in-out",
       }}
     >
       {/* Header */}
@@ -79,7 +79,7 @@ export default function JourneyDetailPage({ params }: { params: Promise<{ slug: 
           <button
             onClick={handleBack}
             className="w-11 h-11 flex items-center justify-center rounded-full shrink-0"
-            style={{ background: "var(--raised)", border: "1px solid var(--border)", animation: "back-btn-in 0.42s cubic-bezier(0.34,1.56,0.64,1) 0.06s both" }}
+            style={{ background: "var(--raised)", border: "1px solid var(--border)", animation: "back-btn-in 0.42s cubic-bezier(0.34,1.56,0.64,1) 0.32s both" }}
           >
             <ChevronLeft size={22} strokeWidth={2} className="text-foreground" />
           </button>

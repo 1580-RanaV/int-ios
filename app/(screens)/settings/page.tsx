@@ -108,11 +108,11 @@ export default function SettingsScreen() {
   const router = useRouter();
 
   // Don't re-animate when returning from a settings detail page
-  const [animate] = useState(() => {
-    if (typeof window === "undefined") return true;
+  const [animate] = useState<"tab-in" | "reveal-in">(() => {
+    if (typeof window === "undefined") return "tab-in";
     const returning = sessionStorage.getItem("settingsNav");
-    if (returning) { sessionStorage.removeItem("settingsNav"); return false; }
-    return true;
+    if (returning) { sessionStorage.removeItem("settingsNav"); return "reveal-in"; }
+    return "tab-in";
   });
 
   const go = (section: string) => {
@@ -134,7 +134,7 @@ export default function SettingsScreen() {
   return (
     <div
       className="flex flex-col flex-1 min-h-0 bg-page relative"
-      style={{ animation: animate ? "tab-in 0.25s ease-out" : "none" }}
+      style={{ animation: animate === "reveal-in" ? "reveal-in 0.28s ease-out" : "tab-in 0.25s ease-out" }}
     >
       {/* Header */}
       <div className="shrink-0 bg-page px-5 pt-5 pb-2">

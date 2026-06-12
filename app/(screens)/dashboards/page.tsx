@@ -36,10 +36,19 @@ export default function DashboardsScreen() {
     setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
   }, [filtered]);
 
+  const [animate] = useState<"tab-in" | "reveal-in">(() => {
+    if (typeof window === "undefined") return "tab-in";
+    const ret = sessionStorage.getItem("dashboardsNav");
+    if (ret) { sessionStorage.removeItem("dashboardsNav"); return "reveal-in"; }
+    return "tab-in";
+  });
+
+  const goTo = (slug: string) => { sessionStorage.setItem("dashboardsNav", "1"); router.push(`/dashboards/${slug}`); };
+
   return (
     <div
       className="flex flex-col flex-1 min-h-0 bg-page relative"
-      style={{ animation: "tab-in 0.25s ease-out" }}
+      style={{ animation: animate === "reveal-in" ? "reveal-in 0.28s ease-out" : "tab-in 0.25s ease-out" }}
     >
       {/* Header */}
       <div className="shrink-0 bg-page px-5 pt-5 pb-4">
@@ -83,7 +92,7 @@ export default function DashboardsScreen() {
               {filtered.map((dashboard, i) => (
                 <button
                   key={dashboard.name}
-                  onClick={() => router.push(`/dashboards/${dashboard.slug}`)}
+                  onClick={() => goTo(dashboard.slug)}
                   className="flex items-center gap-3 w-full px-4 py-3.5 rounded-2xl text-left"
                   style={{
                     background: "var(--raised)",

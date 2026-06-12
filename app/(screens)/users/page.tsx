@@ -25,8 +25,17 @@ export default function UsersScreen() {
     setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 20);
   }, [filtered]);
 
+  const [animate] = useState<"tab-in" | "reveal-in">(() => {
+    if (typeof window === "undefined") return "tab-in";
+    const ret = sessionStorage.getItem("usersNav");
+    if (ret) { sessionStorage.removeItem("usersNav"); return "reveal-in"; }
+    return "tab-in";
+  });
+
+  const goTo = (slug: string) => { sessionStorage.setItem("usersNav", "1"); router.push(`/users/${slug}`); };
+
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-page relative" style={{ animation: "slide-in-right 0.45s cubic-bezier(0.25,0.46,0.45,0.94)" }}>
+    <div className="flex flex-col flex-1 min-h-0 bg-page relative" style={{ animation: animate === "reveal-in" ? "reveal-in 0.28s ease-out" : "tab-in 0.25s ease-out" }}>
 
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <div className="shrink-0 bg-page px-5 pt-5 pb-4">
@@ -81,7 +90,7 @@ export default function UsersScreen() {
                 animation: "tab-in 0.2s ease-out both",
                 animationDelay: `${i * 35}ms`,
               }}
-              onClick={() => router.push(`/users/${encodeURIComponent(user.name)}`)}
+              onClick={() => goTo(encodeURIComponent(user.name))}
             >
               <div
                 className="w-11 h-11 rounded-full flex items-center justify-center shrink-0"

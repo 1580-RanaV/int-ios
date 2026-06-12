@@ -47,10 +47,19 @@ export default function ExperiencesScreen() {
   const totalPersonalizations = EXPERIENCES.filter((e) => e.type === "Personalization").length;
   const totalActive         = EXPERIENCES.filter((e) => e.status === "Active").length;
 
+  const [animate] = useState<"tab-in" | "reveal-in">(() => {
+    if (typeof window === "undefined") return "tab-in";
+    const ret = sessionStorage.getItem("experiencesNav");
+    if (ret) { sessionStorage.removeItem("experiencesNav"); return "reveal-in"; }
+    return "tab-in";
+  });
+
+  const goTo = (slug: string) => { sessionStorage.setItem("experiencesNav", "1"); router.push(`/experiences/${slug}`); };
+
   return (
     <div
       className="flex flex-col flex-1 min-h-0 bg-page relative"
-      style={{ animation: "slide-in-right 0.45s cubic-bezier(0.25,0.46,0.45,0.94)" }}
+      style={{ animation: animate === "reveal-in" ? "reveal-in 0.28s ease-out" : "tab-in 0.25s ease-out" }}
     >
       {/* Header */}
       <div className="shrink-0 bg-page px-5 pt-5 pb-4">
@@ -176,7 +185,7 @@ export default function ExperiencesScreen() {
                         onClick={() => closeDrop(f)}
                         className="flex items-center gap-2.5 w-full px-4 py-2.5 text-left transition-colors duration-100"
                         style={{
-                          background: sel ? "rgba(59,130,246,0.07)" : "transparent",
+                          background: sel ? "#1d4ed8" : "transparent",
                           animation: "tab-in 0.2s ease-out both",
                           animationDelay: `${i * 28}ms`,
                         }}
@@ -187,7 +196,7 @@ export default function ExperiencesScreen() {
                           ? <span className="w-2 h-2 rounded-full shrink-0" style={{ background: color }} />
                           : <span className="w-2 h-2 shrink-0" />
                         }
-                        <span className="text-sm font-medium" style={{ color: sel ? "#1d4ed8" : "var(--foreground)" }}>{f}</span>
+                        <span className="text-sm font-medium" style={{ color: sel ? "#fff" : "var(--foreground)" }}>{f}</span>
                       </button>
                     );
                   })}
@@ -234,7 +243,7 @@ export default function ExperiencesScreen() {
                       animation: "tab-in 0.25s ease-out both",
                       animationDelay: `${i * 40}ms`,
                     }}
-                    onClick={() => router.push(`/experiences/${encodeURIComponent(exp.name)}`)}
+                    onClick={() => goTo(encodeURIComponent(exp.name))}
                   >
                     <p className="text-base font-bold text-foreground leading-snug mb-2.5">{exp.name}</p>
 

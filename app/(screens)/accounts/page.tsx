@@ -43,7 +43,7 @@ export default function AccountsScreen() {
   return (
     <div
       className="flex flex-col flex-1 min-h-0 bg-page relative"
-      style={{ animation: "slide-in-right 0.45s cubic-bezier(0.25,0.46,0.45,0.94)" }}
+      style={{ animation: "tab-in 0.25s ease-out" }}
     >
       {/* Header */}
       <div className="shrink-0 bg-page px-5 pt-5 pb-4">

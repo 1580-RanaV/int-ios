@@ -1,13 +1,31 @@
 "use client";
 
-import { use, useState, useRef, useEffect } from "react";
+import { use, useState, useRef, useEffect, createContext, useContext } from "react";
 import { useRouter } from "next/navigation";
 import {
   ChevronLeft, Sun, Moon, SunMoon, Check, ChevronDown,
   Camera, Mic, ImageIcon, Bell, Mail, Phone,
   Building2, FolderKanban, Shield,
-  Smartphone, Trash2, UserCircle,
+  Smartphone, Trash2, UserCircle, LogOut,
 } from "lucide-react";
+
+// ─── Exit animation context ───────────────────────────────────────────────────
+
+const ExitCtx = createContext<() => void>(() => {});
+
+function PageContainer({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const [exiting, setExiting] = useState(false);
+  const goBack = () => { setExiting(true); setTimeout(() => router.back(), 320); };
+  return (
+    <ExitCtx.Provider value={goBack}>
+      <div className="flex flex-col flex-1 min-h-0 bg-page"
+        style={{ animation: exiting ? "slide-out-right 0.32s ease-in-out forwards" : "slide-in-right 0.32s ease-in-out" }}>
+        {children}
+      </div>
+    </ExitCtx.Provider>
+  );
+}
 
 // ─── Shared data ──────────────────────────────────────────────────────────────
 
@@ -25,13 +43,13 @@ const ORGS: Org[] = [
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function PageHeader({ title }: { title: string }) {
-  const router = useRouter();
+  const goBack = useContext(ExitCtx);
   return (
     <div className="shrink-0 flex items-center gap-3 px-4 pt-4 pb-3" style={{ background: "var(--page)" }}>
       <button
-        onClick={() => router.back()}
+        onClick={goBack}
         className="w-11 h-11 flex items-center justify-center rounded-full shrink-0"
-        style={{ background: "var(--raised)", border: "1px solid var(--border)", animation: "back-btn-in 0.42s cubic-bezier(0.34,1.56,0.64,1) 0.06s both" }}
+        style={{ background: "var(--raised)", border: "1px solid var(--border)", animation: "back-btn-in 0.42s cubic-bezier(0.34,1.56,0.64,1) 0.32s both" }}
       >
         <ChevronLeft size={22} strokeWidth={2} className="text-foreground" />
       </button>
@@ -63,11 +81,12 @@ function SelectField({ label, value, onChange, options }: {
   );
 }
 
-function SaveButton({ onPress }: { onPress: () => void }) {
+function SaveButton() {
+  const goBack = useContext(ExitCtx);
   return (
     <div className="px-4 pt-4 pb-8">
       <button
-        onClick={onPress}
+        onClick={goBack}
         className="w-full py-3 rounded-2xl text-[14px] font-semibold text-white"
         style={{ background: "#1d4ed8" }}
       >
@@ -133,7 +152,6 @@ function ScrollFade({ children, className }: { children: React.ReactNode; classN
 // ─── Section pages ────────────────────────────────────────────────────────────
 
 function AppearancePage() {
-  const router = useRouter();
   const [appearance, setAppearance] = useState<"Light" | "Dark" | "Automatic">("Light");
   const OPTIONS = [
     { key: "Light" as const,     icon: Sun,     label: "Light",     sub: "Always use light mode"     },
@@ -141,10 +159,10 @@ function AppearancePage() {
     { key: "Automatic" as const, icon: SunMoon, label: "Automatic", sub: "Follow system preference"  },
   ];
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-page" style={{ animation: "slide-in-right 0.38s cubic-bezier(0.25,0.46,0.45,0.94)" }}>
+    <PageContainer>
       <PageHeader title="Appearance" />
       <ScrollFade className="px-4 pb-8">
-        <div className="flex flex-col gap-1 pt-2">
+        <div className="flex flex-col gap-2 pt-2">
           {OPTIONS.map(({ key, icon: Icon, label, sub }) => {
             const active = appearance === key;
             return (
@@ -152,53 +170,60 @@ function AppearancePage() {
                 key={key}
                 onClick={() => setAppearance(key)}
                 className="flex items-center gap-3.5 w-full px-3.5 py-3 rounded-2xl text-left"
-                style={{ background: active ? "rgba(59,130,246,0.07)" : "var(--raised)", border: `1px solid ${active ? "rgba(59,130,246,0.2)" : "var(--border)"}` }}
+                style={{ background: active ? "#1d4ed8" : "var(--raised)", border: `1px solid ${active ? "#1d4ed8" : "var(--border)"}` }}
               >
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: active ? "rgba(59,130,246,0.12)" : "var(--secondary)" }}>
-                  <Icon size={17} strokeWidth={1.75} style={{ color: active ? "#1d4ed8" : "var(--icon)" }} />
+                  style={{ background: active ? "rgba(255,255,255,0.15)" : "var(--secondary)" }}>
+                  <Icon size={17} strokeWidth={1.75} style={{ color: active ? "#fff" : "var(--icon)" }} />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-semibold" style={{ color: active ? "#1d4ed8" : "var(--foreground)" }}>{label}</p>
-                  <p className="text-xs mt-0.5 text-muted-foreground">{sub}</p>
+                  <p className="text-sm font-semibold" style={{ color: active ? "#fff" : "var(--foreground)" }}>{label}</p>
+                  <p className="text-xs mt-0.5" style={{ color: active ? "rgba(255,255,255,0.65)" : "var(--muted-foreground)" }}>{sub}</p>
                 </div>
-                {active && <Check size={16} strokeWidth={2} style={{ color: "#1d4ed8", flexShrink: 0 }} />}
+                {active && <Check size={16} strokeWidth={2} style={{ color: "#fff", flexShrink: 0 }} />}
               </button>
             );
           })}
         </div>
       </ScrollFade>
-    </div>
+    </PageContainer>
   );
 }
 
 function ReportingPage() {
-  const router = useRouter();
-  const PERIODS = ["7D", "14D", "30D", "90D", "6M", "12M"];
+  const PERIODS = [
+    { value: "7D",  label: "7 Days"    },
+    { value: "14D", label: "14 Days"   },
+    { value: "30D", label: "30 Days"   },
+    { value: "90D", label: "90 Days"   },
+    { value: "6M",  label: "6 Months"  },
+    { value: "12M", label: "12 Months" },
+  ];
   const [period, setPeriod] = useState("30D");
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-page" style={{ animation: "slide-in-right 0.38s cubic-bezier(0.25,0.46,0.45,0.94)" }}>
+    <PageContainer>
       <PageHeader title="Reporting Period" />
-      <ScrollFade className="px-4 pb-8">
+      <ScrollFade className="px-4 pb-4">
         <p className="text-[13px] text-muted-foreground mb-4 pt-2">Choose the default time window for reports and dashboards.</p>
-        <div className="flex flex-wrap gap-2">
-          {PERIODS.map((p) => {
-            const active = period === p;
+        <div className="flex flex-col gap-2">
+          {PERIODS.map(({ value, label }) => {
+            const active = period === value;
             return (
               <button
-                key={p}
-                onClick={() => setPeriod(p)}
-                className="px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200"
-                style={{ background: active ? "#1d4ed8" : "var(--raised)", color: active ? "#fff" : "var(--foreground)", border: `1px solid ${active ? "#1d4ed8" : "var(--border)"}` }}
+                key={value}
+                onClick={() => setPeriod(value)}
+                className="flex items-center justify-between w-full px-4 py-3.5 rounded-2xl text-left"
+                style={{ background: active ? "#1d4ed8" : "var(--raised)", border: `1px solid ${active ? "#1d4ed8" : "var(--border)"}` }}
               >
-                {p}
+                <span className="text-[14px] font-semibold" style={{ color: active ? "#fff" : "var(--foreground)" }}>{label}</span>
+                {active && <Check size={16} strokeWidth={2.5} style={{ color: "#fff" }} />}
               </button>
             );
           })}
         </div>
-        <SaveButton onPress={() => router.back()} />
       </ScrollFade>
-    </div>
+      <SaveButton />
+    </PageContainer>
   );
 }
 
@@ -206,7 +231,7 @@ function ConnectionsPage() {
   const [gmailConn, setGmailConn] = useState(true);
   const [gcalConn,  setGcalConn]  = useState(false);
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-page" style={{ animation: "slide-in-right 0.38s cubic-bezier(0.25,0.46,0.45,0.94)" }}>
+    <PageContainer>
       <PageHeader title="Connections" />
       <ScrollFade className="px-4 pb-8">
         <p className="text-[13px] text-muted-foreground mb-4 pt-2">Connect external services to sync your data.</p>
@@ -237,59 +262,67 @@ function ConnectionsPage() {
           ))}
         </div>
       </ScrollFade>
-    </div>
+    </PageContainer>
   );
 }
 
 function AccountPage() {
-  const router = useRouter();
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-page" style={{ animation: "slide-in-right 0.38s cubic-bezier(0.25,0.46,0.45,0.94)" }}>
+    <PageContainer>
       <PageHeader title="Account" />
       <ScrollFade className="px-4 pb-8">
-        <div className="flex flex-col gap-2 pt-2">
-          {[
-            { icon: Smartphone, label: "Trusted Devices",       sub: "Manage devices with access" },
-            { icon: Shield,     label: "Two-Factor Auth",        sub: "Secure your account"        },
-          ].map(({ icon: Icon, label, sub }) => (
-            <button key={label} className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-left"
-              style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--secondary)" }}>
-                <Icon size={17} strokeWidth={1.75} className="text-muted-foreground" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-foreground">{label}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">{sub}</p>
-              </div>
-              <ChevronLeft size={15} strokeWidth={1.75} className="text-muted-foreground shrink-0" style={{ transform: "rotate(180deg)" }} />
-            </button>
-          ))}
+        <div className="flex flex-col gap-5 pt-2">
 
-          <div className="mt-4">
-            <button className="flex items-center gap-3.5 w-full px-4 py-3.5 rounded-2xl text-left"
-              style={{ background: "rgba(190,18,60,0.06)", border: "1px solid rgba(190,18,60,0.15)" }}>
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(190,18,60,0.1)" }}>
-                <Trash2 size={17} strokeWidth={1.75} style={{ color: "#be123c" }} />
+          {/* Trusted Devices */}
+          <div>
+            <SectionLabel title="Trusted Devices" />
+            <div className="rounded-2xl overflow-hidden" style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
+              <div className="flex items-center gap-3.5 px-4 py-3.5">
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
+                  <Smartphone size={16} strokeWidth={1.75} className="text-muted-foreground" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[14px] font-semibold text-foreground">This device</p>
+                  <p className="text-[12px] text-muted-foreground mt-0.5">Now</p>
+                </div>
+                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0" style={{ color: "#15803d", background: "rgba(22,163,74,0.12)" }}>
+                  Current
+                </span>
               </div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold" style={{ color: "#be123c" }}>Delete Account</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Permanently remove your account</p>
-              </div>
+            </div>
+          </div>
+
+          {/* Log out everywhere */}
+          <button className="flex items-center gap-3 w-full px-4 py-3.5 rounded-2xl text-left"
+            style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(190,18,60,0.08)" }}>
+              <LogOut size={16} strokeWidth={1.75} style={{ color: "#be123c" }} />
+            </div>
+            <span className="text-[14px] font-semibold" style={{ color: "#be123c" }}>Log out everywhere</span>
+          </button>
+
+          {/* Danger Zone */}
+          <div>
+            <SectionLabel title="Danger Zone" />
+            <button className="flex items-center justify-center gap-2 w-full px-4 py-3.5 rounded-2xl"
+              style={{ background: "transparent", border: "1px solid rgba(190,18,60,0.35)" }}>
+              <Trash2 size={15} strokeWidth={1.75} style={{ color: "#be123c" }} />
+              <span className="text-[14px] font-semibold" style={{ color: "#be123c" }}>Delete account</span>
             </button>
           </div>
+
         </div>
       </ScrollFade>
-    </div>
+    </PageContainer>
   );
 }
 
 function ProfilePage() {
-  const router = useRouter();
   const [name,    setName]    = useState("Rana V");
   const [display, setDisplay] = useState("");
   const [phone,   setPhone]   = useState("+1 (555) 123-4567");
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-page" style={{ animation: "slide-in-right 0.38s cubic-bezier(0.25,0.46,0.45,0.94)" }}>
+    <PageContainer>
       <PageHeader title="Edit Profile" />
       <ScrollFade className="px-4 pb-4">
         <div className="flex flex-col gap-5 pt-2">
@@ -334,29 +367,29 @@ function ProfilePage() {
           </div>
         </div>
       </ScrollFade>
-      <SaveButton onPress={() => router.back()} />
-    </div>
+      <SaveButton />
+    </PageContainer>
   );
 }
 
 function OrgPage() {
-  const router = useRouter();
+  const goBack = useContext(ExitCtx);
   type OrgTab = "Organizations" | "Projects";
   const [orgTab,          setOrgTab]          = useState<OrgTab>("Organizations");
   const [selectedOrg,     setSelectedOrg]     = useState("intempt-ext");
   const [selectedProject, setSelectedProject] = useState("stockinvest-project");
   const activeOrg = ORGS.find((o) => o.id === selectedOrg) ?? ORGS[2];
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-page" style={{ animation: "slide-in-right 0.38s cubic-bezier(0.25,0.46,0.45,0.94)" }}>
+    <PageContainer>
       <PageHeader title="Switch Workspace" />
       <div className="px-4 pb-2">
-        <div className="flex p-1 rounded-[14px]" style={{ background: "var(--raised)", border: "1px solid var(--border)" }}>
+        <div className="flex bg-secondary rounded-[14px] p-1 gap-0.5">
           {(["Organizations", "Projects"] as OrgTab[]).map((tab) => {
             const isActive = orgTab === tab;
             return (
               <button key={tab} onClick={() => setOrgTab(tab)}
-                className="flex-1 flex items-center justify-center gap-1.5 h-9 rounded-[10px] text-[13px] font-semibold transition-all duration-200"
-                style={{ background: isActive ? "var(--page)" : "transparent", color: isActive ? "#1d4ed8" : "var(--muted-foreground)", boxShadow: isActive ? "0 1px 4px rgba(0,0,0,0.08)" : "none" }}>
+                className="flex-1 flex items-center justify-center gap-1.5 py-1.75 rounded-[10px] text-sm font-semibold transition-all"
+                style={{ background: isActive ? "var(--raised)" : "transparent", color: isActive ? "var(--foreground)" : "var(--muted-foreground)", boxShadow: isActive ? "0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04)" : "none" }}>
                 {tab === "Organizations" ? <Building2 size={14} strokeWidth={1.75} /> : <FolderKanban size={14} strokeWidth={1.75} />}
                 {tab}
               </button>
@@ -366,27 +399,27 @@ function OrgPage() {
       </div>
       <ScrollFade className="px-4 pb-8">
         {orgTab === "Organizations" ? (
-          <div className="flex flex-col gap-1 pt-2">
+          <div className="flex flex-col gap-2 pt-2">
             {ORGS.map((org) => {
               const isSel = org.id === selectedOrg;
               return (
                 <button key={org.id}
                   className="flex items-center gap-3.5 w-full px-3.5 py-3 rounded-2xl text-left"
-                  style={{ background: isSel ? "rgba(59,130,246,0.07)" : "var(--raised)", border: `1px solid ${isSel ? "rgba(59,130,246,0.2)" : "var(--border)"}` }}
+                  style={{ background: isSel ? "#1d4ed8" : "var(--raised)", border: `1px solid ${isSel ? "#1d4ed8" : "var(--border)"}` }}
                   onClick={() => { setSelectedOrg(org.id); setSelectedProject(org.projects[0]?.id ?? ""); setTimeout(() => setOrgTab("Projects"), 180); }}
                 >
                   <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-white text-[15px] font-bold" style={{ background: org.color }}>{org.initial}</div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[14px] font-semibold text-foreground truncate">{org.name}</p>
-                    <p className="text-[12px] mt-0.5 text-muted-foreground">{org.projects.length} project{org.projects.length !== 1 ? "s" : ""}</p>
+                    <p className="text-[14px] font-semibold truncate" style={{ color: isSel ? "#fff" : "var(--foreground)" }}>{org.name}</p>
+                    <p className="text-[12px] mt-0.5" style={{ color: isSel ? "rgba(255,255,255,0.65)" : "var(--muted-foreground)" }}>{org.projects.length} project{org.projects.length !== 1 ? "s" : ""}</p>
                   </div>
-                  {isSel && <Check size={16} strokeWidth={2.5} style={{ color: "#1d4ed8", flexShrink: 0 }} />}
+                  {isSel && <Check size={16} strokeWidth={2.5} style={{ color: "#fff", flexShrink: 0 }} />}
                 </button>
               );
             })}
           </div>
         ) : (
-          <div className="flex flex-col gap-1 pt-2">
+          <div className="flex flex-col gap-2 pt-2">
             {activeOrg.projects.length === 0 ? (
               <div className="py-16 flex flex-col items-center gap-2">
                 <FolderKanban size={28} strokeWidth={1.5} className="text-muted-foreground opacity-40" />
@@ -397,29 +430,28 @@ function OrgPage() {
               return (
                 <button key={proj.id}
                   className="flex items-center gap-3.5 w-full px-3.5 py-3 rounded-2xl text-left"
-                  style={{ background: isSel ? "rgba(59,130,246,0.07)" : "var(--raised)", border: `1px solid ${isSel ? "rgba(59,130,246,0.2)" : "var(--border)"}` }}
-                  onClick={() => { setSelectedProject(proj.id); router.back(); }}
+                  style={{ background: isSel ? "#1d4ed8" : "var(--raised)", border: `1px solid ${isSel ? "#1d4ed8" : "var(--border)"}` }}
+                  onClick={() => { setSelectedProject(proj.id); goBack(); }}
                 >
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: "var(--secondary)", border: "1px solid var(--border)" }}>
-                    <FolderKanban size={16} strokeWidth={1.75} className="text-muted-foreground" />
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: isSel ? "rgba(255,255,255,0.15)" : "var(--secondary)", border: `1px solid ${isSel ? "transparent" : "var(--border)"}` }}>
+                    <FolderKanban size={16} strokeWidth={1.75} style={{ color: isSel ? "#fff" : "var(--muted-foreground)" }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[14px] font-semibold text-foreground truncate">{proj.name}</p>
-                    <p className="text-[12px] mt-0.5 text-muted-foreground">{activeOrg.name}</p>
+                    <p className="text-[14px] font-semibold truncate" style={{ color: isSel ? "#fff" : "var(--foreground)" }}>{proj.name}</p>
+                    <p className="text-[12px] mt-0.5" style={{ color: isSel ? "rgba(255,255,255,0.65)" : "var(--muted-foreground)" }}>{activeOrg.name}</p>
                   </div>
-                  {isSel && <Check size={16} strokeWidth={2.5} style={{ color: "#1d4ed8", flexShrink: 0 }} />}
+                  {isSel && <Check size={16} strokeWidth={2.5} style={{ color: "#fff", flexShrink: 0 }} />}
                 </button>
               );
             })}
           </div>
         )}
       </ScrollFade>
-    </div>
+    </PageContainer>
   );
 }
 
 function LocalePage() {
-  const router = useRouter();
   const [language,       setLanguage]       = useState("English");
   const [country,        setCountry]        = useState("United States of America");
   const [dateFormat,     setDateFormat]     = useState("MM/DD/YYYY");
@@ -429,7 +461,7 @@ function LocalePage() {
   const [currency,       setCurrency]       = useState("$ USD");
   const [currencyPos,    setCurrencyPos]    = useState("Before amount ($100)");
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-page" style={{ animation: "slide-in-right 0.38s cubic-bezier(0.25,0.46,0.45,0.94)" }}>
+    <PageContainer>
       <PageHeader title="Language & Region" />
       <ScrollFade className="px-4 pb-4">
         <div className="flex flex-col gap-5 pt-2">
@@ -446,8 +478,8 @@ function LocalePage() {
           <SelectField label="Currency Position" value={currencyPos} onChange={setCurrencyPos} options={["Before amount ($100)", "After amount (100$)"]} />
         </div>
       </ScrollFade>
-      <SaveButton onPress={() => router.back()} />
-    </div>
+      <SaveButton />
+    </PageContainer>
   );
 }
 
@@ -457,7 +489,7 @@ function NotificationsPage() {
   const [meetingReminder, setMeetingReminder] = useState("15 minutes before");
   const [reminderOpen,    setReminderOpen]    = useState(false);
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-page" style={{ animation: "slide-in-right 0.38s cubic-bezier(0.25,0.46,0.45,0.94)" }}>
+    <PageContainer>
       <PageHeader title="Notifications" />
       <ScrollFade className="px-4 pb-8">
         <div className="flex flex-col gap-2 pt-2">
@@ -498,9 +530,9 @@ function NotificationsPage() {
                     return (
                       <button key={opt} onClick={() => { setMeetingReminder(opt); setReminderOpen(false); }}
                         className="flex items-center justify-between w-full px-4 py-2.5 text-left"
-                        style={{ background: sel ? "rgba(59,130,246,0.07)" : "transparent", animation: "tab-in 0.2s ease-out both", animationDelay: `${i * 24}ms` }}>
-                        <span className="text-[13px] font-medium" style={{ color: sel ? "#1d4ed8" : "var(--foreground)" }}>{opt}</span>
-                        {sel && <Check size={13} strokeWidth={2} style={{ color: "#1d4ed8" }} />}
+                        style={{ background: sel ? "#1d4ed8" : "transparent", animation: "tab-in 0.2s ease-out both", animationDelay: `${i * 24}ms` }}>
+                        <span className="text-[13px] font-medium" style={{ color: sel ? "#fff" : "var(--foreground)" }}>{opt}</span>
+                        {sel && <Check size={13} strokeWidth={2} style={{ color: "#fff" }} />}
                       </button>
                     );
                   })}
@@ -510,13 +542,13 @@ function NotificationsPage() {
           </div>
         </div>
       </ScrollFade>
-    </div>
+    </PageContainer>
   );
 }
 
 function PermissionsPage() {
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-page" style={{ animation: "slide-in-right 0.38s cubic-bezier(0.25,0.46,0.45,0.94)" }}>
+    <PageContainer>
       <PageHeader title="Permissions" />
       <ScrollFade className="px-4 pb-8">
         <div className="flex flex-col gap-2 pt-2">
@@ -545,7 +577,7 @@ function PermissionsPage() {
           })}
         </div>
       </ScrollFade>
-    </div>
+    </PageContainer>
   );
 }
 
