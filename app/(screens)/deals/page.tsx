@@ -21,8 +21,6 @@ function DealCard({ deal }: { deal: Deal }) {
     <button
       className="w-full flex items-center gap-3.5 px-4 py-3.5 text-left"
       style={{ animation: "tab-in 0.22s ease-out both" }}
-      onMouseEnter={(e) => { e.currentTarget.style.background = "var(--secondary)"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
     >
       {/* Owner avatar */}
       <div
@@ -247,8 +245,6 @@ export default function DealsPage() {
                           animation: "tab-in 0.2s ease-out both",
                           animationDelay: `${i * 28}ms`,
                         }}
-                        onMouseEnter={(e) => { if (!sel) e.currentTarget.style.background = "var(--secondary)"; }}
-                        onMouseLeave={(e) => { if (!sel) e.currentTarget.style.background = "transparent"; }}
                       >
                         {color
                           ? <span className="w-2 h-2 rounded-full shrink-0" style={{ background: color }} />

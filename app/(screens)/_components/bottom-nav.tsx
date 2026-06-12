@@ -189,13 +189,11 @@ export default function BottomNav() {
               return (
                 <div
                   key={key}
-                  className="flex items-center w-full transition-colors duration-100"
+                  className="flex items-center w-full"
                   style={{
                     animation: "tab-in 0.2s ease-out both",
                     animationDelay: `${i * 28}ms`,
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = "var(--secondary)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
                 >
                   {/* Row — navigate */}
                   <button
@@ -231,10 +229,8 @@ export default function BottomNav() {
             <Link
               href="/settings"
               onClick={closeMore}
-              className="flex items-center gap-3 w-full px-4 py-2.5 text-left transition-colors duration-100"
+              className="flex items-center gap-3 w-full px-4 py-2.5 text-left"
               style={{ animation: "tab-in 0.2s ease-out both", animationDelay: `${ALL_SWAPPABLE.length * 28}ms` }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--secondary)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
             >
               <Settings size={17} strokeWidth={1.75} className="shrink-0" style={{ color: "var(--icon)" }} />
               <span className="flex-1 text-sm font-medium text-foreground">Settings</span>

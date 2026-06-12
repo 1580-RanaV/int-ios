@@ -60,10 +60,8 @@ type RowProps = {
 function Row({ icon: Icon, label, subtitle, value, notSet, danger, onClick }: RowProps) {
   return (
     <button
-      className="flex items-center gap-3.5 w-full px-4 text-left transition-colors duration-100"
+      className="flex items-center gap-3.5 w-full px-4 text-left"
       style={{ paddingTop: 13, paddingBottom: 13 }}
-      onMouseEnter={(e) => { e.currentTarget.style.background = "var(--secondary)"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
       onClick={onClick}
     >
       <Icon size={18} strokeWidth={1.75} className="shrink-0"
@@ -170,10 +168,8 @@ export default function SettingsScreen() {
               </div>
             </div>
             <button
-              className="w-full py-2.5 rounded-2xl text-[13px] font-semibold transition-all duration-150"
+              className="w-full py-2.5 rounded-2xl text-[13px] font-semibold"
               style={{ background: "var(--raised)", border: "1px solid var(--border)", color: "var(--foreground)" }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--secondary)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "var(--raised)"; }}
               onClick={() => go("profile")}
             >
               Edit Profile

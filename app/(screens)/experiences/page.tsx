@@ -189,8 +189,6 @@ export default function ExperiencesScreen() {
                           animation: "tab-in 0.2s ease-out both",
                           animationDelay: `${i * 28}ms`,
                         }}
-                        onMouseEnter={(e) => { if (!sel) e.currentTarget.style.background = "var(--secondary)"; }}
-                        onMouseLeave={(e) => { if (!sel) e.currentTarget.style.background = "transparent"; }}
                       >
                         {color
                           ? <span className="w-2 h-2 rounded-full shrink-0" style={{ background: color }} />
